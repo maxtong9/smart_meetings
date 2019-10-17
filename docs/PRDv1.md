@@ -1,5 +1,5 @@
 # SmartMeetings: Product Requirements Document
-### Team Name: pending...
+### Team Name: Meeting is Believing
 Team Members: Maxton Ginier (Lead), Tuan Le, Jackson Li, Sarita Phoosopha, Christina Tao
 
 ## Introduction
