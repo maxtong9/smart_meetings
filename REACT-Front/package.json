@@ -1,8 +1,8 @@
 {
-  "name": "nextjs-semantic",
-  "description": "Next.js + Semantic UI + Styled Components",
+  "name": "Smart Meeting",
+  "description": "SmartMeeting front end",
   "version": "2.0.0",
-  "author": "Martín M.",
+  "author": "Tuan Le",
   "license": "MIT",
   "scripts": {
     "dev": "next",
