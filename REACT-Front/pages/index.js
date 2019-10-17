@@ -1,5 +1,5 @@
 import { Header, Button, Container } from 'semantic-ui-react';
-import '../.semantic/dist/semantic.min.css';
+import '../semantic/dist/semantic.min.css';
 
 const Home = () => (
   <Container>

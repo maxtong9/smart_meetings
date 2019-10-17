@@ -1,0 +1,43 @@
+{
+  "name": "nextjs-semantic",
+  "description": "Next.js + Semantic UI + Styled Components",
+  "version": "2.0.0",
+  "author": "Martín M.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "now-build": "npm run semantic:build && next build",
+    "semantic:build": "cd semantic && gulp build-css build-assets",
+    "semantic:watch": "cd semantic && npm run semantic:build && gulp watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "next": "^9.0.3",
+    "next-compose-plugins": "^2.2.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "semantic-ui-react": "^0.87.3",
+    "styled-components": "^4.3.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-wesbos": "0.0.19",
+    "eslint-plugin-html": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "file-loader": "^4.1.0",
+    "fomantic-ui": "^2.7.7",
+    "prettier": "^1.18.2",
+    "url-loader": "^2.1.0"
+  }
+}
