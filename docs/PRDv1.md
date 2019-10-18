@@ -18,8 +18,11 @@ The problem is currently being solved using audio transcription by various compa
 ## Appendices
 ### Technologies Employed
 GUI: React w/ Material UI
+RTC: WebRTC
 User Database: MongoDB
 Audio/Video Storage: Amazon S3
 Backend Framework: Ruby on Rails
+Web Hosting: DigitalOcean
 Audio Transcription: IBM Watson
 Audio/Text Processing: nltk (Python)
+Container Platform: Docker
