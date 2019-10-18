@@ -17,3 +17,9 @@ The problem is currently being solved using audio transcription by various compa
 
 ## Appendices
 ### Technologies Employed
+GUI: React w/ Material UI
+User Database: MongoDB
+Audio/Video Storage: Amazon S3
+Backend Framework: Ruby on Rails
+Audio Transcription: IBM Watson
+Audio/Text Processing: nltk (Python)
