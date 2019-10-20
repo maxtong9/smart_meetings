@@ -4,7 +4,7 @@
 ### Python Version: 3
 Install dependencies via pip3 with: `pip3 install -r requirements.txt`
 
-#### Installing all Tlk libs:
+#### Installing all Ntlk libs:
 * In a python3 Shell, run the following 2 commands: 
 ```
 import nltk
@@ -14,3 +14,4 @@ Until We decide on which packages to use, we will use this to assure all package
 
 ### References
 [nltk](https://www.datacamp.com/community/tutorials/text-analytics-beginners-nltk)
+[Python Sockets](https://realpython.com/python-sockets/)
