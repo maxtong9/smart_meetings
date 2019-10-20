@@ -33,4 +33,4 @@ tp.printTranscription()
 
 print('Hello, World! ')
 if __name__ == "__main__":
-    print("THIS IS ANOTHE EXAMPLE HERE")
+    print("THIS IS ANOTHEr EXAMPLE HERE")
