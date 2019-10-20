@@ -1,6 +1,10 @@
 from nltk.tokenize import word_tokenize #Tokenizer
 from nltk.probability import FreqDist
 from nltk import pos_tag
+import text_processor
+
+# Make a class?
+
 '''
     Demo Stuff revolving around nltk
 '''
@@ -21,9 +25,12 @@ print(freq_dist.most_common(5)) # Displays 'n' most common tokens with frequency
 tag_pos = pos_tag(token_word)
 print(tag_pos)
 
+# My class Example for the proposed text processor
+tp = text_processor.TextProcessor("Hello, World")
+tp.printTranscription()
 
-
-
-
+# Practice my new class
 
 print('Hello, World! ')
+if __name__ == "__main__":
+    print("THIS IS ANOTHE EXAMPLE HERE")
