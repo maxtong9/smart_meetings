@@ -8,8 +8,9 @@ Install dependencies via pip3 with: `pip3 install -r requirements.txt`
 * In a python3 Shell, run the following 2 commands: 
 ```
 import nltk
-nltk.download()
+nltk.download('all')
 ```
+Until We decide on which packages to use, we will use this to assure all packages are downloaded
 
 ### References
 [nltk](https://www.datacamp.com/community/tutorials/text-analytics-beginners-nltk)
