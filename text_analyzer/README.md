@@ -13,5 +13,5 @@ nltk.download('all')
 Until We decide on which packages to use, we will use this to assure all packages are downloaded
 
 ### References
-[nltk](https://www.datacamp.com/community/tutorials/text-analytics-beginners-nltk)
-[Python Sockets](https://realpython.com/python-sockets/)
+* [nltk](https://www.datacamp.com/community/tutorials/text-analytics-beginners-nltk)
+* [Python Sockets](https://realpython.com/python-sockets/)
