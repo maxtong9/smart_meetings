@@ -12,11 +12,11 @@ stringExample = "It is a long established fact that a reader will be distracted 
 
 # Tokenizing Strings
 token_word = word_tokenize(stringExample)
-print('Tokenized: \n')
+print('Tokenized: ')
 print(token_word)
 # Frequency distribution of tokenized words
 freq_dist = FreqDist(token_word)
-print("Frequency Distribution: \n")
+print("Frequency Distribution: ")
 print(freq_dist)
 
 print(freq_dist.most_common(5)) # Displays 'n' most common tokens with frequency
