@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.16.0"
+  }
+}
