@@ -1,27 +1,27 @@
-# README
+# Rails Local Environment Setup
 MacOS setup:
 
-##Installing Homebrew
+## Installing Homebrew
 First, we need to install Homebrew. Homebrew allows us to install and compile software packages easily from source.
 
 `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-##Install Ruby version 2.6.5
+## Install Ruby version 2.6.5
 
 To do this, run the following commands in your Terminal:
 
 `brew install rbenv ruby-build
 
-# Add rbenv to bash so that it loads every time you open a terminal
 echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
 source ~/.bash_profile
+`
 
 # Install Ruby
 rbenv install 2.6.5
 rbenv global 2.6.5
 ruby -v`
 
-##Install Rails version 6.0.0
+## Install Rails version 6.0.0
 
 `gem install rails -v 6.0.0`
 
@@ -29,32 +29,30 @@ ruby -v`
 
 Check version:
 
-`rails -v
-# Rails 6.0.0`
+`rails -v`
 
-##Install Nodejs version 13.0.0
+## Install Nodejs version 13.0.0
 
 `brew install node`
 
 Check node version and npm version
 
-`node -v
+`node -v`
+`npm -v`
 
-npm -v`
-
-##Install Gems in Gemfile
+## Install Gems in Gemfile
 
 `bundle install`
 
-##Install node_modules folder
+## Install node_modules folder
 
 `npm install`
 
-##Install yarn
+## Install yarn
 
 `brew install yarn`
 
-Update Yarn packages
+## Update Yarn packages
 
 `yarn install --check-files`
 
@@ -64,7 +62,7 @@ run:
 
 `rails s`
 
-Then locate to localhost:
+Then locate to http://localhost:3000/
 
 On the second window run (Ignore if not making direct changes to application):
 
