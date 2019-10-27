@@ -1,24 +1,71 @@
 # README
+MacOS setup:
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+##Installing Homebrew
+First, we need to install Homebrew. Homebrew allows us to install and compile software packages easily from source.
 
-Things you may want to cover:
+`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-* Ruby version
+##Install Ruby version 2.6.5
 
-* System dependencies
+To do this, run the following commands in your Terminal:
 
-* Configuration
+`brew install rbenv ruby-build
 
-* Database creation
+# Add rbenv to bash so that it loads every time you open a terminal
+echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
+source ~/.bash_profile
 
-* Database initialization
+# Install Ruby
+rbenv install 2.6.5
+rbenv global 2.6.5
+ruby -v`
 
-* How to run the test suite
+##Install Rails version 6.0.0
 
-* Services (job queues, cache servers, search engines, etc.)
+`gem install rails -v 6.0.0`
 
-* Deployment instructions
+`rbenv rehash`
 
-* ...
+Check version:
+
+`rails -v
+# Rails 6.0.0`
+
+##Install Nodejs version 13.0.0
+
+`brew install node`
+
+Check node version and npm version
+
+`node -v
+
+npm -v`
+
+##Install Gems in Gemfile
+
+`bundle install`
+
+##Install node_modules folder
+
+`npm install`
+
+##Install yarn
+
+`brew install yarn`
+
+Update Yarn packages
+
+`yarn install --check-files`
+
+Open two terminals in the rails_hw directory
+
+run:
+
+`rails s`
+
+Then locate to localhost:
+
+On the second window run (Ignore if not making direct changes to application):
+
+`bin/webpack-dev-server`
