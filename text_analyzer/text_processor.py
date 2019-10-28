@@ -18,7 +18,6 @@ Design Choice:
 
 '''
 import nltk
-import heapq
 
 
 
@@ -125,6 +124,13 @@ class TextProcessor:
 
         print("*****OUTPUT*****\n", output)
         return output
+    
+
+    # Extension to the original summarize algorithm
+    # The key difference in this algorithm is that we comapare the words 
+    # In each sentence and remove sentences that have close to the same words 
+    # As some other sentences
+    def summarize2():
 
 '''
 Testing Here
