@@ -1,6 +1,6 @@
 # Rails Local Environment MacOS Setup
 
-## Installing Homebrew
+## Install Homebrew
 First, Install Homebrew. Homebrew allows installation and compilation of software packages easily from source.
 
 `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
@@ -58,6 +58,8 @@ Check node version and npm version:
 ## Update Yarn packages
 
 `yarn install --check-files`
+
+## Run application
 
 Open two terminals in the rails_hw directory.
 
