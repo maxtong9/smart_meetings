@@ -6,7 +6,7 @@ First, Install Homebrew. Homebrew allows installation and compilation of softwar
 
 `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-## Install Ruby version 2.6.5
+## Install rbenv
 
 To do this, run the following commands in your Terminal:
 
@@ -16,9 +16,11 @@ To do this, run the following commands in your Terminal:
 source ~/.bash_profile
 `
 
-# Install Ruby
+## Install Ruby
 `rbenv install 2.6.5`
+
 `rbenv global 2.6.5`
+
 `ruby -v`
 
 ## Install Rails version 6.0.0
