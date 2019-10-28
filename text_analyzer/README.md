@@ -15,3 +15,4 @@ Until We decide on which packages to use, we will use this to assure all package
 ### References
 * [nltk](https://www.datacamp.com/community/tutorials/text-analytics-beginners-nltk)
 * [Python Sockets](https://realpython.com/python-sockets/)
+* [Summarizing Text](https://stackabuse.com/text-summarization-with-nltk-in-python/)
