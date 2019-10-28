@@ -1,1 +1,2 @@
 ibm-watson>=4.0.1
+python-dotenv
