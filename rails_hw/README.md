@@ -1,5 +1,4 @@
-# Rails Local Environment Setup
-MacOS setup:
+# Rails Local Environment MacOS Setup
 
 ## Installing Homebrew
 First, Install Homebrew. Homebrew allows installation and compilation of software packages easily from source.
@@ -20,6 +19,8 @@ source ~/.bash_profile
 `rbenv install 2.6.5`
 
 `rbenv global 2.6.5`
+
+Check version:
 
 `ruby -v`
 
