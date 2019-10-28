@@ -23,6 +23,8 @@ import nltk
 
 class TextProcessor:
     def __init__(self, rawTranscription):
+        # Percentage of original text the summary length should be
+        self.SUMMARY_PERCENTAGE = .59
         self.raw = rawTranscription
         # self.wordList = None #nltk.word_tokenize(self.raw)
         # self.sentenceList = None #nltk.sent_tokenize(self.raw)
@@ -44,94 +46,86 @@ class TextProcessor:
         print('Transcription:\n', self.raw, '\n')
 
     def summarize(self):
-        # Remove stop words
-        # Convert Paragraphs to Sentences
-        # wordList = nltk.word_tokenize(self.raw)
-        # print(wordList)
-        # # wordList = self.removeWhiteSpace(wordList)
-        # # Remove stopwords and commas
-        # for word in wordList:
-        #     if word.lower() in self.stopwords or word is ',' or word is ', ':
-        #         wordList.remove(word)
-
-        # print(wordList)
-
-        # Here we are getting the list of sentences with removed stop words and commas (might need to add more things0)
+        # Here we are getting the list of sentences with removed stop words and commas (might need to add more things)
         masterSentList = []
         sentList = nltk.sent_tokenize(self.raw)
+        summary_length = int(len(sentList) * self.SUMMARY_PERCENTAGE)
+        
+
         for sent in sentList:
             wordNoStopList = []
             for word in nltk.word_tokenize(sent):
                 if (word.lower() not in self.stopwords) and word is not ',':
                     wordNoStopList.append(word)
             masterSentList.append(wordNoStopList)
-        print(masterSentList)
 
         # Here we are getting the master tokenized word list
         masterTokenizeList = []
         for tokenSent in masterSentList:
-            print(tokenSent)
             for word in tokenSent:
                 # Remove Periods
                 if word is not '.':
                     masterTokenizeList.append(word.lower())
 
         # Here we get the frequency distr of the most common word
-        print(masterTokenizeList)
         most_occuring_value = nltk.probability.FreqDist(masterTokenizeList).most_common(1)[0][1]
-        print(most_occuring_value)
-
-        # Here we are getting the word with the corresponding freq distr
-        # word_and_weighted_freq = {}
-        # for word in masterTokenizeList:
-        #     word = word.lower() # Might be able to remove when using Watson
-        #     if word not in word_and_weighted_freq.keys():
-        #         word_and_weighted_freq[word] = 1
-        #     else:
-        #         word_and_weighted_freq[word] += 1
-        # print(word_and_weighted_freq)
 
         # Get frequency of eeach word
         word_and_weighted_freq = nltk.probability.FreqDist(masterTokenizeList)
         # Get weighted freq of each word relative to most common word
         for word_key in nltk.probability.FreqDist(masterTokenizeList):
             word_and_weighted_freq[word_key] = word_and_weighted_freq[word_key] / most_occuring_value
-        print(word_and_weighted_freq.most_common(10))
-        print("SENTENCE LIST: \n", sentList)
-        print("\n")
         
+        sentence_freq_sum = []
+        pos = 0 #Track ordering of sentences
         # Calculate sum of weighted frequencies by sentences
-        output = []
         for sentence in sentList:
             freqSum = 0
             for word in nltk.word_tokenize(sentence):
                 if word.lower() in word_and_weighted_freq.keys():
                     freqSum+=word_and_weighted_freq[word.lower()]
-
-            # Place in order of highest first
-            # Might be a better way to do this
-            i = 0
+            
+            # Place in order by total freq in sentence_freq_sum List
+            index = 0
             appended = False
-            while len(output) is not 0 and i < len(output):
-                if output[i][1] < freqSum:
-                    output.insert(i, (sentence, freqSum))
+            while len(sentence_freq_sum) is not 0 and index < len(sentence_freq_sum):
+                if sentence_freq_sum[index][1] < freqSum:
+                    # Insert at current positino
                     appended = True
+                    sentence_freq_sum.insert(index, ((sentence, freqSum, pos)))
                     break
-                i += 1
+                index += 1
             if not appended:
-                # Append to end
-                output.append((sentence, freqSum))
+                sentence_freq_sum.append((sentence, freqSum, pos ))
+            pos += 1
 
-        print("*****OUTPUT*****\n", output)
-        return output
+
+
+        # Take only the specified percentage and sort by order of appearance in the original transcription
+
+        
+        summary = sorted(sentence_freq_sum[:summary_length], key=lambda sentence: sentence[2])        # Sort by sentence list ordering
+
+        print(summary)
+
+
+        # Format the output
+        returnSummary = ""
+        for sentence in summary:
+            returnSummary += (sentence[0] + " ")
+
+
+
+
+
+
+        
+
+           
+
+        print("*****OUTPUT*****\n", returnSummary)
+        return returnSummary
     
-
-    # Extension to the original summarize algorithm
-    # The key difference in this algorithm is that we comapare the words 
-    # In each sentence and remove sentences that have close to the same words 
-    # As some other sentences
-    def summarize2():
-
 '''
 Testing Here
 '''
