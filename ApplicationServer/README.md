@@ -61,7 +61,7 @@ Check node version and npm version:
 
 ## Run application
 
-Open two terminals in the rails_hw directory.
+Open two terminals in the ApplicationServer directory.
 
 Run:
 
