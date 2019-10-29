@@ -17,7 +17,7 @@ class Transcribe:
 		speech_to_text = SpeechToTextV1(authenticator=authenticator)
 		speech_to_text.set_service_url(SERVICE_URL)
 
-		transcription = open("transcription.txt" , "w")
+		transcription = open("example_transcription_output/transcription.txt" , "w")
 		# path = '/Users/SaritaP/Desktop/speech_to_text/audio_files'
 		# files = os.listdir(path);
 

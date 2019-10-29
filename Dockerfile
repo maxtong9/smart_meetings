@@ -1,11 +1,13 @@
 # Python
 FROM python:3
-COPY /speech_to_text /speech_to_text
-WORKDIR /speech_to_text
+COPY /python_server /smart_meetings/python_server
+WORKDIR /smart_meetings/python_server
 RUN pip install -r requirements.txt
 ENV API_KEY 8W_8axK4MIt2HRV4iAFNUe8q2uOV_GpOg5lHAXWu51Tw
 ENV SERVICE_URL https://stream.watsonplatform.net/speech-to-text/api
-CMD [ "python3", "main.py" ]
-COPY requirements.txt /speech_to_text/requirements.txt
+RUN python3 main.py
 
 # Ruby on Rails
+# FROM ruby:2.6.5
+# COPY /rails_hw /ruby_on_rails_app
+# WORKDIR /ruby_on_rails_app
