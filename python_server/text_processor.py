@@ -18,16 +18,16 @@ Design Choice:
 
 '''
 import nltk
-
-
-
+import pickle
 class TextProcessor:
     def __init__(self, rawTranscription):
         # Percentage of original text the summary length should be
         self.SUMMARY_PERCENTAGE = .59
         self.raw = rawTranscription
-        # self.wordList = None #nltk.word_tokenize(self.raw)
-        # self.sentenceList = None #nltk.sent_tokenize(self.raw)
+
+        self.wordList = None 
+        self.sentenceList = None
+    
         # self.sentenceListNoStop = None #self.removeStopWords(self.sentenceList)
         self.stopwords = nltk.corpus.stopwords.words('english')
 
@@ -42,17 +42,44 @@ class TextProcessor:
             newWordList.append(word.strip()) 
         return newWordList
 
-    def printData(self):
+    def printRawTranscription(self):
         print('Transcription:\n', self.raw, '\n')
+
+    def dialogue_act_features(self, post):
+        features = {}
+        for word in nltk.word_tokenize(post):
+            if word is '.' or word is '?' or word is ',' or word is '!': # No bias in transcriptions
+                continue
+            features['contains({})'.format(word.lower())] = True
+        return features
+
+    
+    def tagQuestions(self):
+        # Tokenize sentence list
+        if self.sentenceList is None:
+            self.sentenceList = nltk.sent_tokenize(self.raw)
+
+        # Open file and trained classifier
+        file = open('question_classifier.pickle', 'rb')
+        classifier = pickle.load(file)
+        # Classify the sentences and append the questions (clarify is similar to questions in our case)
+        questionList = []
+        for sentence in self.sentenceList:
+            classification = classifier.classify(self.dialogue_act_features(sentence))
+            if classification == 'whQuestion' or classification == 'Clarify':
+                questionList.append(sentence)
+        return questionList
+
 
     def summarize(self):
         # Here we are getting the list of sentences with removed stop words and commas (might need to add more things)
         masterSentList = []
-        sentList = nltk.sent_tokenize(self.raw)
-        summary_length = int(len(sentList) * self.SUMMARY_PERCENTAGE)
+        if self.sentenceList is None:
+            self.sentenceList = nltk.sent_tokenize(self.raw)
+        summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
         
 
-        for sent in sentList:
+        for sent in self.sentenceList:
             wordNoStopList = []
             for word in nltk.word_tokenize(sent):
                 if (word.lower() not in self.stopwords) and word is not ',':
@@ -79,7 +106,7 @@ class TextProcessor:
         sentence_freq_sum = []
         pos = 0 #Track ordering of sentences
         # Calculate sum of weighted frequencies by sentences
-        for sentence in sentList:
+        for sentence in self.sentenceList:
             freqSum = 0
             for word in nltk.word_tokenize(sentence):
                 if word.lower() in word_and_weighted_freq.keys():
@@ -106,7 +133,6 @@ class TextProcessor:
         
         summary = sorted(sentence_freq_sum[:summary_length], key=lambda sentence: sentence[2])        # Sort by sentence list ordering
 
-        print(summary)
 
 
         # Format the output
@@ -115,15 +141,6 @@ class TextProcessor:
             returnSummary += (sentence[0] + " ")
 
 
-
-
-
-
-        
-
-           
-
-        print("*****OUTPUT*****\n", returnSummary)
         return returnSummary
     
 '''
@@ -131,11 +148,12 @@ Testing Here
 '''
 if __name__ == "__main__":
     # Demo Input
-    demoInput = "So, keep working. Keep striving. Never give up. Fall down seven times, get up eight. Ease is a greater threat to progress than hardship. Ease is a greater threat to progress than hardship. So, keep moving, keep growing, keep learning. See you at work."
+    demoInput = "How did you get here? So, keep working. Keep striving. Never give up. Fall down seven times, get up eight. Ease is a greater threat to progress than hardship. Ease is a greater threat to progress than hardship. So, keep moving, keep growing, keep learning. See you at work."
     # Processing Object
     tp = TextProcessor(demoInput)
 
     tp.summarize()
+    tp.tagQuestions()
 
             
 
