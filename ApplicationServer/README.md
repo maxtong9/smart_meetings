@@ -80,25 +80,34 @@ On the second window run (Ignore if not making direct changes to application):
 #### Option 1: Use the image from DockerHub
 
 `docker pull christinatao31/smart_meetings:app_server`
+
 `docker run -d -p 3000:3000 --name rr ruby-on-rails`
+
 Navigate to <http://localhost:3000/>
 
 #### Option 2: Build the Docker image
 
 `docker image build -t ruby-on-rails .`
+
 `docker run -p 3000:3000 --name rr ruby-on-rails`
+
 Navigate to <http://localhost:3000/>
 
 
 ### To remove the container
+
 `docker container rm rr`
 
 ### To remove the image
+
 `docker images`
+
 Find the image with the tag name `app_server_v0` and copy the `IMAGE ID`.
+
 `docker image rm <IMAGE ID>`
 
 ### To run the container in the background, run
+
 `docker run -d -p 3000:3000 --name rr ruby-on-rails`
 
 
