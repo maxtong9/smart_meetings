@@ -15,3 +15,15 @@ CS Capstone Project. Make Meetings Smarter! With Smart Meetings...
 # How to: Start the application
 
 
+# How to run Docker
+
+## Install Docker Desktop
+
+<https://hub.docker.com/?overlay=onboarding>
+
+## Tutorials used
+
+<https://docs.docker.com/get-started/>
+<https://docker-curriculum.com/>
+
+## Run Docker
