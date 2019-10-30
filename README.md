@@ -25,5 +25,4 @@ CS Capstone Project. Make Meetings Smarter! With Smart Meetings...
 
 <https://docs.docker.com/get-started/>
 <https://docker-curriculum.com/>
-
-## Run Docker
+<https://blog.codeship.com/running-rails-development-environment-docker/>

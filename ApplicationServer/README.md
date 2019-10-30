@@ -72,3 +72,22 @@ Then locate to http://localhost:3000/.
 On the second window run (Ignore if not making direct changes to application):
 
 `bin/webpack-dev-server`
+
+## Docker
+
+### Pull docker image
+
+`docker pull christinatao31/smart_meetings:app_server`
+
+### Build the Docker image
+
+`docker image build -t ruby-on-rails .`
+
+### Run the Docker container
+
+`docker run -p 3000:3000 --name rr ruby-on-rails`
+
+To run the container in the background, run
+`docker run -d -p 3000:3000 --name rr ruby-on-rails`
+
+Navigate to <http://localhost:3000/>
