@@ -10,10 +10,10 @@ First, Install Homebrew. Homebrew allows installation and compilation of softwar
 To do this, run the following commands in your Terminal:
 
 `brew install rbenv ruby-build`
-
-`echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
+```
+echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
 source ~/.bash_profile
-`
+```
 
 ## Install Ruby
 `rbenv install 2.6.5`
