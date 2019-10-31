@@ -6,13 +6,20 @@ def socket()
   port = 9999
   db = SQLite3::Database.open "development.sqlite3"
 
-  rs = db.execute("SELECT created_at from users WHERE id = 1")
-  #rs1 = db1.q("SELECT * from users;")
+  maxId = db.execute "SELECT MAX(id) FROM users"
+  stm = db.prepare "SELECT key FROM active_storage_blobs WHERE id=?"
 
-  puts rs
-  #puts rs1
+  #stm.bind_param 1, maxId[0][0]
+  stm.bind_param 1, 3
+  rs = stm.execute
+
+  row = rs.next
+
+  puts row
 
   s = TCPSocket.open(hostname, port)
-  s.write(rs)
+  s.write(row)
   s.close                 # Close the socket when done
 end
+
+#socket()
