@@ -2,6 +2,7 @@
 #https://stackoverflow.com/questions/419163/what-does-if-name-main-do
 
 import os
+import numpy as np
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson import ApiException
@@ -20,31 +21,64 @@ class Transcribe:
 		transcription = open("transcription.txt" , "w")
 		# path = '/Users/SaritaP/Desktop/speech_to_text/audio_files'
 		# files = os.listdir(path);
+		results = []
 
-		audio = open(self.audio, "rb")
-		#API CAll
-		response = str(speech_to_text.recognize(audio, content_type="audio/flac", smart_formatting=True))
+		for item in self.audio:
+			file = open(item, "rb")
+			#API CAlL
+			response = speech_to_text.recognize(file, content_type="audio/wav", smart_formatting=True, timestamps=True, inactivity_timeout=90)
+			results.append(response.get_result());
 
-		# Extract the transcript from DetailedResponse type which includes headers.
-		split = response.split('\n')
-		for line in split:
-			if "transcript" in line:
-				index = line.find("transcript")					
-				transcription.write(line[index+14:-2])
+		phrase = []
+		t_string = ""
+		t_start = 0
+		temp = []
+		#Timestamps of each word to include periods.
+		for speaker, item in enumerate(results):
+			for i in item['results']:
+				for j in i['alternatives']:
+					for index, word in enumerate(j['timestamps']):
+						if index == 0:
+							if temp:
+								if (word[1])-(temp[1][2]) < 0.45:
+									t_string += " " + str(word[0])
+								else:
+									t_string += ". "
+									phrase.append([speaker, t_string, t_start, temp[1][2]])
+									t_string = ""
+									t_start = word[1]
+									t_string += str(word[0])
+									temp = []
+								continue
+							t_string += word[0]
+							t_start = word[1]
 
+						elif (word[1])-(j['timestamps'][index-1][2]) < 0.45:
+							t_string += " " + str(word[0])
+							if index == len(j['timestamps'])-1:
+								temp = [index, word];
+						else:
+							t_string += ". "
+							phrase.append([speaker, t_string, t_start, j['timestamps'][index-1][2]])
+							t_string = ""
+							t_start = word[1]
+							t_string += str(word[0])
 
+		phrase.sort(key = lambda x: x[2])
+		s = ""
+
+		for index, sentence in enumerate(phrase):
+			if index == 0:
+				s = "Person " + str(sentence[0]+1) + ": "
+				s += str(sentence[1])
+			elif (sentence[0] == phrase[index-1][0]):
+				s += str(sentence[1])
+			else:
+				s += "\n" + "Person " + str(sentence[0]+1) + ": "
+				s += str(sentence[1])
+
+		#Write transcript to file
+		transcription.write(s)
 		transcription.close()
-
-
-
-# for filename in os.listdir(path):
-	# 	if filename.endswith('.flac'):
-	# 		audio = open(os.path.join(path,filename), 'rb')
-	# 		response = speech_to_text.recognize(audio, content_type="audio/flac", smart_formatting=True)
-	# 		response_str = str(response)
-	# 		print(response_str)
-	# 		split = response_str.split('\n')
-	# 		for line in split:
-	# 			if "transcript" in line:
-	# 				index = line.find("transcript")
-	# 				transcript.write(filename + ": " + line[index+14:-2] + "\n")
+		
+		# return t_string
