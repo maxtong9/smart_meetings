@@ -1,5 +1,3 @@
-require_relative '../../db/ruby_socket'
-
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -84,8 +82,13 @@ class UsersController < ApplicationController
 
       s.write(user.file.attachments.last.key)
 
-      #key = keyFromPython
+      recv_from_socket(s)
 
       s.close
+    end
+
+    def recv_from_socket(s)
+      key = s.gets
+      
     end
 end
