@@ -13,7 +13,7 @@ class Transcribe:
 		self.audio = input_audio
 
 	def transcription(self):
-		authenticator = IAMAuthenticator(API_KEY)
+		authenticator = IAMAuthenticator(WATSON_API_KEY)
 		speech_to_text = SpeechToTextV1(authenticator=authenticator)
 		speech_to_text.set_service_url(SERVICE_URL)
 
