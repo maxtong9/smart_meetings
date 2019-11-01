@@ -23,6 +23,7 @@ class TextProcessor:
     def __init__(self, rawTranscription):
         # Percentage of original text the summary length should be
         self.SUMMARY_PERCENTAGE = .59
+        self.ACTION_ITEM_KEYWORD = ["action", "item"]
         self.raw = rawTranscription
 
         self.wordList = None 
@@ -44,7 +45,70 @@ class TextProcessor:
 
     def printRawTranscription(self):
         print('Transcription:\n', self.raw, '\n')
+    
 
+    '''
+    Joins A List Of Sentences into A Sentence String
+    '''
+    def joinSentenceListToSentence(self, listOfSentences):
+        sentString = ""
+        for sent in listOfSentences:
+            sentString += sent + " "
+        return sentString[:-1]
+
+
+    
+    '''
+    Joins a list of words into a sentence string.
+    '''
+    def joinWordsToSentence(self, listOfWords):
+        sentence = ""
+        for word in listOfWords:
+            if word != '.':
+                sentence += word + " "
+
+        # [:-1] gets rid of the last " " and then we add a period
+        return sentence[:-1] + '.'
+
+
+    '''
+    Removes any action items from the original transcription (sanitizes)
+    - In: Sentence List (with supposed action words)
+    - Out: Sentence List Without action item keywords
+    PRESUMPTION: Key Phrase is at the beginning of a sentence
+    '''    
+    def removeActionItemKeywords(self, sentList):
+        newSentList = []
+        for sentence in sentList:
+            words = nltk.word_tokenize(sentence)
+            if len(words) >= 2:
+                if words[0] == self.ACTION_ITEM_KEYWORD[0] and words[1] == self.ACTION_ITEM_KEYWORD[1]:
+                    newSentList.append(joinWordsToSentence(words[2:]))
+        return newSentList
+
+
+            
+
+
+    '''
+    This Function returns a list of all of the action Items in the Transcription
+    Presumption: Key Phrase is at the beginning of the sentence
+    If Presumption does not hold, then will have to implement another way
+    '''
+    # TODO: Might need to use .lower()
+    def getActionItems(self):
+        if self.sentenceList is None:
+            self.sentenceList = nltk.sent_tokenize(self.raw)
+        actionItems = []
+        for sentence in self.sentenceList:
+            words = nltk.word_tokenize(sentence)
+            if len(words) >= 2:
+                if words[0] == self.ACTION_ITEM_KEYWORD[0] and words[1] == self.ACTION_ITEM_KEYWORD[1]:
+                    actionItems.append(self.joinWordsToSentence(words[2:]))
+        return actionItems
+    '''
+    Helper Function for getQuestionList (formats properly to be classified)
+    '''
     def dialogue_act_features(self, post):
         features = {}
         for word in nltk.word_tokenize(post):
@@ -53,8 +117,10 @@ class TextProcessor:
             features['contains({})'.format(word.lower())] = True
         return features
 
-    
-    def tagQuestions(self):
+    '''
+    Returns a list of questions based on the trained model
+    '''
+    def getQuestionList(self):
         # Tokenize sentence list
         if self.sentenceList is None:
             self.sentenceList = nltk.sent_tokenize(self.raw)
@@ -70,7 +136,12 @@ class TextProcessor:
                 questionList.append(sentence)
         return questionList
 
-
+    '''
+    Returns a summary of the transcription
+    - Takes the Highest freq word and gives all of the words a relative weighted frequency based on that word.
+    - Sums sentence words (besides stop words) and sorts sentences in order
+    - Takes n % sentences and resorts them in the order of which they were in the original transcription
+    '''
     def summarize(self):
         # Here we are getting the list of sentences with removed stop words and commas (might need to add more things)
         masterSentList = []
@@ -126,14 +197,8 @@ class TextProcessor:
                 sentence_freq_sum.append((sentence, freqSum, pos ))
             pos += 1
 
-
-
         # Take only the specified percentage and sort by order of appearance in the original transcription
-
-        
         summary = sorted(sentence_freq_sum[:summary_length], key=lambda sentence: sentence[2])        # Sort by sentence list ordering
-
-
 
         # Format the output
         returnSummary = ""
@@ -148,12 +213,13 @@ Testing Here
 '''
 if __name__ == "__main__":
     # Demo Input
-    demoInput = "How did you get here? So, keep working. Keep striving. Never give up. Fall down seven times, get up eight. Ease is a greater threat to progress than hardship. Ease is a greater threat to progress than hardship. So, keep moving, keep growing, keep learning. See you at work."
+    demoInput = " action item How did you get here. Go back to work. I don't know what you want from me. This is getting very annoying. We need to focus on the meeting. How are we supposed to do that."
     # Processing Object
     tp = TextProcessor(demoInput)
 
-    tp.summarize()
-    tp.tagQuestions()
+    print(tp.summarize())
+    print(tp.getQuestionList())
+    print(tp.getActionItems())
 
             
 
