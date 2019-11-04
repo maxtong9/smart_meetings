@@ -23,7 +23,7 @@ class TextProcessor:
     def __init__(self, rawTranscription):
         # Percentage of original text the summary length should be
         self.SUMMARY_PERCENTAGE = .59
-        # Action Item Keywords (lower case)
+        # Action Item Keywords (lower)
         self.ACTION_ITEM_KEYWORD = ["action", "item"]
 
         # RAW Transcription
@@ -115,7 +115,7 @@ class TextProcessor:
             if len(words) >= 2:
                 if words[0] == self.ACTION_ITEM_KEYWORD[0] and words[1] == self.ACTION_ITEM_KEYWORD[1]:
                     actionItems.append(self.joinWordsToSentence(words[2:]))
-        return actionItems
+        return self.joinSentenceListToSentence(actionItems)
     '''
     Helper Function for getQuestionList (formats properly to be classified)
     '''
@@ -220,12 +220,15 @@ class TextProcessor:
         # Take only the specified percentage and sort by order of appearance in the original transcription
         summary = sorted(sentence_freq_sum[:summary_length], key=lambda sentence: sentence[2])        # Sort by sentence list ordering
 
-        # Format the output
-        returnSummary = ""
-        for sentence in summary:
-            returnSummary += (sentence[0] + " ")
+        # Format summary for joinSentenceListToSentence Input
+        listOfSent = []
+        for sent in summary:
+            listOfSent.append(sent[0])
 
+        # Format the output of summary
+        returnSummary = self.joinSentenceListToSentence(listOfSent)
 
+    
         return returnSummary
     
 '''
@@ -243,3 +246,5 @@ if __name__ == "__main__":
     print(tp.getQuestionList())
     print("Action Items: \n")
     print(tp.getActionItems())
+    print("RAW TRANSCRIPTION: \n")
+    print(tp.raw)
