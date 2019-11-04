@@ -26,15 +26,17 @@ nltk.download('all')
 
 * [Speech Recognition](https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-http#HTTP-basic)
 
-## Local environment variables
-
-Set environment variables WATSON_API_KEY and SERVICE_URL
-
 ## Docker
+
+### Environment variables
+
+Environment variables are located in the .env file. They are automatically loaded by Docker, so it is not necessary to set the environment variables on the host machine.
+
+The .env file is in the .gitignore. If you wish to commit it to GitHub, create a local branch and commit to there without pushing.
 
 ### Build image
 
-`docker image build --build-arg WATSON_API_KEY --build-arg SERVICE_URL -t christinatao31/smart_meetings:python_server_v1 .`
+`docker image build -t christinatao31/smart_meetings:python_server_v1 .`
 
 ### Run container
 
