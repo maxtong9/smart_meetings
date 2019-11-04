@@ -1,6 +1,6 @@
 #Socket Connection as well as Python access to S3
 import socketserver
-from s3_access import *
+from s3_access.s3_access import download_file_from_S3, upload_file_to_S3
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
 
@@ -10,9 +10,10 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         print("{} wrote:".format(self.client_address[0]))
         print(self.data)
 
-        # download_file_from_S3("smartmeetingsbelieving", "downloaded.txt", self.data)
+        download_file_from_S3("smartmeetingsbelieving", "downloaded.txt", self.data.decode("utf-8"))
+        upload_file_to_S3("smartmeetingsbelieving", "downloaded.txt", "haha.txt")
         # CALL TEXT_ANALYZER FUNCTIONS HERE
-        toSend = b'Some key'
+        toSend = "haha.txt"
         self.request.sendall(toSend)
 
 if __name__ == "__main__":

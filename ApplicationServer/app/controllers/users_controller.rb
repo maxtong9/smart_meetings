@@ -88,17 +88,17 @@ class UsersController < ApplicationController
     end
 
     def recv_from_socket(s)
-      real_key = s.gets
-      key = 'hdbs5hx9l9stwamkmsf0jl1p5r0r'
+      key = s.gets
+      binding.pry()
       directory = "./tmp/"
-      download_file_from_s3('smartmeetingsbelieving', directory + 'my_item.txt', key)
+      download_file_from_s3('smartmeetingsbelieving', directory + 'got_from_s3.txt', key)
     end
+
     def download_file_from_s3(bucket, file_path, object_key)
       require 'aws-sdk-s3'  # v2: require 'aws-sdk'
 
       #Aws.config(:access_key_id => Rails.application.credentials.production[:aws][:access_key_id], :secret_access_key => Rails.application.credentials.production[:aws][:secret_access_key])
       s3 = Aws::S3::Resource.new(:access_key_id => Rails.application.credentials.dig(:aws, :access_key_id), :secret_access_key => Rails.application.credentials.dig(:aws, :secret_access_key), region: 'us-west-1')
-
       # Create the object to retrieve
       obj = s3.bucket(bucket).object(object_key)
       # Get the item's content and save it to a file
