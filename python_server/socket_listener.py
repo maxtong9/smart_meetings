@@ -11,9 +11,9 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         print(self.data)
 
         download_file_from_S3("smartmeetingsbelieving", "downloaded.txt", self.data.decode("utf-8"))
-        upload_file_to_S3("smartmeetingsbelieving", "downloaded.txt", "haha.txt")
+        upload_file_to_S3("smartmeetingsbelieving", "./tmp/downloaded.txt", "haha.txt")
         # CALL TEXT_ANALYZER FUNCTIONS HERE
-        toSend = "haha.txt"
+        toSend = b'haha.txt'
         self.request.sendall(toSend)
 
 if __name__ == "__main__":

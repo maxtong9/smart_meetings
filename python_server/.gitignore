@@ -1,9 +1,5 @@
-.env
+env
 __pycache__
-<<<<<<< HEAD
 venv
-=======
-
 /tmp/
 /s3_access/tmp
->>>>>>> 93f235c7f9e3184c3b6f62502279f96d47627900
