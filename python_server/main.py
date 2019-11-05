@@ -2,8 +2,9 @@ from transcribe import *
 from text_processor import *
 def main():
 	# Transcribe Audio
-	T = Transcribe(["Sarita.wav", "Christina.wav"])
-	T.transcription()
+	T = Transcribe(["audio-file.flac"])
+	transcript = T.transcription()
+
 	# Used Audio in Text Processor
 	tp = TextProcessor("Hello, Input")
 	tp.summarize()

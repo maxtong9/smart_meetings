@@ -1,5 +1,9 @@
-#https://cloud.ibm.com/apidocs/speech-to-text/speech-to-text?code=python
-#https://stackoverflow.com/questions/419163/what-does-if-name-main-do
+'''
+This class contains audio to text processing
+
+Input: Audio files from S3
+Output: Create a json file with the transcription and returns a string.
+'''
 
 import os
 import numpy as np
@@ -14,30 +18,31 @@ class Transcribe:
 		self.audio = input_audio
 
 	def transcription(self):
-		authenticator = IAMAuthenticator(API_KEY)
+		''' Returns transcription of the inputed audio files '''
+		authenticator = IAMAuthenticator(WATSON_API_KEY)
 		speech_to_text = SpeechToTextV1(authenticator=authenticator)
 		speech_to_text.set_service_url(SERVICE_URL)
 
 		transcription = open("transcription.txt" , "w")
-		# path = '/Users/SaritaP/Desktop/speech_to_text/audio_files'
-		# files = os.listdir(path);
 		results = []
-
+		#Iterating through all inputted files
 		for item in self.audio:
 			file = open(item, "rb")
 			#API CAlL
-			response = speech_to_text.recognize(file, content_type="audio/wav", smart_formatting=True, timestamps=True, inactivity_timeout=90)
+			response = speech_to_text.recognize(file, content_type="audio/flac", smart_formatting=True, timestamps=True, inactivity_timeout=90)
 			results.append(response.get_result());
 
 		phrase = []
 		t_string = ""
 		t_start = 0
 		temp = []
-		#Timestamps of each word to include periods.
+
+		# Obtain the timestamps of each word to include periods.
 		for speaker, item in enumerate(results):
 			for i in item['results']:
 				for j in i['alternatives']:
 					for index, word in enumerate(j['timestamps']):
+						#Take into account seperation in transcript from Watson IBM
 						if index == 0:
 							if temp:
 								if (word[1])-(temp[1][2]) < 0.45:
@@ -52,10 +57,13 @@ class Transcribe:
 								continue
 							t_string += word[0]
 							t_start = word[1]
-
+						# The amount of time to determine when a period is placed is decided here. 
 						elif (word[1])-(j['timestamps'][index-1][2]) < 0.45:
 							t_string += " " + str(word[0])
 							if index == len(j['timestamps'])-1:
+								if len(results) == 1:
+									phrase.append([speaker, t_string, t_start, word[2]])
+									continue
 								temp = [index, word];
 						else:
 							t_string += ". "
@@ -64,9 +72,11 @@ class Transcribe:
 							t_start = word[1]
 							t_string += str(word[0])
 
+		#Sort the phrases from all the audio transcriptions in chronological order
 		phrase.sort(key = lambda x: x[2])
 		s = ""
 
+		#Format output
 		for index, sentence in enumerate(phrase):
 			if index == 0:
 				s = "Person " + str(sentence[0]+1) + ": "
@@ -81,4 +91,4 @@ class Transcribe:
 		transcription.write(s)
 		transcription.close()
 		
-		# return t_string
+		return s
