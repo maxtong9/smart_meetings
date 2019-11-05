@@ -8,8 +8,8 @@ from botocore.exceptions import ClientError
 
 # Create directory for storing files temporarily to process
 directory = "./tmp/"
-if not os.path.exists(directory):
-    os.makedirs(directory)
+# if not os.path.exists(directory):
+#     os.makedirs(directory)
 
 def download_file_from_S3(bucket, file_name, object_key):
     """Download a file from an S3 bucket

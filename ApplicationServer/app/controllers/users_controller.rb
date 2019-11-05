@@ -89,7 +89,6 @@ class UsersController < ApplicationController
 
     def recv_from_socket(s)
       key = s.gets
-      binding.pry()
       directory = "./tmp/"
       download_file_from_s3('smartmeetingsbelieving', directory + 'got_from_s3.txt', key)
     end
@@ -102,7 +101,6 @@ class UsersController < ApplicationController
       # Create the object to retrieve
       obj = s3.bucket(bucket).object(object_key)
       # Get the item's content and save it to a file
-      binding.pry()
       obj.get(response_target: file_path)
     end
 end
