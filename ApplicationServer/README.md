@@ -64,18 +64,18 @@ Then locate to http://localhost:3000/.
 
 ## Install PostgreSQL locally (for MacOS)
 
-This is a full PostgreSQL installation packaged as a Mac application. 
-https://postgresapp.com/ 
+This is a full PostgreSQL installation packaged as a Mac application.  
+https://postgresapp.com/  
 Follow the instructions through the link.
 
 ## Starting PostgreSQL server
 
-Open the Postgres.app application installed in the previous step.
+Open the Postgres.app application installed in the previous step.  
 Server should automatically initialize.
 
 ## Create PostgreSQL role
 
-This will create a new PostgreSQL role. 
+This will create a new PostgreSQL role.  
 `sudo -u postgres createuser -s applicationserver`
 
 ## Install Gems in Gemfile
