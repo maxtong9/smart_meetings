@@ -72,3 +72,40 @@ Then locate to http://localhost:3000/.
 On the second window run (Ignore if not making direct changes to application):
 
 `bin/webpack-dev-server`
+
+# Rails Local Environment End-to-End Testing
+
+## Install Gems in Gemfile
+
+`bundle install`
+
+## Install node_modules folder
+
+`npm install`
+
+## Update Yarn packages
+
+`yarn install --check-files`
+
+##Create and Migrate database
+
+```
+rails db:create
+rails db:migrate
+```
+
+##Create test.json file to upload while creating user (can just be anywhere) with:
+
+`{"id":1,"name":"File Name","transcription":"hahaha","questions": ["how", "when"],"summary":"heywassupyo", "action_items": ["do", "this"]}`
+
+##Testing
+
+run `rails s`
+
+Make sure the socket is running (Refer to the python_server documentation)
+
+Then locate to http://localhost:3000/users/new.
+
+Add a new user and upload test.json to it.
+
+Click Back, then click Show on the user you just created and witness the marvel.
