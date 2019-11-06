@@ -1,3 +1,5 @@
 ibm-watson>=4.0.1
 python-dotenv
 nltk==3.4.5
+numpy>=1.17.3
+python-dotenv==0.10.3
