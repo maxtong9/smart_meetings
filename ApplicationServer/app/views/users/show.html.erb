@@ -5,5 +5,14 @@
   <%= @user.name %>
 </p>
 
+<p>
+  <b>Attached File: </b>
+  <%= @user.file.attachments.first.filename %>
+</p>
+
+<p>
+  <b>Blob: </b>
+   <%= render file: "./tmp/to_display.json" %>
+</p>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

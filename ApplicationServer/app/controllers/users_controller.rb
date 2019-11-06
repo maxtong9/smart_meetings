@@ -31,7 +31,6 @@ class UsersController < ApplicationController
         send_to_socket(@user)
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
-        # socket()
       else
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -82,15 +81,17 @@ class UsersController < ApplicationController
 
       s.write(user.file.attachments.last.key)
 
-      recv_from_socket(s)
+      recv_from_socket(s, user)
 
       s.close
     end
 
-    def recv_from_socket(s)
+    def recv_from_socket(s, user)
       key = s.gets
       directory = "./tmp/"
-      download_file_from_s3('smartmeetingsbelieving', directory + 'got_from_s3.txt', key)
+      download_file_from_s3('smartmeetingsbelieving', directory + 'to_display.json', key)
+      user.file.attach(io: File.open(directory + 'to_display.json'), filename: 's3.json', content_type: 'application/json')
+      binding.pry()
     end
 
     def download_file_from_s3(bucket, file_path, object_key)
