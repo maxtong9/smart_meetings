@@ -12,6 +12,9 @@ This is a full PostgreSQL installation packaged as a Mac application.
 https://postgresapp.com/  
 Follow the instructions through the link.
 
+For commandline:  
+`sudo apt install postgresql postgresql-contrib libpq-dev`
+
 ## Starting PostgreSQL server
 
 Open the Postgres.app application installed in the previous step.  
