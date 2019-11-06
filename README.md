@@ -17,7 +17,7 @@ Follow the instructions through the link
 Open the Postgres.app application installed in the previous step.  
 Server should automatically initialize.
 
-## Create PostgreSQL role
+## Update PostgreSQL role
 
 Change database role to your operating system user:  
 Open `ApplicationServer/config/database.yml`.  
