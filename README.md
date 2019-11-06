@@ -10,10 +10,7 @@ CS Capstone Project. Make Meetings Smarter! With Smart Meetings...
 
 This is a full PostgreSQL installation packaged as a Mac application.  
 https://postgresapp.com/  
-Follow the instructions through the link.
-
-For commandline:  
-`sudo apt install postgresql postgresql-contrib libpq-dev`
+Follow the instructions through the link
 
 ## Starting PostgreSQL server
 
@@ -22,8 +19,9 @@ Server should automatically initialize.
 
 ## Create PostgreSQL role
 
-This will create a new PostgreSQL role.  
-`sudo -u postgres createuser -s applicationserver`
+Change database role to your operating system user:  
+Open `ApplicationServer/config/database.yml`.  
+On line 32, change the username to your operating system username.
 
 ## Install Gems in Gemfile
 
