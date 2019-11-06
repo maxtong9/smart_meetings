@@ -87,18 +87,20 @@ On the second window run (Ignore if not making direct changes to application):
 
 `yarn install --check-files`
 
-##Create and Migrate database
+## Create and Migrate database
 
 ```
 rails db:create
 rails db:migrate
 ```
 
-##Create test.json file to upload while creating user (can just be anywhere) with:
+## Create test.json file to upload while creating user (can just be anywhere) with:
+
+This step is only relevant up until our text analysis functions are working.
 
 `{"id":1,"name":"File Name","transcription":"hahaha","questions": ["how", "when"],"summary":"heywassupyo", "action_items": ["do", "this"]}`
 
-##Testing
+## Testing
 
 run `rails s`
 
