@@ -72,3 +72,42 @@ Then locate to http://localhost:3000/.
 On the second window run (Ignore if not making direct changes to application):
 
 `bin/webpack-dev-server`
+
+## Docker
+
+### Two Options
+
+#### Option 1: Use the image from DockerHub
+
+`docker pull christinatao31/smart_meetings:app_server_v1`
+
+`docker run -d -p 3000:3000 --name as christinatao31/smart_meetings:app_server_v1`
+
+Navigate to <http://localhost:3000/>
+
+#### Option 2: Build the Docker image
+
+`docker image build -t christinatao31/smart_meetings:app_server_v1 .`
+
+`docker container run -p 3000:3000 --name as christinatao31/smart_meetings:app_server_v1`
+
+Navigate to <http://localhost:3000/>
+
+
+### To remove the container
+
+`docker container rm as`
+
+### To remove the image
+
+`docker images`
+
+Find the image with the tag name `app_server_v1` and copy the `IMAGE ID`.
+
+`docker image rm <IMAGE ID>`
+
+### To run the container in the background, run
+
+`docker run -d -p 3000:3000 --name as christinatao31/smart_meetings:app_server_v1`
+
+
