@@ -43,6 +43,20 @@ rake db:setup
 rake db:migrate
 ```
 
+## Install awscli for Python aws credentials
+
+`pip3 install awscli`
+
+then set credentials using:  
+`aws configure`
+
+Then enter the Id and Secret Key shared in the group chat.
+
+## Rails credentials
+
+Put shared master.key file (messenger) into  
+`smart_meetings/ApplicationServer/config`
+
 ## Create test.json file to upload while creating user (can just be anywhere) with:
 
 This step is only relevant up until our text analysis functions are working.
@@ -64,4 +78,3 @@ Then locate to http://localhost:3000/users/new.
 Add a new user and upload test.json to it.
 
 Click Back, then click Show on the user you just created and witness the marvel.
-

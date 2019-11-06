@@ -91,7 +91,6 @@ class UsersController < ApplicationController
       directory = "./tmp/"
       download_file_from_s3('smartmeetingsbelieving', directory + 'to_display.json', key)
       user.file.attach(io: File.open(directory + 'to_display.json'), filename: 's3.json', content_type: 'application/json')
-      binding.pry()
     end
 
     def download_file_from_s3(bucket, file_path, object_key)
