@@ -1,5 +1,6 @@
 from transcribe import *
 from text_processor import *
+import json
 '''
 Main Class for dealing with Meeting Transcriptions
 
@@ -15,9 +16,14 @@ class TranscriptionAnalyzer:
         # Dictionary of audio files associated by the names
         self.audioFiles = {}
 
-        self.transcribe = None Transcribe(["Sarita.wav", "Christina.wav"])
+        self.transcribe = None #Transcribe(["Sarita.wav", "Christina.wav"])
         self.transcription = None
+
         self.text_analyzer = None
+        
+        self.analyzer_output = None
+        
+        self.output = None
 
 
     # Loads an audio file associated with the name into the object
@@ -25,8 +31,8 @@ class TranscriptionAnalyzer:
         self.audioFiles[name] = audioFile
 
     # Fetches the transcription from the given audio files
-    def transcribe(self):
-        if self.audioFiles = None:
+    def transcribeAudio(self):
+        if self.audioFiles == None:
             print("Error: No Audio Files are loaded")
             return -1
 
@@ -35,20 +41,35 @@ class TranscriptionAnalyzer:
 
      # Analyzes the text
     def analyze(self):
-        if self.transcription = None:
+        print(self.transcription)
+        if self.transcription == None:
             print("Error: Transcription is not available")
             return -1
-        self.text_analyzer = TextProcessor(self.transcription))
+
+        self.text_analyzer = TextProcessor(self.transcription)
+        
+        self.analyzer_output["summary"] = self.text_analyzer.summarize()
+        self.analyzer_output["questions"] = self.text_analyzer.getQuestionList()
+        self.analyzer_output["action_items"] = self.text_analyzer.getActionItems()
+        self.analyzer_output["raw"] = self.text_analyzer.raw
+        self.output = json.dumps(self.analyzer_output)
+
+
 
 
     # Runs all of the necessary functions. 
     # Called from the socket program after loading the audio files
     def run(self):
-        if self.transcribe() == -1:
+        if self.transcribeAudio() == -1:
             print("Error: No audio files are loaded")
             
-       if self.analyze() == -1:
+        if self.analyze() == -1:
            print("Error: Transcription is not available")
+
+        if self.output == None:
+            print("Error: No output available")
+
+        return self.output
 
         
         
