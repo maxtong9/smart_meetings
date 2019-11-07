@@ -35,7 +35,7 @@ On line 32, change the username to your operating system username.
 
 `yarn install --check-files`
 
-## Create and Migrate database
+## Setup and Migrate database
 
 Go into the Rails application directory.  
 ```
@@ -67,7 +67,7 @@ This step is only relevant up until our text analysis functions are working.
 ## Start Python Socket
 
 In a different terminal, go into the `python_server` directory and run:  
-`pip3 install -r requirements`  
+`pip3 install -r requirements.txt`  
 `python3 socket_listener.py`
 
 ## Testing
