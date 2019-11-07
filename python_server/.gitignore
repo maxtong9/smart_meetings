@@ -1,2 +1,9 @@
-.env
+env
 __pycache__
+venv
+
+/tmp/*
+!/tmp/.keep
+
+/s3_access/tmp/*
+!/s3_access/tmp/.keep

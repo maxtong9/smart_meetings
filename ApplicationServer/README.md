@@ -1,12 +1,11 @@
 # Rails Local Environment MacOS Setup
 
 ## Install Homebrew
-First, Install Homebrew. Homebrew allows installation and compilation of software packages easily from source.
 
-`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+First, Install Homebrew. Homebrew allows installation and compilation of software packages easily from source.  
+`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"` 
 
 ## Install rbenv
-
 To do this, run the following commands in your Terminal:
 
 `brew install rbenv ruby-build`
@@ -16,31 +15,27 @@ source ~/.bash_profile
 ```
 
 ## Install Ruby
-`rbenv install 2.6.5`
 
-`rbenv global 2.6.5`
+`rbenv install 2.6.5`  
+`rbenv global 2.6.5`  
 
-Check version:
-
+Check version:  
 `ruby -v`
 
 ## Install Rails version 6.0.0
 
-`gem install rails -v 6.0.0`
+`gem install rails -v 6.0.0`  
+`rbenv rehash`  
 
-`rbenv rehash`
-
-Check version:
-
+Check version:  
 `rails -v`
 
 ## Install Nodejs version 13.0.0
 
-`brew install node`
+`brew install node`  
 
-Check node version and npm version:
-
-`node -v`
+Check node version and npm version:  
+`node -v`  
 `npm -v`
 
 ## Install Gems in Gemfile
@@ -61,17 +56,10 @@ Check node version and npm version:
 
 ## Run application
 
-Open two terminals in the ApplicationServer directory.
-
-Run:
-
+Run in Rails application directory:  
 `rails s`
 
 Then locate to http://localhost:3000/.
-
-On the second window run (Ignore if not making direct changes to application):
-
-`bin/webpack-dev-server`
 
 ## Docker
 
@@ -109,5 +97,3 @@ Find the image with the tag name `app_server_v1` and copy the `IMAGE ID`.
 ### To run the container in the background, run
 
 `docker run -d -p 3000:3000 --name as christinatao31/smart_meetings:app_server_v1`
-
-
