@@ -79,3 +79,35 @@ Then locate to http://localhost:3000/users/new.
 Add a new user and upload test.json to it.
 
 Click Back, then click Show on the user you just created and witness the marvel.
+
+# How to run Docker
+
+## Docker compose
+
+`docker-compose up`
+
+To run one service:
+
+`docker-compose up <service>`
+
+To run in the background, use the "detached" flag:
+
+`docker-compose up -d`
+
+To stop services in detached mode:
+
+`docker-compose stop`
+
+To bring everything down and remove containers completely:
+
+`docker-compose down`
+
+## Install Docker Desktop
+
+<https://hub.docker.com/?overlay=onboarding>
+
+## Tutorials used
+
+<https://docs.docker.com/get-started/>
+<https://docker-curriculum.com/>
+<https://blog.codeship.com/running-rails-development-environment-docker/>
