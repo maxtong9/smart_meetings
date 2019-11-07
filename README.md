@@ -50,7 +50,8 @@ rake db:migrate
 then set credentials using:  
 `aws configure`
 
-Then enter the Id and Secret Key shared in the group chat.
+Then enter the Id and Secret Key shared in the group chat.  
+region: us-west-1
 
 ## Rails credentials
 
