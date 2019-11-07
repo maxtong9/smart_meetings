@@ -19,18 +19,19 @@ class Transcribe:
 
 	def transcription(self):
 		''' Returns transcription of the inputed audio files '''
-		authenticator = IAMAuthenticator(WATSON_API_KEY)
+		authenticator = IAMAuthenticator("-VKjBbTHAZ5rhPN7q9dnm9zYd1WAvcvihFXq5lVQpOrU")
 		speech_to_text = SpeechToTextV1(authenticator=authenticator)
-		speech_to_text.set_service_url(SERVICE_URL)
+		speech_to_text.set_service_url("https://stream.watsonplatform.net/speech-to-text/api")
 
 		transcription = open("transcription.txt" , "w")
-		results = []
+		t_results = []
 		#Iterating through all inputted files
 		for item in self.audio:
+
 			file = open(item, "rb")
 			#API CAlL
-			response = speech_to_text.recognize(file, content_type="audio/flac", smart_formatting=True, timestamps=True, inactivity_timeout=90)
-			results.append(response.get_result());
+			response = speech_to_text.recognize(file, content_type="audio/wav", smart_formatting=True, timestamps=True, inactivity_timeout=120)
+			t_results.append(response.get_result());
 
 		phrase = []
 		t_string = ""
@@ -38,7 +39,7 @@ class Transcribe:
 		temp = []
 
 		# Obtain the timestamps of each word to include periods.
-		for speaker, item in enumerate(results):
+		for speaker, item in enumerate(t_results):
 			for i in item['results']:
 				for j in i['alternatives']:
 					for index, word in enumerate(j['timestamps']):
@@ -61,7 +62,7 @@ class Transcribe:
 						elif (word[1])-(j['timestamps'][index-1][2]) < 0.45:
 							t_string += " " + str(word[0])
 							if index == len(j['timestamps'])-1:
-								if len(results) == 1:
+								if len(t_results) == 1:
 									phrase.append([speaker, t_string, t_start, word[2]])
 									continue
 								temp = [index, word];
@@ -91,4 +92,4 @@ class Transcribe:
 		transcription.write(s)
 		transcription.close()
 		
-		return s
+		return phrase
