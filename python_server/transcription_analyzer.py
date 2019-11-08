@@ -70,8 +70,8 @@ class TranscriptionAnalyzer:
             print("Error: No output available")
 
 
-        print("****JSON*****")
-        print(self.output)
+        # print("****JSON*****")
+        # print(self.output)
         return self.output
 
         
