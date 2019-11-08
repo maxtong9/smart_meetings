@@ -20,9 +20,9 @@ class TranscriptionAnalyzer:
         self.transcription = None
 
         self.text_analyzer = None
-        
+
         self.analyzer_output = {}
-        
+
         self.output = None
 
 
@@ -48,17 +48,16 @@ class TranscriptionAnalyzer:
             return -1
 
         self.text_analyzer = TextProcessor(self.transcription)
-        
+
         self.analyzer_output["summary"] = self.text_analyzer.summarize()
         self.analyzer_output["questions"] = self.text_analyzer.getQuestionList()
         self.analyzer_output["action_items"] = self.text_analyzer.getActionItems()
         self.analyzer_output["raw"] = self.text_analyzer.raw_data
         self.output = json.dumps(self.analyzer_output)
+        with open('./tmp/results.json', 'w') as outfile:
+            json.dump(self.analyzer_output, outfile)
 
-
-
-
-    # Runs all of the necessary functions. 
+    # Runs all of the necessary functions.
     # Called from the socket program after loading the audio files
     def run(self):
         if self.transcribeAudio() == -1:
@@ -73,31 +72,3 @@ class TranscriptionAnalyzer:
         # print("****JSON*****")
         # print(self.output)
         return self.output
-
-        
-        
-
-   
-
-        
-
-
-
-
-
-    
-    
-
-
-        
-
-
-
-
-if __name__ == '__main__':
-    TA = TranscriptionAnalyzer()
-    #TA.loadAudio("Christina", "Christina.wav")
-    #TA.loadAudio("Sarita", "Sarita.wav")
-    TA.loadAudio("Jackson", "Recording.wav")
-    TA.run()
-    
