@@ -19,9 +19,9 @@ class Transcribe:
 
 	def transcription(self):
 		''' Returns transcription of the inputed audio files '''
-		authenticator = IAMAuthenticator("-VKjBbTHAZ5rhPN7q9dnm9zYd1WAvcvihFXq5lVQpOrU")
+		authenticator = IAMAuthenticator(WATSON_API_KEY)
 		speech_to_text = SpeechToTextV1(authenticator=authenticator)
-		speech_to_text.set_service_url("https://stream.watsonplatform.net/speech-to-text/api")
+		speech_to_text.set_service_url(SERVICE_URL)
 
 		transcription = open("transcription.txt" , "w")
 		t_results = []
