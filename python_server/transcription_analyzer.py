@@ -14,21 +14,21 @@ class TranscriptionAnalyzer:
     def __init__(self):
         self.message = "Hello, World"
         # Dictionary of audio files associated by the names
-        self.audioFiles = {}
+        self.audioFiles = []
 
         self.transcribe = None #Transcribe(["Sarita.wav", "Christina.wav"])
         self.transcription = None
 
         self.text_analyzer = None
         
-        self.analyzer_output = None
+        self.analyzer_output = {}
         
         self.output = None
 
 
     # Loads an audio file associated with the name into the object
     def loadAudio(self, name, audioFile):
-        self.audioFiles[name] = audioFile
+        self.audioFiles.append(audioFile)
 
     # Fetches the transcription from the given audio files
     def transcribeAudio(self):
@@ -37,7 +37,8 @@ class TranscriptionAnalyzer:
             return -1
 
         self.transcribe = Transcribe(self.audioFiles)
-        self.transcription = self.transcribe.transcription
+        self.transcription = self.transcribe.transcription()
+        print(self.transcription)
 
      # Analyzes the text
     def analyze(self):
@@ -51,7 +52,7 @@ class TranscriptionAnalyzer:
         self.analyzer_output["summary"] = self.text_analyzer.summarize()
         self.analyzer_output["questions"] = self.text_analyzer.getQuestionList()
         self.analyzer_output["action_items"] = self.text_analyzer.getActionItems()
-        self.analyzer_output["raw"] = self.text_analyzer.raw
+        self.analyzer_output["raw"] = self.text_analyzer.raw_data
         self.output = json.dumps(self.analyzer_output)
 
 
@@ -62,13 +63,15 @@ class TranscriptionAnalyzer:
     def run(self):
         if self.transcribeAudio() == -1:
             print("Error: No audio files are loaded")
-            
         if self.analyze() == -1:
            print("Error: Transcription is not available")
 
         if self.output == None:
             print("Error: No output available")
 
+
+        # print("****JSON*****")
+        # print(self.output)
         return self.output
 
         
@@ -93,5 +96,8 @@ class TranscriptionAnalyzer:
 
 if __name__ == '__main__':
     TA = TranscriptionAnalyzer()
+    #TA.loadAudio("Christina", "Christina.wav")
+    #TA.loadAudio("Sarita", "Sarita.wav")
+    TA.loadAudio("Jackson", "Recording.wav")
     TA.run()
     
