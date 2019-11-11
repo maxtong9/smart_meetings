@@ -29,7 +29,7 @@ class Transcribe:
 		for item in self.audio:
 			file = open(item, "rb")
 			#API CAlL
-			response = speech_to_text.recognize(file, content_type="audio/flac", smart_formatting=True, timestamps=True, inactivity_timeout=90)
+			response = speech_to_text.recognize(file, content_type="audio/wav", smart_formatting=True, timestamps=True, inactivity_timeout=90)
 			results.append(response.get_result());
 
 		phrase = []
@@ -57,12 +57,13 @@ class Transcribe:
 								continue
 							t_string += word[0]
 							t_start = word[1]
-						# The amount of time to determine when a period is placed is decided here. 
+						# The amount of time to determine when a period is placed is decided here.
 						elif (word[1])-(j['timestamps'][index-1][2]) < 0.45:
 							t_string += " " + str(word[0])
 							if index == len(j['timestamps'])-1:
 								if len(results) == 1:
 									phrase.append([speaker, t_string, t_start, word[2]])
+									t_string = ""
 									continue
 								temp = [index, word];
 						else:
@@ -74,6 +75,7 @@ class Transcribe:
 
 		#Sort the phrases from all the audio transcriptions in chronological order
 		phrase.sort(key = lambda x: x[2])
+		print(phrase)
 		s = ""
 
 		#Format output
@@ -90,5 +92,9 @@ class Transcribe:
 		#Write transcript to file
 		transcription.write(s)
 		transcription.close()
-		
-		return s
+		return phrase
+
+
+if __name__ == "__main__":
+	t = Transcribe(["Recording.wav"])
+	t.transcription()
