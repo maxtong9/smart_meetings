@@ -28,6 +28,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        send_to_socket(@user)
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -70,5 +71,36 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:name, :file)
+    end
+
+    def send_to_socket(user)
+      hostname = 'localhost'
+      port = 9999
+
+      s = TCPSocket.open(hostname, port)
+
+      s.write(user.file.attachments.last.key)
+
+      recv_from_socket(s, user)
+
+      s.close
+    end
+
+    def recv_from_socket(s, user)
+      key = s.gets
+      directory = "./tmp/"
+      download_file_from_s3('smartmeetingsbelieving', directory + 'to_display.json', key)
+      user.file.attach(io: File.open(directory + 'to_display.json'), filename: 's3.json', content_type: 'application/json')
+    end
+
+    def download_file_from_s3(bucket, file_path, object_key)
+      require 'aws-sdk-s3'  # v2: require 'aws-sdk'
+
+      #Aws.config(:access_key_id => Rails.application.credentials.production[:aws][:access_key_id], :secret_access_key => Rails.application.credentials.production[:aws][:secret_access_key])
+      s3 = Aws::S3::Resource.new(:access_key_id => Rails.application.credentials.dig(:aws, :access_key_id), :secret_access_key => Rails.application.credentials.dig(:aws, :secret_access_key), region: 'us-west-1')
+      # Create the object to retrieve
+      obj = s3.bucket(bucket).object(object_key)
+      # Get the item's content and save it to a file
+      obj.get(response_target: file_path)
     end
 end

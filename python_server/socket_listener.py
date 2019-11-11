@@ -1,5 +1,6 @@
 #Socket Connection as well as Python access to S3
 import socketserver
+from s3_access.s3_access import download_file_from_S3, upload_file_to_S3
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
 
@@ -8,8 +9,12 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.data = self.request.recv(1024).strip()
         print("{} wrote:".format(self.client_address[0]))
         print(self.data)
-        # just send back the same data, but upper-cased
-        self.request.sendall(self.data.upper())
+
+        download_file_from_S3("smartmeetingsbelieving", "downloaded.txt", self.data.decode("utf-8"))
+        upload_file_to_S3("smartmeetingsbelieving", "./tmp/downloaded.txt", "haha.txt")
+        # CALL TEXT_ANALYZER FUNCTIONS HERE
+        toSend = b'haha.txt'
+        self.request.sendall(toSend)
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 9999

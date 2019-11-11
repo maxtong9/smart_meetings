@@ -26,7 +26,7 @@ export default class HelloWorld extends React.Component {
     return (
       <div>
         <h3>
-          Hello, {this.state.name}!
+          HellO, {this.state.name}!
         </h3>
         <button>
           <Link to ="/about">About</Link> 
