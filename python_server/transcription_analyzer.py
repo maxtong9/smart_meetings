@@ -11,11 +11,11 @@ Output is a formattable json file (or just json) that can be used to upload to S
 USE: Load audio files individually or as a list {___.loadAudio(...)} then call {___.run()}
 '''
 class TranscriptionAnalyzer:
-    def __init__(self):
+    def __init__(self, key):
         self.message = "Hello, World"
         # Dictionary of audio files associated by the names
         self.audioFiles = []
-
+        self.key = key
         self.transcribe = None #Transcribe(["Sarita.wav", "Christina.wav"])
         self.transcription = None
 
@@ -54,7 +54,7 @@ class TranscriptionAnalyzer:
         self.analyzer_output["action_items"] = self.text_analyzer.getActionItems()
         self.analyzer_output["raw"] = self.text_analyzer.raw_data
         self.output = json.dumps(self.analyzer_output)
-        with open('./tmp/results.json', 'w') as outfile:
+        with open('./tmp/' + self.key + '.json', 'w') as outfile:
             json.dump(self.analyzer_output, outfile)
 
     # Runs all of the necessary functions.

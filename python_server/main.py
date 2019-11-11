@@ -12,13 +12,13 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         print("{} wrote:".format(self.client_address[0]))
         print(self.data)
 
-        download_file_from_S3("smartmeetingsbelieving", "Recording.wav", self.data.decode("utf-8"))
-        TA = TranscriptionAnalyzer()
-        TA.loadAudio("Jackson", "./tmp/Recording.wav")
+        download_file_from_S3("smartmeetingsbelieving", self.data.decode("utf-8") + ".wav", self.data.decode("utf-8"))
+        TA = TranscriptionAnalyzer(self.data.decode("utf-8"))
+        TA.loadAudio("Jackson", "./tmp/" + self.data.decode("utf-8") + ".wav")
         TA.run()
-        upload_file_to_S3("smartmeetingsbelieving", "./tmp/results.json", "results.json")
-        toSend = b'results.json'
-        self.request.sendall(toSend)
+        upload_file_to_S3("smartmeetingsbelieving", "./tmp/" + self.data.decode("utf-8") + ".json", self.data.decode("utf-8") + ".json")
+        key = self.data.decode("utf-8") + ".json"
+        self.request.sendall(str.encode(key))
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 9999
