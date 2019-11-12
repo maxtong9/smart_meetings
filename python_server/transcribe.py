@@ -57,7 +57,7 @@ class Transcribe:
 								continue
 							t_string += word[0]
 							t_start = word[1]
-						# The amount of time to determine when a period is placed is decided here. 
+						# The amount of time to determine when a period is placed is decided here.
 						elif (word[1])-(j['timestamps'][index-1][2]) < 0.45:
 							t_string += " " + str(word[0])
 							if index == len(j['timestamps'])-1:

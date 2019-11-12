@@ -12,7 +12,7 @@
 
 <p>
   <b>Blob: </b>
-   <%= render file: "./tmp/to_display.json" %>
+   <%= render file: "./tmp/" + @user.file.attachments.last.filename.to_s() %>
 </p>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

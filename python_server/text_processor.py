@@ -1,5 +1,5 @@
 '''
-This File will hold all of the API related text processor functions 
+This File will hold all of the API related text processor functions
 '''
 
 '''
@@ -8,10 +8,10 @@ This class is the main text processing class
 Input: IBM Watson Audio Text Output
 Output: Text processing Functions (TBD)
 
-Design Choice: 
+Design Choice:
 - all of the mutated steps during the processes are stored as variables
 - When they are used (ie tokenize) they will be instantiated in the class.
-- Thus, any other processes we write can use them, and if they aren't defined, 
+- Thus, any other processes we write can use them, and if they aren't defined,
 - the process will define it itself
 - This will make the processor fast because it only does an operation (ie tokenize)
 - when needed. And if it's already done, then the class doesn't have to do it again.
@@ -35,7 +35,7 @@ class TextProcessor:
 
         # Master Raw List of the Sentences. Thiswill only be initialized. Never mutated
         self.sentenceList = None
-    
+
         self.stopwords = nltk.corpus.stopwords.words('english')
 
         self.transform_input()
@@ -44,7 +44,7 @@ class TextProcessor:
 
     '''
     Transforms the input of Audio -> text to a list of usable strings
-    '''     
+    '''
     def transform_input(self):
         self.speakerList = []
         self.sentenceList = []
@@ -75,7 +75,7 @@ class TextProcessor:
     def removeWhiteSpace(self, wordList):
         newWordList = []
         for word in wordList:
-            newWordList.append(word.strip()) 
+            newWordList.append(word.strip())
         return newWordList
 
 
@@ -89,7 +89,7 @@ class TextProcessor:
         return sentString[:-1]
 
 
-    
+
     '''
     Joins a list of words into a sentence string.
     '''
@@ -108,7 +108,7 @@ class TextProcessor:
     - In: Sentence List (with supposed action words)
     - Out: Sentence List Without action item keywords
     PRESUMPTION: Key Phrase is at the beginning of a sentence
-    '''    
+    '''
     def removeActionItemKeywords(self, sentList):
         newSentList = []
         for sentence in sentList:
@@ -187,7 +187,7 @@ class TextProcessor:
             if not (word == '.' or word == ',' or word == ',' or word == '?' or word == '!'):
                 newWordList.append(word)
         return newWordList
-                
+
 
     '''
     Returns a summary of the transcription
@@ -202,7 +202,7 @@ class TextProcessor:
         sentNoActionItems = self.removeActionItemKeywords(self.sentenceList)
 
         summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
-        
+
         masterSentList = self.removeStopWords(sentNoActionItems)
 
         # Here we are getting the master tokenized word list
@@ -220,7 +220,7 @@ class TextProcessor:
         # Get weighted freq of each word relative to most common word
         for word_key in nltk.probability.FreqDist(masterTokenizeList):
             word_and_weighted_freq[word_key] = word_and_weighted_freq[word_key] / most_occuring_value
-        
+
         sentence_freq_sum = []
 
         pos = 0 #Track ordering of sentences
@@ -231,7 +231,7 @@ class TextProcessor:
             for word in nltk.word_tokenize(sentence):
                 if word.lower() in word_and_weighted_freq.keys():
                     freqSum+=word_and_weighted_freq[word.lower()]
-            
+
             # Place in order by total freq in sentence_freq_sum List
             index = 0
             appended = False
@@ -245,7 +245,7 @@ class TextProcessor:
             if not appended:
                 sentence_freq_sum.append((sentence, freqSum, pos, self.speakerList[pos] ))
             pos += 1
-        
+
         # Take only the specified percentage and sort by order of appearance in the original transcription
         summary = sorted(sentence_freq_sum[:summary_length], key=lambda sentence: sentence[2])        # Sort by sentence list ordering
 
@@ -256,11 +256,11 @@ class TextProcessor:
         # Format the output of summary
         # returnSummary = self.joinSentenceListToSentence(listOfSent)
 
-    
+
         return listOfSent
-    
+
 '''
-Minimal 
+Minimal
 Testing Here
 '''
 if __name__ == "__main__":

@@ -89,8 +89,8 @@ class UsersController < ApplicationController
     def recv_from_socket(s, user)
       key = s.gets
       directory = "./tmp/"
-      download_file_from_s3('smartmeetingsbelieving', directory + 'to_display.json', key)
-      user.file.attach(io: File.open(directory + 'to_display.json'), filename: 's3.json', content_type: 'application/json')
+      download_file_from_s3('smartmeetingsbelieving', directory + key, key)
+      user.file.attach(io: File.open(directory + key), filename: key, content_type: 'application/json')
     end
 
     def download_file_from_s3(bucket, file_path, object_key)
