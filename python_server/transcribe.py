@@ -23,10 +23,16 @@ class Transcribe:
 		speech_to_text = SpeechToTextV1(authenticator=authenticator)
 		speech_to_text.set_service_url(SERVICE_URL)
 
-		transcription = open("transcription.txt" , "w")
 		results = []
 		#Iterating through all inputted files
 		for item in self.audio:
+			file_type = "audio/flac"
+			if ".wav" in item:
+				file_type = "audio/wav"
+			elif ".mpeg" in item:
+				file_type = "audio/mpeg"
+			elif ".mp3" in item:
+				file_type = "audio/mp3"
 			file = open(item, "rb")
 			#API CAlL
 			response = speech_to_text.recognize(file, content_type="audio/wav", smart_formatting=True, timestamps=True, inactivity_timeout=90)
@@ -39,7 +45,8 @@ class Transcribe:
 
 		# Obtain the timestamps of each word to include periods.
 		for speaker, item in enumerate(results):
-			for i in item['results']:
+			temp = []
+			for r_index, i in enumerate(item['results']):
 				for j in i['alternatives']:
 					for index, word in enumerate(j['timestamps']):
 						#Take into account seperation in transcript from Watson IBM
@@ -55,17 +62,25 @@ class Transcribe:
 									t_string += str(word[0])
 									temp = []
 								continue
+							if t_string:
+								t_string += ". "
+								phrase.append([speaker, t_string, t_start, j['timestamps'][index-1][2]])
+								t_string = ""
+								t_start = word[1]
+								t_string += str(word[0])
+								continue
 							t_string += word[0]
 							t_start = word[1]
 						# The amount of time to determine when a period is placed is decided here. 
 						elif (word[1])-(j['timestamps'][index-1][2]) < 0.45:
 							t_string += " " + str(word[0])
 							if index == len(j['timestamps'])-1:
-								if len(results) == 1:
+								if (len(results) == 1) or (r_index == len(item['results'])-1):
+									t_string += ". "
 									phrase.append([speaker, t_string, t_start, word[2]])
 									t_string = ""
-									continue
-								temp = [index, word];
+								else:
+									temp = [index, word, speaker];
 						else:
 							t_string += ". "
 							phrase.append([speaker, t_string, t_start, j['timestamps'][index-1][2]])
@@ -73,11 +88,18 @@ class Transcribe:
 							t_start = word[1]
 							t_string += str(word[0])
 
+		if temp:
+			t_string += ". "
+			phrase.append([temp[2], t_string, t_start, temp[1][2]])
+
 		#Sort the phrases from all the audio transcriptions in chronological order
 		phrase.sort(key = lambda x: x[2])
-		print(phrase)
-		s = ""
+		return phrase
 
+	def text(self, phrase):
+		''' Returns json format of transcript '''
+		data = {}
+		s = ""
 		#Format output
 		for index, sentence in enumerate(phrase):
 			if index == 0:
@@ -89,12 +111,11 @@ class Transcribe:
 				s += "\n" + "Person " + str(sentence[0]+1) + ": "
 				s += str(sentence[1])
 
-		#Write transcript to file
-		transcription.write(s)
-		transcription.close()
-		return phrase
+		data['text'] = s
+		with open('transcription.json', 'w') as outfile:
+			json.dump(data, outfile)
 
 
-if __name__ == "__main__":
-	t = Transcribe(["Recording.wav"])
-	t.transcription()
+# if __name__ == "__main__":
+# 	t = Transcribe(["Recording.wav"])
+# 	t.transcription()
