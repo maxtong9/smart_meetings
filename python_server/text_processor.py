@@ -168,7 +168,7 @@ class TextProcessor:
         questionList = []
         for sentence in sentNoAction:
             classification = classifier.classify(self.dialogue_act_features(sentence))
-            if classification == 'whQuestion' or classification == 'Clarify':
+            if classification == 'whQuestion':
                 questionList.append(sentence)
                 continue
             starting_word = nltk.word_tokenize(sentence)[0].lower()
