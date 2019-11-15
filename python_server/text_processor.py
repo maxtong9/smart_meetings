@@ -25,6 +25,7 @@ class TextProcessor:
         self.SUMMARY_PERCENTAGE = .59
         # Action Item Keywords (lower)
         self.ACTION_ITEM_KEYWORD = ["action", "item"]
+
         # List of the speakers in the same order as the sentenceList
         self.speakerList = None
 
@@ -41,6 +42,20 @@ class TextProcessor:
         self.transform_input()
 
         self.questionStarters = ['what', 'when', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would']
+
+    '''
+        This function will analyze people's hesitations. (The use of 'um' in their dialogue.
+        It will report a percentage of the number of 'ums' against the total amount of words that they said in the transcription.
+
+        The % Hesitations will then be removed. 
+
+        Input: rawData from th
+        Output: percentage of % HESITATION s against the total number of words the person said.
+    '''
+    def analyzeHesitations(self):
+        print("Analyze hesitations here")
+
+
 
     '''
     Transforms the input of Audio -> text to a list of usable strings
