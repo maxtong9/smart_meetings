@@ -41,7 +41,7 @@ class TextProcessor:
 
         self.transform_input()
 
-        self.questionStarters = ['what', 'when', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would']
+        self.questionStarters = ['what', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would']
 
     '''
         This function will analyze people's hesitations. (The use of 'um' in their dialogue.
