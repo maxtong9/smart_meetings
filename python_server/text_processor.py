@@ -34,14 +34,17 @@ class TextProcessor:
         # RAW Transcription of only the sentences (or phrases)
         self.raw = None
 
-        # Master Raw List of the Sentences. Thiswill only be initialized. Never mutated
+        # Master Raw List of the Sentences. Thiswill only be initialized. Never mutated ( Same order as the sentence list)
         self.sentenceList = None
 
         self.stopwords = nltk.corpus.stopwords.words('english')
 
         self.transform_input()
 
-        self.questionStarters = ['what', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would']
+        self.questionStarters = ['what', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would', 'whose'] # Add as you think of more
+
+
+        self.transform_input()
 
     '''
         This function will analyze people's hesitations. (The use of 'um' in their dialogue.
