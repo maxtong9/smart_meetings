@@ -39,7 +39,6 @@ class TextProcessor:
 
         self.stopwords = nltk.corpus.stopwords.words('english')
 
-        self.transform_input()
 
         self.questionStarters = ['what', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would', 'whose'] # Add as you think of more
 
@@ -212,8 +211,12 @@ class TextProcessor:
     - Takes the Highest freq word and gives all of the words a relative weighted frequency based on that word.
     - Sums sentence words (besides stop words) and sorts sentences in order
     - Takes n % sentences and resorts them in the order of which they were in the original transcription
+
+
+    Outputs list of tuples [Speaker: Sentence]
     '''
     def summarize(self):
+            # GUARD
         if self.sentenceList is None:
             self.sentenceList = nltk.sent_tokenize(self.raw)
 
@@ -268,6 +271,8 @@ class TextProcessor:
         summary = sorted(sentence_freq_sum[:summary_length], key=lambda sentence: sentence[2])        # Sort by sentence list ordering
 
         # Format summary for joinSentenceListToSentence Input
+
+
         listOfSent = []
         for sent in summary:
             listOfSent.append((sent[3], sent[0]))
