@@ -1,0 +1,22 @@
+header {
+  padding: 200px 0 120px;
+  background-color: #5cdb95;
+}
+
+section {
+  padding: 200px 0;
+}
+
+.navbar {
+   background-color: #5cdb95;
+   color: white;
+}
+
+.custom-btn {
+  background: #00887A;
+  color: white;
+}
+
+a1 {
+  color: white;
+}

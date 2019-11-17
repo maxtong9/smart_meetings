@@ -53,11 +53,6 @@ Check node version and npm version:
 `npm install popper.js --save`
 `npm install react-bootstrap bootstrap --save`
 
-
-## Install node_modules folder
-
-`npm install`
-
 ## Install yarn
 
 `brew install yarn`
