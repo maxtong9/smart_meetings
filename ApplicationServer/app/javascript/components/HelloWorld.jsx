@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import About from './About';
+import Meeting from './Meeting';
 import { Link } from 'react-router-dom'
 import "../../assets/stylesheets/index.css";
 import Jumbotron from "react-bootstrap/Jumbotron";
@@ -34,29 +35,22 @@ export default class HelloWorld extends React.Component {
     return (
         <div className="index">
           <body body id="page-top">
-          <div class="container-fluid">
-            <Nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
-            <a class="navbar-brand js-scroll-trigger text-white" href="#page-top">SMART MEETING</a>
-              <Button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-                <span class="navbar-toggler-icon"></span>
-             </Button>
-
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                  <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                      <a class="nav-link js-scroll-trigger a1" href="#about">About</a>
-                    </li>
-                  </ul>
-                </div>
-            </Nav>
-           </div>
+          <Navbar class="navbar" expand="lg" sticky="top">
+            <Navbar.Brand href="#home">SMART MEETING</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="ml-auto">
+                <Nav.Link class="a1" href="#about">About</Nav.Link>
+                <Nav.Link class="a1" href="/meeting">Meeting</Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
 
             <header class="text-white">
               <div class="container text-center">
                 <h1>Welcome to Smart Meeting</h1>
                 <p class="lead">We provide powerful tools to keep your conferences efficient and meaningful</p>
-                <Button bsClass="custom-btn" href="#"> Get Started </Button>
+                <Button bsClass="custom-btn" href="/meeting"> Get Started </Button>
               </div>
             </header>
 
