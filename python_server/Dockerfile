@@ -20,4 +20,4 @@ RUN pip install -r requirements.txt \
 COPY . .
 
 # Run the script
-RUN python main.py
+CMD python main.py
