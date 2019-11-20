@@ -12,7 +12,6 @@ USE: Load audio files individually or as a list {___.loadAudio(...)} then call {
 '''
 class TranscriptionAnalyzer:
     def __init__(self, key):
-        self.message = "Hello, World"
         # Dictionary of audio files associated by the names
         self.audioFiles = []
         self.key = key
@@ -54,8 +53,8 @@ class TranscriptionAnalyzer:
         self.analyzer_output["action_items"] = self.text_analyzer.getActionItems()
         self.analyzer_output["raw"] = self.text_analyzer.raw_data
         self.output = json.dumps(self.analyzer_output)
-        with open('./tmp/' + self.key + '.json', 'w') as outfile:
-            json.dump(self.analyzer_output, outfile)
+        # with open('./tmp/' + self.key + '.json', 'w') as outfile:
+        #     json.dump(self.analyzer_output, outfile)
 
     # Runs all of the necessary functions.
     # Called from the socket program after loading the audio files
@@ -72,3 +71,20 @@ class TranscriptionAnalyzer:
         # print("****JSON*****")
         # print(self.output)
         return self.output
+
+
+if __name__ == "__main__":
+    # move audio files to frontmost python_server directory
+   TA = TranscriptionAnalyzer("fakekey")
+   TA.loadAudio('Christina', 'Christina.mp3')
+   TA.loadAudio('Jackson', 'Jackson.mp3')
+   TA.loadAudio('Max', 'Max.mp3')
+   TA.loadAudio('Sarita', 'Sarita.mp3')
+   TA.loadAudio('Tuan', 'Tuan.mp3')
+#    TA.load()
+#    TA.load()
+#    TA.load()
+#    TA.load()
+   print(TA.run())
+
+
