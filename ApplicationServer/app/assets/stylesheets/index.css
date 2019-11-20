@@ -9,11 +9,11 @@ section {
 
 .navbar {
    background-color: #5cdb95;
-   color: white;
+   color: #00887A !important;
 }
 
-.custom-btn {
-  background-color: #00887A;
+.custon-btn{
+  background-color: #00887A !important;
   color: white;
 }
 

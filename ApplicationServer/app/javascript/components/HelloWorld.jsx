@@ -9,8 +9,6 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import NavItem from "react-bootstrap/NavItem";
-import NavDropdown from "react-bootstrap/NavDropdown";
 
 export default class HelloWorld extends React.Component {
   static propTypes = {
@@ -35,13 +33,13 @@ export default class HelloWorld extends React.Component {
     return (
         <div className="index">
           <body body id="page-top">
-          <Navbar class="navbar" expand="lg" sticky="top">
-            <Navbar.Brand href="#home">SMART MEETING</Navbar.Brand>
+          <Navbar className="navbar" variant="dark" expand="lg" sticky="top">
+            <Navbar.Brand href="#">{'SMART MEETING'}</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="ml-auto">
-                <Nav.Link class="a1" href="#about">About</Nav.Link>
-                <Nav.Link class="a1" href="/meeting">Meeting</Nav.Link>
+                <Nav.Link href="#about">About</Nav.Link>
+                <Nav.Link href="/meeting">Meeting</Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -50,7 +48,7 @@ export default class HelloWorld extends React.Component {
               <div class="container text-center">
                 <h1>Welcome to Smart Meeting</h1>
                 <p class="lead">We provide powerful tools to keep your conferences efficient and meaningful</p>
-                <Button bsClass="custom-btn" href="/meeting"> Get Started </Button>
+                <Button variant="secondary" href="/meeting">Get Started</Button>
               </div>
             </header>
 
