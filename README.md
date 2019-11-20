@@ -84,19 +84,11 @@ Click Back, then click Show on the user you just created and witness the marvel.
 
 ## Docker compose
 
+<!-- `docker-compose run app yarn` -->
+
+`docker-compose run app rake db:create`
+
 `docker-compose up`
-
-To run one service:
-
-`docker-compose up <service>`
-
-To run in the background, use the "detached" flag:
-
-`docker-compose up -d`
-
-To stop services in detached mode:
-
-`docker-compose stop`
 
 To bring everything down and remove containers completely:
 
