@@ -27,20 +27,32 @@ class TextProcessor:
         self.ACTION_ITEM_KEYWORD = ["action", "item"]
 
         # Hesitation, that occurs in the raw transcription
-        self.HESITATION = '% HESITATION'
+        self.HESITATION1 = '% HESITATION'
+
+        self.HESITATION2 = '%HESITATION'
 
         # List of the speakers in the same order as the sentenceList
         self.speakerList = None
 
         self.raw_data = rawData
 
-        # Master Raw List of the Sentences. Thiswill only be initialized. Never mutated ( Same order as the sentence list)
+        # Master Raw List of the Sentences. This will only be initialized. Never mutated ( Same order as the sentence list)
         self.sentenceList = None
 
         self.stopwords = nltk.corpus.stopwords.words('english')
 
 
         self.questionStarters = ['what', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would', 'whose'] # Add as you think of more
+        
+        # Holds the values of all of the speakers in the meeting
+        self.total_speakers = None
+
+        # Keeps track of the number of hesitations that each person says
+        self.hesitations_per_person = None
+        
+        # Keeps track of the total number of hesitations said in the meeting
+        self.total_hesitation_count = 0
+
 
 
         self.transform_input() # Initializes speakerList and sentenceList
@@ -55,7 +67,30 @@ class TextProcessor:
         Output: percentage of % HESITATION s against the total number of words the person said.
     '''
     def analyzeHesitations(self):
-        print("Analyze hesitations here")
+        # Setup hesitations_per_person
+        self.hesitations_per_person = {i: 0 for i in self.total_speakers}
+
+        # Iterate through each "sentence"
+        for dataPoint in self.raw_data:
+            # dataPoint[0] = speaker
+            # dataPoint[1] = sentence string
+
+            # Count number of HESITATIONS in Sentence
+            localCount = dataPoint[1].count(self.HESITATION2)
+
+            # Add to total/ per person count
+            self.hesitations_per_person[dataPoint[0]] += localCount
+            self.total_hesitation_count += localCount
+
+        for person in self.total_speakers:
+            # Divide by total count
+            self.hesitations_per_person[person] /= self.total_hesitation_count
+
+
+        # Higher the percentage the more the hesitations
+        return self.hesitations_per_person
+        
+
 
     '''
     Removes all instances of %HESITATION (self.HESITATION) from the given string, and returns a new string
@@ -63,7 +98,7 @@ class TextProcessor:
     Output: String without %HESITATION
     '''
     def removeHesitationFromString(self, string):
-        return string.replace(self.HESITATION, '')
+        return string.replace(self.HESITATION1, '')
     
     '''
     Input: List of strings
@@ -82,10 +117,12 @@ class TextProcessor:
     def transform_input(self):
         self.speakerList = []
         self.sentenceList = []
+        self.total_speakers = []
         for phraseList in self.raw_data:
             self.speakerList.append(phraseList[0])
             self.sentenceList.append(phraseList[1])
-
+            if phraseList[0] not in self.total_speakers:
+                self.total_speakers.append(phraseList[0])
 
 
     '''
@@ -326,3 +363,4 @@ if __name__ == "__main__":
     print(tp.getActionItems())
     print("RAW TRANSCRIPTION: \n")
     print(tp.raw_data)
+    print(tp.analyzeHesitations())
