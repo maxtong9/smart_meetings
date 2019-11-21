@@ -26,6 +26,9 @@ class TextProcessor:
         # Action Item Keywords (lower)
         self.ACTION_ITEM_KEYWORD = ["action", "item"]
 
+        # Hesitation, that occurs in the raw transcription
+        self.HESITATION = '% HESITATION'
+
         # List of the speakers in the same order as the sentenceList
         self.speakerList = None
 
@@ -54,6 +57,23 @@ class TextProcessor:
     def analyzeHesitations(self):
         print("Analyze hesitations here")
 
+    '''
+    Removes all instances of %HESITATION (self.HESITATION) from the given string, and returns a new string
+    Input: String with %HESITATION
+    Output: String without %HESITATION
+    '''
+    def removeHesitationFromString(self, string):
+        return string.replace(self.HESITATION, '')
+    
+    '''
+    Input: List of strings
+    Output: list of strings without self.HESITATION
+    '''
+    def removeHesitationFromList(self, listOfStrings):
+        newList = []
+        for string in listOfStrings:
+            newList.append(self.removeHesitationFromString(string))
+        return newList
 
 
     '''
@@ -146,7 +166,7 @@ class TextProcessor:
     '''
     # TODO: Might need to use .lower()
     def getActionItems(self):
-        
+        sentence_list = self.removeHesitationFromList(self.sentenceList)
         actionItems = []
         actionItem = False
         for sentence in self.sentenceList:
@@ -176,6 +196,7 @@ class TextProcessor:
     def getQuestionList(self):
        
         sentNoAction = self.removeActionItemKeywords(self.sentenceList)
+        sentNoHesitation = self.removeHesitationFromList(sentNoAction)
 
         # Open file and trained classifier
         file = open('question_classifier.pickle', 'rb')
@@ -215,12 +236,18 @@ class TextProcessor:
     Outputs list of tuples [Speaker: Sentence]
     '''
     def summarize(self):
-
+        # Remove Action Items
         sentNoActionItems = self.removeActionItemKeywords(self.sentenceList)
+        
+        # Remove HESITATIONS
+        sentNoHesitations = self.removeHesitationFromList(sentNoActionItems)
 
+        # Get the summary length relative to the original length
         summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
 
-        masterSentList = self.removeStopWords(sentNoActionItems)
+        # Remove stop words
+        masterSentList = self.removeStopWords(sentNoHesitations)
+
 
         # Here we are getting the master tokenized word list
         masterTokenizeList = []
@@ -243,7 +270,7 @@ class TextProcessor:
         pos = 0 #Track ordering of sentences
 
         # Calculate sum of weighted frequencies by sentences
-        for sentence in sentNoActionItems:
+        for sentence in sentNoHesitations:
             freqSum = 0
             for word in nltk.word_tokenize(sentence):
                 if word.lower() in word_and_weighted_freq.keys():
@@ -291,7 +318,7 @@ if __name__ == "__main__":
     
     # Processing Object
     tp = TextProcessor(demoInput)
-    print("Summary: \n")
+    print("Summary: ***** \n")
     print(tp.summarize())
     print("Question List: \n")
     print(tp.getQuestionList())
