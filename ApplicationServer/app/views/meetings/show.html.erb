@@ -4,15 +4,23 @@
   <strong>Name:</strong>
   <%= @meeting.name %>
 </p>
-
 <p>
-  <b>Attached File: </b>
-  <%= @meeting.file.attachments.first.filename %>
+  <strong>Number of Participants:</strong>
+  <%= @meeting.participants %>
 </p>
-
-<p>
-  <b>Blob: </b>
-   <%= render file: "./tmp/" + @meeting.file.attachments.last.filename.to_s() %>
-</p>
+<% if @meeting.file.attachments.first != nil %>
+  <p>
+    <b>Attached File: </b>
+    <%= @meeting.file.attachments.first.filename %>
+  </p>
+  <p>
+    <b>Blob: </b>
+     <%= render file: "./tmp/" + @meeting.file.attachments.last.filename.to_s() %>
+  </p>
+<% else %>
+  <p>
+    No Attached File
+  </p>
+<% end %>
 <%= link_to 'Edit', edit_meeting_path(@meeting) %> |
 <%= link_to 'Back', meetings_path %>

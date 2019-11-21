@@ -8,16 +8,26 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         # self.request is the TCP socket connected to the client
-        self.data = self.request.recv(1024).strip()
-        print("{} wrote:".format(self.client_address[0]))
-        print(self.data)
+        self.data = self.request.recv(1024)
+        print(self.data.decode())
+        amount = int(self.data.decode()[0])
+        meeting_name = self.data.decode("utf-8")[1:len(self.data.decode())]
+        TA = TranscriptionAnalyzer(meeting_name)
 
-        download_file_from_S3("smartmeetingsbelieving", self.data.decode("utf-8") + ".wav", self.data.decode("utf-8"))
-        TA = TranscriptionAnalyzer(self.data.decode("utf-8"))
-        TA.loadAudio("Jackson", "./tmp/" + self.data.decode("utf-8") + ".wav")
+        #Receive files one by one
+        self.data = self.request.recv(1024)
+        info_string = self.data.decode("utf-8")
+        info_list = info_string.split('|')
+        for i in range(1, amount + 1):
+            key = info_list[i].split(';')[0]
+            filename = info_list[i].split(';')[1]
+            print("Received file: ", filename)
+            download_file_from_S3("smartmeetingsbelieving", filename, key)
+            TA.loadAudio(filename.split('.')[0] + str(i), "./tmp/" + filename)
+
         TA.run()
-        upload_file_to_S3("smartmeetingsbelieving", "./tmp/" + self.data.decode("utf-8") + ".json", self.data.decode("utf-8") + ".json")
-        key = self.data.decode("utf-8") + ".json"
+        upload_file_to_S3("smartmeetingsbelieving", "./tmp/" + meeting_name + ".json", meeting_name + ".json")
+        key = meeting_name + ".json"
         self.request.sendall(str.encode(key))
 
 if __name__ == "__main__":

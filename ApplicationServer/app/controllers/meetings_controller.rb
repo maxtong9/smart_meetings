@@ -24,11 +24,10 @@ class MeetingsController < ApplicationController
   # POST /meetings
   # POST /meetings.json
   def create
-    @meeting = Meeting.new(meeting_params)
+    @meeting = Meeting.new(create_params)
 
     respond_to do |format|
       if @meeting.save
-        send_to_socket(@meeting)
         format.html { redirect_to @meeting, notice: 'Meeting was successfully created.' }
         format.json { render :show, status: :created, location: @meeting }
       else
@@ -42,7 +41,8 @@ class MeetingsController < ApplicationController
   # PATCH/PUT /meetings/1.json
   def update
     respond_to do |format|
-      if @meeting.update(meeting_params)
+      if @meeting.update(edit_params)
+        send_to_socket(@meeting)
         format.html { redirect_to @meeting, notice: 'Meeting was successfully updated.' }
         format.json { render :show, status: :ok, location: @meeting }
       else
@@ -69,8 +69,12 @@ class MeetingsController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def meeting_params
-      params.require(:meeting).permit(:name, :file)
+    def edit_params
+      params.require(:meeting).permit(:name, file: [])
+    end
+
+    def create_params
+      params.require(:meeting).permit(:name, :participants)
     end
 
     def send_to_socket(meeting)
@@ -78,8 +82,12 @@ class MeetingsController < ApplicationController
       port = 9999
 
       s = TCPSocket.open(hostname, port)
-
-      s.write(meeting.file.attachments.last.key)
+      s.write(meeting.participants.to_s, meeting.name)
+      info_string = ''
+      for file in meeting.file.attachments do
+          info_string = info_string + '|' + file.key + ';' + file.filename.to_s
+      end
+      s.write(info_string)
 
       recv_from_socket(s, meeting)
 
