@@ -5,6 +5,7 @@ import App from '../components/App';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import HelloWorld from '../components/HelloWorld';
 import About from '../components/About';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // This is how react_on_rails can see the HelloWorld in the browser.
 ReactOnRails.register({
