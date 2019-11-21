@@ -51,6 +51,7 @@ class TranscriptionAnalyzer:
         self.analyzer_output["summary"] = self.text_analyzer.summarize()
         self.analyzer_output["questions"] = self.text_analyzer.getQuestionList()
         self.analyzer_output["action_items"] = self.text_analyzer.getActionItems()
+        self.analyzer_output["hesitation_analytics"] = self.text_analyzer.analyzeHesitations()
         self.analyzer_output["raw"] = self.text_analyzer.raw_data
         self.output = json.dumps(self.analyzer_output)
         # with open('./tmp/' + self.key + '.json', 'w') as outfile:
