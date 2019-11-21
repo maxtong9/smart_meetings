@@ -10,8 +10,14 @@
 </p>
 <% if @meeting.file.attachments.first != nil %>
   <p>
-    <b>Attached File: </b>
-    <%= @meeting.file.attachments.first.filename %>
+    <b>Attached Files: </b>
+    <br />
+    <% for i in 0..@meeting.participants-1 do %>
+      <p>
+        <%=  @meeting.file.attachments[i].filename %>
+        <br />
+      </p>
+    <% end %>
   </p>
   <p>
     <b>Blob: </b>
