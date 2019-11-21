@@ -26,6 +26,7 @@
 <% else %>
   <p>
     No Attached File
+    <%= render 'upload_form', meeting: @meeting %>
   </p>
 <% end %>
 <%= link_to 'Edit', edit_meeting_path(@meeting) %> |

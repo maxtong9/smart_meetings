@@ -16,13 +16,6 @@
     <%= form.text_field :name %>
   </div>
 
-  <div class="field">
-    <%= form.label :file %>
-    <%= form.file_field :file, multiple: true %>
-  </div>
-
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <%= render 'upload_form', meeting: @meeting %>
+  
 <% end %>
