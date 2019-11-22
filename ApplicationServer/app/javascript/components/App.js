@@ -2,6 +2,7 @@
 import React from 'react';
 import HelloWorld from './HelloWorld';
 import About from './About';
+import Meeting from './Meeting';
 import { Route, Switch }  from 'react-router-dom';
 
 class App extends React.Component {

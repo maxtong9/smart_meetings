@@ -35,7 +35,7 @@ class Transcribe:
 				file_type = "audio/mp3"
 			file = open(item, "rb")
 			#API CAlL
-			response = speech_to_text.recognize(file, content_type="audio/wav", smart_formatting=True, timestamps=True, inactivity_timeout=90)
+			response = speech_to_text.recognize(file, content_type=file_type, smart_formatting=True, timestamps=True, inactivity_timeout=90)
 			results.append(response.get_result());
 
 		phrase = []

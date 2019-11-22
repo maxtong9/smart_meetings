@@ -74,11 +74,11 @@ In a different terminal, go into the `python_server` directory and run:
 
 run `rails s`
 
-Then locate to http://localhost:3000/users/new.
+Then locate to http://localhost:3000/meetings/new.
 
-Add a new user and upload test.json to it.
+Add a new meeting and upload test.json to it.
 
-Click Back, then click Show on the user you just created and witness the marvel.
+Click Back, then click Show on the meeting you just created and witness the marvel.
 
 # How to run Docker
 
