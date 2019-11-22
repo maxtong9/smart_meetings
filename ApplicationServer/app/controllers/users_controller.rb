@@ -74,7 +74,8 @@ class UsersController < ApplicationController
     end
 
     def send_to_socket(user)
-      hostname = 'localhost'
+      # hostname = 'localhost'
+      hostname = '169.231.136.225' # UNCOMMENT THIS OUT FOR DOCKER, REPLACING WITH YOUR PUBLIC IP ADDRESS
       port = 9999
 
       s = TCPSocket.open(hostname, port)
@@ -89,6 +90,7 @@ class UsersController < ApplicationController
     def recv_from_socket(s, user)
       key = s.gets
       directory = "./tmp/"
+      puts "KEY FROM PYTHON SERVER: #{key}"
       download_file_from_s3('smartmeetingsbelieving', directory + key, key)
       user.file.attach(io: File.open(directory + key), filename: key, content_type: 'application/json')
     end

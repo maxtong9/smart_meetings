@@ -15,9 +15,9 @@ RUN bundle install
 #  && npm install \
 RUN yarn install --check-files
 
-# COPY entrypoint.sh /usr/bin/
-# RUN chmod +x /usr/bin/entrypoint.sh
-# ENTRYPOINT ["entrypoint.sh"]
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
 
 # Copy the rest of the files
 COPY . ./

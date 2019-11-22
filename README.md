@@ -86,6 +86,8 @@ Click Back, then click Show on the user you just created and witness the marvel.
 
 <!-- `docker-compose run app yarn` -->
 
+Comment/uncomment the marked lines in ApplicationServer/config/database.yml, python_server/main.py, ApplicationServer/app/controllers/users_controller.rb
+
 `docker-compose run app rake db:create`
 
 `docker-compose up`
