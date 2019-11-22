@@ -3,7 +3,7 @@
 ## Install Homebrew
 
 First, Install Homebrew. Homebrew allows installation and compilation of software packages easily from source.  
-`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"` 
+`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 ## Install rbenv
 To do this, run the following commands in your Terminal:
@@ -45,6 +45,13 @@ Check node version and npm version:
 ## Install node_modules folder
 
 `npm install`
+
+## Install bootstrap and dependencies
+
+`npm install bootstrap --save`
+`npm install jquery --save`
+`npm install popper.js --save`
+`npm install react-bootstrap bootstrap --save`
 
 ## Install yarn
 

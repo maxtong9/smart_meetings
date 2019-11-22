@@ -1,0 +1,11 @@
+<%= form_with(model: meeting, local: true) do |form| %>
+
+  <div class="field">
+    <%= form.file_field :file, multiple: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+
+<% end %>
