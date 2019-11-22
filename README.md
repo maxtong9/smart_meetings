@@ -88,6 +88,8 @@ Click Back, then click Show on the meeting you just created and witness the marv
 
 Comment/uncomment the marked lines in ApplicationServer/config/database.yml, python_server/main.py, ApplicationServer/app/controllers/users_controller.rb
 
+`docker-compose build`
+
 `docker-compose run app rake db:create`
 
 `docker-compose up`
