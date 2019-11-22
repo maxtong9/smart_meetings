@@ -13,12 +13,12 @@
 
   <div class="field">
     <%= form.label "Meeting Name" %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, :required => true %>
   </div>
 
   <div class="field">
     <%= form.label "Number of Participants" %>
-    <%= form.text_field :participants %>
+    <%= form.text_field :participants, :required => true %>
   </div>
 
   <div class="actions">

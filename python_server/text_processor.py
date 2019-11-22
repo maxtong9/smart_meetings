@@ -98,7 +98,7 @@ class TextProcessor:
     Output: String without %HESITATION
     '''
     def removeHesitationFromString(self, string):
-        return string.replace(self.HESITATION1, '')
+        return string.replace(self.HESITATION1, '').replace(self.HESITATION2, '')
     
     '''
     Input: List of strings
@@ -208,7 +208,7 @@ class TextProcessor:
         actionItem = False
         for sentence in self.sentenceList:
             if actionItem:
-                actionItems.append(sentence)
+                actionItems.append(self.removeHesitationFromString(sentence))
                 actionItem = False
             words = nltk.word_tokenize(sentence)
             if len(words) >= 2:
