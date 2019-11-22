@@ -52,8 +52,10 @@ class TranscriptionAnalyzer:
         self.analyzer_output["summary"] = self.text_analyzer.summarize()
         self.analyzer_output["questions"] = self.text_analyzer.getQuestionList()
         self.analyzer_output["action_items"] = self.text_analyzer.getActionItems()
+        self.analyzer_output["hesitation_analytics"] = self.text_analyzer.analyzeHesitations()
         self.analyzer_output["raw"] = self.text_analyzer.raw_data
         self.output = json.dumps(self.analyzer_output)
+
         with open('./tmp/' + self.meeting + '.json', 'w') as outfile:
             json.dump(self.analyzer_output, outfile)
 
@@ -75,3 +77,20 @@ class TranscriptionAnalyzer:
 
         print("Done with TA.run()")
         return self.output
+
+
+if __name__ == "__main__":
+    # move audio files to frontmost python_server directory
+   TA = TranscriptionAnalyzer("fakekey")
+   TA.loadAudio('Christina', 'Christina.mp3')
+   TA.loadAudio('Jackson', 'Jackson.mp3')
+   TA.loadAudio('Max', 'Max.mp3')
+   TA.loadAudio('Sarita', 'Sarita.mp3')
+   TA.loadAudio('Tuan', 'Tuan.mp3')
+#    TA.load()
+#    TA.load()
+#    TA.load()
+#    TA.load()
+   print(TA.run())
+
+
