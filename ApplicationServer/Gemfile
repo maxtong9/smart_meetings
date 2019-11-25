@@ -24,6 +24,9 @@ gem 'jbuilder', '~> 2.7'
 #Webpack and React
 gem 'react_on_rails', '11.1.4'
 gem 'mini_racer'
+
+gem 'bootstrap', '~> 4.0.0'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 gem 'aws-sdk'

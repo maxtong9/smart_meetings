@@ -58,6 +58,8 @@ GEM
       zeitwerk (~> 2.1, >= 2.1.8)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    autoprefixer-rails (9.7.2)
+      execjs
     aws-eventstream (1.0.3)
     aws-partitions (1.228.0)
     aws-sdk (3.0.1)
@@ -843,6 +845,10 @@ GEM
     bindex (0.8.1)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
+    bootstrap (4.0.0)
+      autoprefixer-rails (>= 6.0.3)
+      popper_js (>= 1.12.9, < 2)
+      sass (>= 3.5.2)
     builder (3.2.3)
     byebug (11.0.1)
     capybara (3.29.0)
@@ -892,6 +898,7 @@ GEM
     nokogiri (1.10.5)
       mini_portile2 (~> 2.4.0)
     pg (1.1.4)
+    popper_js (1.14.5)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -1002,6 +1009,7 @@ DEPENDENCIES
   aws-sdk
   aws-sdk-s3
   bootsnap (>= 1.4.2)
+  bootstrap (~> 4.0.0)
   byebug
   capybara (>= 2.15)
   jbuilder (~> 2.7)
