@@ -8,24 +8,16 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         # self.request is the TCP socket connected to the client
-
-        self.data = self.request.recv(1024)
-        print(self.data.decode())
-        amount = int(self.data.decode()[0])
-        print("AMOUNT: " + str(amount))
-        meeting_name = self.data.decode("utf-8")[1:len(self.data.decode())]
-        print("MEETING NAME: " + meeting_name)
-        TA = TranscriptionAnalyzer(meeting_name)
-
-        #Receive files one by one
+        #Receive files
         self.data = self.request.recv(1024)
         info_string = self.data.decode("utf-8")
-        print("INFO STRING: " + info_string)
         info_list = info_string.split('|')
-        print("INFO LIST:")
-        for item in info_list:
-            print(item)
-        print("END INFO LIST")
+
+        amount = int(info_list[0][0])
+        meeting_name = info_list[0][1:len(info_list[0])]
+        print(amount)
+        print(meeting_name)
+        TA = TranscriptionAnalyzer(meeting_name)
         for i in range(1, amount + 1):
             key = info_list[i].split(';')[0]
             filename = info_list[i].split(';')[1]
