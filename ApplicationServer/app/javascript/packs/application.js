@@ -10,9 +10,9 @@ require('@rails/ujs').start();
 require('turbolinks').start();
 require('@rails/activestorage').start();
 require('channels');
-var $ = require('jquery');
-window.$ = $;
-require('bootstrap');
+// var $ = require('jquery');
+// window.$ = $;
+// require('bootstrap');
 import "bootstrap/dist/css/bootstrap.min.css";
 // Uncomment to copy all static images under ../images
 // to the output folder and reference

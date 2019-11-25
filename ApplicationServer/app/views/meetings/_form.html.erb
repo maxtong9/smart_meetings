@@ -1,9 +1,9 @@
 <%= form_with(model: meeting, local: true) do |form| %>
   <% if meeting.errors.any? %>
-    <div id="error_explanation">
+    <div id="text-style error_explanation">
       <h2><%= pluralize(meeting.errors.count, "error") %> prohibited this meeting from being saved:</h2>
 
-      <ul>
+      <ul class="text-style">
         <% meeting.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
