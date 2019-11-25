@@ -84,19 +84,17 @@ Click Back, then click Show on the meeting you just created and witness the marv
 
 ## Docker compose
 
+<!-- `docker-compose run app yarn` -->
+
+Comment/uncomment the marked lines in ApplicationServer/config/database.yml, python_server/main.py, ApplicationServer/app/controllers/users_controller.rb
+
+`docker-compose build`
+
+`docker-compose run app rake db:setup`
+
+`docker-compose run app rake db:migrate`
+
 `docker-compose up`
-
-To run one service:
-
-`docker-compose up <service>`
-
-To run in the background, use the "detached" flag:
-
-`docker-compose up -d`
-
-To stop services in detached mode:
-
-`docker-compose stop`
 
 To bring everything down and remove containers completely:
 

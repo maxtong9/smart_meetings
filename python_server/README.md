@@ -40,7 +40,7 @@ The .env file is in the .gitignore. If you wish to commit it to GitHub, create a
 
 ### Run container
 
-`docker container run --name ps christinatao31/smart_meetings:python_server_v1`
+`docker container run --env-file .env --name ps christinatao31/smart_meetings:python_server_v1`
 
 #### Run container in interactive mode
 

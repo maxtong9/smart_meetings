@@ -78,7 +78,8 @@ class MeetingsController < ApplicationController
     end
 
     def send_to_socket(meeting)
-      hostname = 'localhost'
+      # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
+      hostname = '169.231.51.177' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)
@@ -87,6 +88,7 @@ class MeetingsController < ApplicationController
       for file in meeting.file.attachments do
           info_string = info_string + '|' + file.key + ';' + file.filename.to_s
       end
+      puts "INFO STRING: #{info_string}"
       s.write(info_string)
 
       recv_from_socket(s, meeting)

@@ -226,7 +226,7 @@ class TextProcessor:
     def dialogue_act_features(self, post):
         features = {}
         for word in nltk.word_tokenize(post):
-            if word is '.' or word is '?' or word is ',' or word is '!': # No bias in transcriptions
+            if word == '.' or word == '?' or word == ',' or word == '!': # No bias in transcriptions
                 continue
             features['contains({})'.format(word.lower())] = True
         return features
