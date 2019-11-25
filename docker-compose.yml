@@ -16,10 +16,12 @@ services:
     depends_on: 
       - db
       - py
+    env_file:
+      - .env
   py:
     build: python_server
     env_file:
-      - ./python_server/.env
+      - .env
     ports:
       - "9999:9999"
     environment:

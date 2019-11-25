@@ -12,13 +12,20 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.data = self.request.recv(1024)
         print(self.data.decode())
         amount = int(self.data.decode()[0])
+        print("AMOUNT: " + str(amount))
         meeting_name = self.data.decode("utf-8")[1:len(self.data.decode())]
+        print("MEETING NAME: " + meeting_name)
         TA = TranscriptionAnalyzer(meeting_name)
 
         #Receive files one by one
         self.data = self.request.recv(1024)
         info_string = self.data.decode("utf-8")
+        print("INFO STRING: " + info_string)
         info_list = info_string.split('|')
+        print("INFO LIST:")
+        for item in info_list:
+            print(item)
+        print("END INFO LIST")
         for i in range(1, amount + 1):
             key = info_list[i].split(';')[0]
             filename = info_list[i].split(';')[1]
