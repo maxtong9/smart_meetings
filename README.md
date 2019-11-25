@@ -100,6 +100,10 @@ To bring everything down and remove containers completely:
 
 `docker-compose down`
 
+To rebuild and run the containers:
+
+`docker-compose up --build`
+
 ## Install Docker Desktop
 
 <https://hub.docker.com/?overlay=onboarding>

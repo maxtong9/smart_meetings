@@ -1,6 +1,5 @@
 version: '3'
 services:
-  
   db:
     image: postgres
     volumes:
@@ -25,11 +24,4 @@ services:
     ports:
       - "9999:9999"
     environment:
-      - PYTHONUNBUFFERED=1
-      # - py
-    # network_mode: host
-    # links:
-    #   - python
-# networks:
-#   front:
-#     a
+      - PYTHONUNBUFFERED=1 # to see Python output
