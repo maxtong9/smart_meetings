@@ -17,9 +17,9 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  database: postgres 
-  host: db # UNCOMMENT THIS FOR DOCKER
-  username: postgres # UNCOMMENT THIS FOR DOCKER
+  database: postgres
+  # host: db # UNCOMMENT THIS FOR DOCKER
+  # username: postgres # UNCOMMENT THIS FOR DOCKER
   # username: tina # COMMENT THIS OUT FOR DOCKER
   password:
   # For details on connection pooling, see Rails configuration guide

@@ -10,6 +10,7 @@ class MeetingsController < ApplicationController
   # GET /meetings/1
   # GET /meetings/1.json
   def show
+    @meeting = Meeting.find(params[:id])
   end
 
   # GET /meetings/new
@@ -78,8 +79,8 @@ class MeetingsController < ApplicationController
     end
 
     def send_to_socket(meeting)
-      # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
-      hostname = '169.231.51.177' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
+      hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
+      # hostname = '169.231.51.177' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)
