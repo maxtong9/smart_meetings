@@ -84,7 +84,7 @@ class TextProcessor:
 
 
         if self.total_hesitation_count == 0:
-            return self.hesitations_per_person
+            return self.dicToArray(self.hesitations_per_person)
 
         else:
             for person in self.total_speakers:
@@ -92,9 +92,14 @@ class TextProcessor:
                 self.hesitations_per_person[person] /= self.total_hesitation_count
 
             # Higher the percentage the more the hesitations
-            return self.hesitations_per_person
+            return self.dicToArray(self.hesitations_per_person)
         
-
+    # Basic Func that transforms dictionary output to an array (Practical use for working with ruby)
+    def dicToArray(self, dic):
+        arrToReturn = []
+        for name in self.hesitations_per_person:
+            arrToReturn.append([name, self.hesitations_per_person[name]])
+        return arrToReturn
 
     '''
     Removes all instances of %HESITATION (self.HESITATION) from the given string, and returns a new string

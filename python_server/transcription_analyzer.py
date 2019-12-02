@@ -77,7 +77,7 @@ class TranscriptionAnalyzer:
         # print("****JSON*****")
         # print(self.output)
 
-        print("Done with TA.run()")
+        # print("Done with TA.run()")
         return self.output
 
 
