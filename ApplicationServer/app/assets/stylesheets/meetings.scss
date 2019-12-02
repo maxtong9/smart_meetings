@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-h1 {
+h1, p {
   margin: 20px 50px;
 }
 
@@ -12,4 +12,12 @@ table {
 
 .text-style {
   margin:5px 60px;
+}
+
+.li-style {
+  margin: 20px 50px;
+}
+
+.a-style {
+  margin-left: 50px;
 }

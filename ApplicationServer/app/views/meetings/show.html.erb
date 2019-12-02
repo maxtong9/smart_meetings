@@ -25,21 +25,21 @@
     <p> <b> Summary </b> </p>
     <% temp = 0 %>
     <% p = 0 %>
-    <% string = '' %>
+    <% string_s = '' %>
     <% for i in hash.summary %>
         <% if temp == 0 %>
-          <% string = i[1] %>
+          <% string_s = i[1][0...-1] %>
           <% p = i[0] %>
           <% temp = temp+1 %>
         <% else %>
           <% if p == i[0] %>
-            <% string = string+i[1] %>
+            <% string_s = string_s+ ' ' + i[1][0...-1] %>
             <% if temp == hash.summary.length-1 %>
-              <p> Person <%= p %>: <%=string%></p>
+              <p> <%= p[0...-1] %>: <%=string_s%></p>
             <% end %>
           <% else %>
-            <p> Person <%= p %>: <%=string%></p>
-            <% string = i[1] %>
+            <p> <%= p[0...-1] %>: <%=string_s%></p>
+            <% string_s = i[1][0...-1] %>
             <% p = i[0] %>
           <% end %>
           <% temp = temp+1 %>
@@ -50,21 +50,28 @@
     <p> <b> Questions </b> </p>
     <% if hash.questions.length != 0 %>
       <% for i in hash.questions %>
-        <li> <ul> <%= i %> </ul> </li>
+        <li class="li-style"> <ul> <%= i[0...-1] %> </ul> </li>
       <% end %>
     <% else %>
       <p> None </p>
     <% end %>
 
-    <b> Action Items </b>
-    <p> <%= hash.action_items %> </p>
+    <p> <b> Action Items </b> </p>
+    <p> <%=hash.action_items%> </p>
 
-    <b> Hesitations </b>
-    <p> <%= hash.hesitation_analytics %> </p>
 
-    <b> Transcriptions </b>
+    <p> <b> Hesitations </b> </p>
+    <% if hash.hesitation_analytics.length != 0 %>
+      <% for i in hash.hesitation_analytics %>
+        <p> <%= i[0] %>: <%= i[1]%> </p>
+      <% end %>
+    <% else %>
+      <p> None </p>
+    <% end %>
+
+    <p> <b> Transcriptions </b> </p>
     <% temp1 = 0 %>
-    <% p1 = 0 %>
+    <% p1 = '' %>
     <% string1 = '' %>
     <% for i in hash.raw %>
         <% if temp1 == 0 %>
@@ -73,12 +80,14 @@
           <% temp1 = temp1+1 %>
         <% else %>
           <% if p1 == i[0] %>
-            <% string1 = string+i[1] %>
+            <% string1 = string1+i[1] %>
             <% if temp1 == hash.raw.length-1 %>
-              <p> Person <%= p1 %>: <%=string1%></p>
+              <p><%= p1[0...-1] %>: <%=string1%></p>
+              <% string1 = '' %>
             <% end %>
           <% else %>
-            <p> Person <%= p1 %>: <%=string1%></p>
+            <p><%= p1[0...-1]%>: <%=string1%></p>
+            <% string1 = '' %>
             <% string1 = i[1] %>
             <% p1 = i[0] %>
           <% end %>
@@ -86,7 +95,6 @@
         <% end %>
 
     <% end %>
-    <%= hash %>
   </p>
 <% else %>
   <p>
@@ -94,5 +102,5 @@
     <%= render 'upload_form', meeting: @meeting %>
   </p>
 <% end %>
-<%= link_to 'Edit', edit_meeting_path(@meeting) %> |
-<%= link_to 'Back', meetings_path %>
+<a class="a-style"><%= link_to 'Edit', edit_meeting_path(@meeting) %> |
+<%= link_to 'Back', meetings_path %></a>
