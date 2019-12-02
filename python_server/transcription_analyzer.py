@@ -15,6 +15,7 @@ class TranscriptionAnalyzer:
         self.message = "Hello, World"
         # Dictionary of audio files associated by the names
         self.audioFiles = []
+        self.nameList = []
         self.meeting = name
         self.transcribe = None #Transcribe(["Sarita.wav", "Christina.wav"])
         self.transcription = None
@@ -29,6 +30,7 @@ class TranscriptionAnalyzer:
     # Loads an audio file associated with the name into the object
     def loadAudio(self, name, audioFile):
         self.audioFiles.append(audioFile)
+        self.nameList.append(name)
 
     # Fetches the transcription from the given audio files
     def transcribeAudio(self):
@@ -36,7 +38,7 @@ class TranscriptionAnalyzer:
             print("Error: No Audio Files are loaded")
             return -1
 
-        self.transcribe = Transcribe(self.audioFiles)
+        self.transcribe = Transcribe(self.audioFiles, self.nameList)
         self.transcription = self.transcribe.transcription()
         print(self.transcription)
 
@@ -75,7 +77,7 @@ class TranscriptionAnalyzer:
         # print("****JSON*****")
         # print(self.output)
 
-        print("Done with TA.run()")
+        # print("Done with TA.run()")
         return self.output
 
 
@@ -84,10 +86,10 @@ if __name__ == "__main__":
    TA = TranscriptionAnalyzer("fakekey")
    TA.loadAudio('Christina', 'Christina.mp3')
    TA.loadAudio('Jackson', 'Jackson.mp3')
-   TA.loadAudio('Max', 'Max.mp3')
-   TA.loadAudio('Sarita', 'Sarita.mp3')
-   TA.loadAudio('Tuan', 'Tuan.mp3')
-#    TA.load()
+#    TA.loadAudio('Max', 'Max.mp3')
+#    TA.loadAudio('Sarita', 'Sarita.mp3')
+#    TA.loadAudio('Tuan', 'Tuan.mp3')
+# #    TA.load()
 #    TA.load()
 #    TA.load()
 #    TA.load()
