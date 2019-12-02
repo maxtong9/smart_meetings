@@ -48,10 +48,9 @@ Check node version and npm version:
 
 ## Install bootstrap and dependencies
 
-`npm install bootstrap --save`
-`npm install jquery --save`
-`npm install popper.js --save`
-`npm install react-bootstrap bootstrap --save`
+`npm install bootstrap --save`  <br />
+`npm install jquery --save`  <br />
+`npm install popper.js --save`  <br />
 
 ## Install yarn
 

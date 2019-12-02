@@ -1,12 +1,45 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Smart Meeting</title>
-    <%= csrf_meta_tags %>
-    <%= javascript_pack_tag 'hello-world-bundle' %>
+
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body id="page-top">
+   <%= render "layouts/index" %>
+
+   <header class="head">
+      <div class="container text-center">
+        <h1>Welcome to Smart Meeting</h1>
+        <p class="lead">We provide powerful tools to keep your conferences efficient and meaningful.</p>
+      </div>
+    </header>
+
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <h2>About the product</h2>
+            <p class="lead">Smart Meeting currently features:</p>
+            <ul>
+              <li>Raw transcription with speaker labels.</li>
+              <li>Summary of your meeting.</li>
+              <li>List of action items to be completed.</li>
+              <li>List of questions asked during the meeting.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">2019-2020 CS Capstone</p>
+      </div>
+    </footer>
+    <!-- <script src="../../javascript/components/scrolling-nav.js"></script> -->
   </body>
 </html>

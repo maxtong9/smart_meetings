@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ApplicationServer</title>
+    <title><%= content_for?(:title) ? yield(:title) : "Smart Meeting" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <header>
+        <%= render "layouts/index" %>
+    </header>
     <%= yield %>
   </body>
 </html>
