@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ApplicationServer
+rails s &
+cd ..
+cd python_server
+python3 main.py

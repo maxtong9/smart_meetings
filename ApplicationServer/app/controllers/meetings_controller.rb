@@ -84,8 +84,7 @@ class MeetingsController < ApplicationController
       port = 9999
 
       s = TCPSocket.open(hostname, port)
-      s.write(meeting.participants.to_s, meeting.name)
-      info_string = ''
+      info_string = meeting.participants.to_s + meeting.name
       for file in meeting.file.attachments do
           info_string = info_string + '|' + file.key + ';' + file.filename.to_s
       end
