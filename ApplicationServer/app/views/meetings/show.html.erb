@@ -50,14 +50,20 @@
     <p> <b> Questions </b> </p>
     <% if hash.questions.length != 0 %>
       <% for i in hash.questions %>
-        <li class="li-style"> <ul> <%= i[0...-1] %> </ul> </li>
+         <p> <%= i[0] %>: <%= i[1]%> </p>
       <% end %>
     <% else %>
       <p> None </p>
     <% end %>
 
     <p> <b> Action Items </b> </p>
-    <p> <%=hash.action_items%> </p>
+    <% if hash.action_items.length != 0 %>
+      <% for i in hash.action_items %>
+        <p> <%= i[0] %>: <%= i[1]%> </p>
+      <% end %>
+    <% else %>
+      <p> None </p>
+    <% end %>
 
 
     <p> <b> Hesitations </b> </p>
@@ -69,7 +75,7 @@
       <p> None </p>
     <% end %>
 
-    <p> <b> Transcriptions </b> </p>
+    <p> <b> Transcription </b> </p>
     <% temp1 = 0 %>
     <% p1 = '' %>
     <% string1 = '' %>
