@@ -14,9 +14,9 @@ import json
 from settings import *
 
 class Transcribe:
-	def __init__(self, input_audio):
+	def __init__(self, input_audio, nameList):
 		self.audio = input_audio
-
+		self.nameList = nameList
 	def transcription(self):
 		''' Returns transcription of the inputed audio files '''
 		authenticator = IAMAuthenticator(WATSON_API_KEY)
@@ -56,7 +56,7 @@ class Transcribe:
 									t_string += " " + str(word[0])
 								else:
 									t_string += ". "
-									phrase.append([speaker, t_string, t_start, temp[1][2]])
+									phrase.append([self.nameList[speaker], t_string, t_start, temp[1][2]])
 									t_string = ""
 									t_start = word[1]
 									t_string += str(word[0])
@@ -64,7 +64,7 @@ class Transcribe:
 								continue
 							if t_string:
 								t_string += ". "
-								phrase.append([speaker, t_string, t_start, j['timestamps'][index-1][2]])
+								phrase.append([self.nameList[speaker], t_string, t_start, j['timestamps'][index-1][2]])
 								t_string = ""
 								t_start = word[1]
 								t_string += str(word[0])
@@ -77,13 +77,13 @@ class Transcribe:
 							if index == len(j['timestamps'])-1:
 								if (len(results) == 1) or (r_index == len(item['results'])-1):
 									t_string += ". "
-									phrase.append([speaker, t_string, t_start, word[2]])
+									phrase.append([self.nameList[speaker], t_string, t_start, word[2]])
 									t_string = ""
 								else:
-									temp = [index, word, speaker];
+									temp = [index, word, self.nameList[speaker]];
 						else:
 							t_string += ". "
-							phrase.append([speaker, t_string, t_start, j['timestamps'][index-1][2]])
+							phrase.append([self.nameList[speaker], t_string, t_start, j['timestamps'][index-1][2]])
 							t_string = ""
 							t_start = word[1]
 							t_string += str(word[0])
