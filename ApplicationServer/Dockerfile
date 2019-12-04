@@ -20,10 +20,10 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
 # Copy the rest of the files
-COPY . ./
- 
+COPY . /smart_meetings
+
 # RUN yarn install --check-files
- 
+
 # Run the application
 EXPOSE 3000
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
