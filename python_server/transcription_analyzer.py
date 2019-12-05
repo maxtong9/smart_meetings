@@ -19,6 +19,7 @@ class TranscriptionAnalyzer:
         self.meeting = name
         self.transcribe = None #Transcribe(["Sarita.wav", "Christina.wav"])
         self.transcription = None
+        self.interuption = None
 
         self.text_analyzer = None
 
@@ -40,6 +41,7 @@ class TranscriptionAnalyzer:
 
         self.transcribe = Transcribe(self.audioFiles, self.nameList)
         self.transcription = self.transcribe.transcription()
+        self.interuption = self.transcribe.overlap()
         print(self.transcription)
 
      # Analyzes the text
@@ -55,6 +57,7 @@ class TranscriptionAnalyzer:
         self.analyzer_output["questions"] = self.text_analyzer.getQuestionList()
         self.analyzer_output["action_items"] = self.text_analyzer.getActionItems()
         self.analyzer_output["hesitation_analytics"] = self.text_analyzer.analyzeHesitations()
+        self.analyzer_output["interuption"] = self.interuption
         self.analyzer_output["raw"] = self.text_analyzer.raw_data
         self.output = json.dumps(self.analyzer_output)
 
@@ -94,5 +97,3 @@ if __name__ == "__main__":
 #    TA.load()
 #    TA.load()
    print(TA.run())
-
-

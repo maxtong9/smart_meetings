@@ -17,6 +17,8 @@ class Transcribe:
 	def __init__(self, input_audio, nameList):
 		self.audio = input_audio
 		self.nameList = nameList
+		self.phrase = None
+
 	def transcription(self):
 		''' Returns transcription of the inputed audio files '''
 		authenticator = IAMAuthenticator(WATSON_API_KEY)
@@ -94,18 +96,19 @@ class Transcribe:
 
 		#Sort the phrases from all the audio transcriptions in chronological order
 		phrase.sort(key = lambda x: x[2])
+		self.phrase = phrase
 		return phrase
 
-	def text(self, phrase):
+	def text(self):
 		''' Returns json format of transcript '''
 		data = {}
 		s = ""
 		#Format output
-		for index, sentence in enumerate(phrase):
+		for index, sentence in enumerate(self.phrase):
 			if index == 0:
 				s = "Person " + str(sentence[0]+1) + ": "
 				s += str(sentence[1])
-			elif (sentence[0] == phrase[index-1][0]):
+			elif (sentence[0] == self.phrase[index-1][0]):
 				s += str(sentence[1])
 			else:
 				s += "\n" + "Person " + str(sentence[0]+1) + ": "
@@ -114,6 +117,34 @@ class Transcribe:
 		data['text'] = s
 		with open('transcription.json', 'w') as outfile:
 			json.dump(data, outfile)
+
+	def overlap(self):
+		s_time = 0
+		e_time = 0
+		name = ''
+		# {name: interuption count}
+		overlap = {}
+		for index, comp in enumerate(self.phrase):
+			if index == 0:
+				name = comp[0]
+				s_time = comp[2]
+				e_time = comp[3]
+			else:
+				if name != comp[0]:
+					if comp[2] > s_time and comp[2] < e_time:
+						if comp[0] not in overlap:
+							overlap[comp[0]] = 1
+						else:
+							overlap[comp[0]] += 1
+					s_time = comp[2]
+					e_time = comp[3]
+					name = comp[0]
+		interuption = []
+		for i in overlap:
+			interuption.append([i[:-1], overlap[i]])
+
+		return interuption
+
 
 
 # if __name__ == "__main__":

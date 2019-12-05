@@ -13,10 +13,9 @@
     <b>Attached Files: </b>
     <br />
     <% for i in 0..@meeting.participants-1 do %>
-      <p>
+      <ul> <li class="li-style">
         <%=  @meeting.file.attachments[i].filename %>
-        <br />
-      </p>
+      </li> </ul>
     <% end %>
   </p>
   <p>
@@ -50,7 +49,7 @@
     <p> <b> Questions </b> </p>
     <% if hash.questions.length != 0 %>
       <% for i in hash.questions %>
-         <p> <%= i[0] %>: <%= i[1]%> </p>
+         <ul> <li class="li-style"><%= i[0] %>: <%= i[1]%> </li> </ul>
       <% end %>
     <% else %>
       <p> None </p>
@@ -59,7 +58,7 @@
     <p> <b> Action Items </b> </p>
     <% if hash.action_items.length != 0 %>
       <% for i in hash.action_items %>
-        <p> <%= i[0] %>: <%= i[1]%> </p>
+        <ul> <li class="li-style"> <%= i[0] %>: <%= i[1][0...-1]%> </li> </ul>
       <% end %>
     <% else %>
       <p> None </p>
@@ -69,7 +68,16 @@
     <p> <b> Hesitations </b> </p>
     <% if hash.hesitation_analytics.length != 0 %>
       <% for i in hash.hesitation_analytics %>
-        <p> <%= i[0] %>: <%= i[1]%> </p>
+        <ul> <li class="li-style"> <%= i[0] %>: <%= i[1]*100 %> </li> </ul>
+      <% end %>
+    <% else %>
+      <p> None </p>
+    <% end %>
+
+    <p> <b> Interuptions </b> </p>
+    <% if hash.interuption.length != 0 %>
+      <% for i in hash.interuption %>
+          <ul> <li class="li-style"> <%= i[0] %>: <%= i[1]%> </li> </ul>
       <% end %>
     <% else %>
       <p> None </p>
@@ -79,23 +87,30 @@
     <% temp1 = 0 %>
     <% p1 = '' %>
     <% string1 = '' %>
+    <% time1 = 0 %>
+    <% time2 = 0 %>
     <% for i in hash.raw %>
         <% if temp1 == 0 %>
           <% string1 = i[1] %>
           <% p1 = i[0] %>
           <% temp1 = temp1+1 %>
+          <% time1 = i[2] %>
+          <% time2 = i[3] %>
         <% else %>
           <% if p1 == i[0] %>
             <% string1 = string1+i[1] %>
+            <% time2 = i[3] %>
             <% if temp1 == hash.raw.length-1 %>
-              <p><%= p1[0...-1] %>: <%=string1%></p>
+              <p><%= p1[0...-1]%> (<%= time1 %>, <%= time2 %>): <%=string1%></p>
               <% string1 = '' %>
             <% end %>
           <% else %>
-            <p><%= p1[0...-1]%>: <%=string1%></p>
+            <p><%= p1[0...-1]%> (<%= time1 %>, <%= time2 %>): <%=string1%></p>
             <% string1 = '' %>
             <% string1 = i[1] %>
             <% p1 = i[0] %>
+            <% time1 = i[2] %>
+            <% time2 = i[3] %>
           <% end %>
           <% temp1 = temp1+1 %>
         <% end %>
