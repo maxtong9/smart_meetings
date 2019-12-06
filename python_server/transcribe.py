@@ -122,7 +122,6 @@ class Transcribe:
 		s_time = 0
 		e_time = 0
 		name = ''
-		# {name: interuption count}
 		overlap = {}
 		for index, comp in enumerate(self.phrase):
 			if index == 0:
@@ -139,11 +138,11 @@ class Transcribe:
 					s_time = comp[2]
 					e_time = comp[3]
 					name = comp[0]
-		interuption = []
+		interruption = []
 		for i in overlap:
-			interuption.append([i[:-1], overlap[i]])
+			interruption.append([i[:-1], overlap[i]])
 
-		return interuption
+		return interruption
 
 
 
