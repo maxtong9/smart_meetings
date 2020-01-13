@@ -25,7 +25,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'react_on_rails', '11.1.4'
 gem 'mini_racer'
 
-gem 'bootstrap', '~> 4.0.0'
+gem 'bootstrap', '~> 4.3.1'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
