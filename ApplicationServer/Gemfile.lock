@@ -1026,7 +1026,6 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   pry
   puma (~> 3.12)
-  rack (= 2.0.8)
   rails (~> 6.0.0)
   react_on_rails (= 11.1.4)
   sass-rails (~> 5)
@@ -1043,4 +1042,4 @@ RUBY VERSION
    ruby 2.6.5p114
 
 BUNDLED WITH
-   2.1.4
+   1.17.2

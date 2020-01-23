@@ -1,19 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: 1
   name: MyString
-  meeting_1: 1
-  meeting_2: 1
-  meeting_3: 1
-  meeting_4: 1
-  meeting_5: 1
 
 two:
-  id: 1
   name: MyString
-  meeting_1: 1
-  meeting_2: 1
-  meeting_3: 1
-  meeting_4: 1
-  meeting_5: 1
