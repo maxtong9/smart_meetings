@@ -12,11 +12,13 @@ services:
       - /smart_meetings/application_server/node_modules
     ports:
       - "3000:3000"
-    depends_on: 
+    depends_on:
       - db
       - py
     env_file:
       - .env
+    tty: true
+    stdin_open: true
   py:
     build: python_server
     env_file:
