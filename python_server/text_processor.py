@@ -19,6 +19,7 @@ Design Choice:
 '''
 import nltk
 import pickle
+import math
 class TextProcessor:
     def __init__(self, rawData):
         # Percentage of original text the summary length should be
@@ -53,9 +54,204 @@ class TextProcessor:
         # Keeps track of the total number of hesitations said in the meeting
         self.total_hesitation_count = 0
 
+        # Keeps track of the total number of words in a meeting 
+        self.total_words = 0
+
 
 
         self.transform_input() # Initializes speakerList and sentenceList
+
+
+    '''
+    Implementation of the tfidf algorithm
+    This function will gather keywords from the Meeting.
+    '''
+    def tfidf(self):
+        # Remove Action Items
+        sentNoActionItems = self.removeActionItemKeywords(self.sentenceList)
+
+        # Remove HESITATIONS
+        sentNoHesitations = self.removeHesitationFromList(sentNoActionItems)
+
+        # Get the summary length relative to the original length
+        summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
+        
+        # Number of sentences in this case
+        total_documents = len(self.sentenceList)
+        # Generate Frequency Matrix
+        freq_matrix = self.create_frequency_matrix(sentNoHesitations)
+        
+        # Generate Term Frequency Matrix
+        tf_matrix = self.create_tf_matrix(freq_matrix)
+        
+        # Generate documents per words table
+        word_per_doc_table = self.create_documents_per_words(freq_matrix)
+
+        # Generate idf matrix
+        idf_matrix = self.create_idf_matrix(freq_matrix, word_per_doc_table, total_documents)
+        
+        # Generate tf_idf matrix
+        tf_idf_matrix = self.create_tf_idf_matrix(tf_matrix, idf_matrix)
+
+        # Score the sentences
+        sentenceValue = self.score_sentences(tf_idf_matrix)
+        
+        average_score = self.find_average_score(sentenceValue)
+
+        print(tf_idf_matrix)
+
+
+    '''
+    Finds the average sentence score
+    '''
+    def find_average_score(self, sentenceValue) ->int:
+        sumValues = 0
+        for entry in sentenceValue:
+            sumValues += sentenceValue[entry]
+
+        average = (sumValues / len(sentenceValue))
+
+        return average
+
+    '''
+    Gives weight to the sentences
+
+    '''
+    def score_sentences(self, tf_idf_matrix) -> dict:
+        sentenceValue = {}
+
+        for sent, f_table in tf_idf_matrix.items():
+            total_score_per_sentence = 0
+
+            count_words_in_sentence = len(f_table)
+            for word, score in f_table.items():
+                total_score_per_sentence += score
+            sentenceValue[sent] = total_score_per_sentence / count_words_in_sentence
+
+        return sentenceValue
+
+    
+    '''
+    creates the tf-idf matrix
+    '''
+    
+    def create_tf_idf_matrix(self, tf_matrix, idf_matrix):
+        tf_idf_matrix = {}
+
+        for (sent1, f_table1), (sent2, f_table2) in zip(tf_matrix.items(), idf_matrix.items()):
+            tf_idf_table = {}
+
+            for (word1, value1), (word2, value2) in zip(f_table1.items(), f_table2.items()):
+                tf_idf_table[word1] = float(value1 * value2)
+
+            tf_idf_matrix[sent1] = tf_idf_table
+
+        return tf_idf_matrix
+    
+    '''
+    Calculate IDF and generate a matrix
+    '''
+    def create_idf_matrix(self, freq_matrix, count_doc_per_words, total_documents):
+        idf_matrix = {}
+
+        for sent, f_table in freq_matrix.items():
+            idf_table = {}
+
+            for word in f_table.keys():
+                idf_table[word] = math.log10(total_documents / float(count_doc_per_words[word]))
+
+            idf_matrix[sent] = idf_table
+        return idf_matrix
+
+    '''
+    Creates the documents per word table
+    " How many sentences contain a word"?
+    '''
+    def create_documents_per_words(self, freq_matrix):
+        words_per_doc_table = {}
+
+        for sent, f_table in freq_matrix.items():
+            for word, count in f_table.items():
+                if word in words_per_doc_table:
+                    words_per_doc_table[word] += 1
+                else:
+                    words_per_doc_table[word] = 1
+        return words_per_doc_table
+
+    '''
+    Create the Term Frequency Matrix
+    '''      
+    def create_tf_matrix(self, freq_matrix):
+        tf_matrix = {}
+
+        for sent, f_table in freq_matrix.items():
+            tf_table = {}
+
+            count_words_in_sentence = len(f_table)
+            for word, count in f_table.items():
+                tf_table[word] = count / count_words_in_sentence
+            tf_matrix[sent] = tf_table
+
+        return tf_matrix
+
+
+
+
+    '''
+    Creates the frequency matrix of the words in each sentence
+    '''
+    
+    def create_frequency_matrix(self, sentences):
+        frequency_matrix = {}
+        ps = nltk.PorterStemmer()
+
+        for sent in sentences:
+            freq_table = {}
+            words = nltk.word_tokenize(sent)
+            for word in words:
+                word = word.lower()
+                word = ps.stem(word)
+                if word in self.stopwords:
+                    continue
+                if word in freq_table:
+                    freq_table[word] += 1
+                else:
+                    freq_table[word] = 1
+            frequency_matrix[sent[:15]] = freq_table
+        return frequency_matrix
+
+
+    '''
+    This function gives a percentage for each person and how much they spoke
+    during a meeting.
+    '''
+    def timeSpoken(self):
+        print("timeSpoken")
+        # Set up the number of words per person
+        self.wordsPerPerson = {i: 0 for i in self.total_speakers}
+
+        # dataPoint[0] = speaker
+        # dataPoint[1] = sentence string
+        for dataPoint in self.raw_data:
+            listOfWords = nltk.word_tokenize(self.removeHesitationFromString(dataPoint[1]))
+            for word in listOfWords:
+                if word == '.' or word == '?' or word == ',' or word == '!': # Doesn't count as a real word
+                    continue
+                self.total_words += 1
+                self.wordsPerPerson[dataPoint[0]] += 1
+        if self.total_words == 0:
+            return self.dicToArray2(self.wordsPerPerson) # should be all 0
+        else:
+            for person in self.wordsPerPerson:
+                self.wordsPerPerson[person] /= self.total_words
+            return self.dicToArray2(self.total_words)
+
+# Basic Func that transforms TIMESPOKEN dictionary output to an array (Practical use for working with ruby)
+    def dicToArray2(self, dic):
+        arrToReturn = []
+        for name in self.wordsPerPerson:
+            arrToReturn.append([name[:-1], self.wordsPerPerson[name]])
+        return arrToReturn
 
     '''
         This function will analyze people's hesitations. (The use of 'um' in their dialogue.
@@ -94,7 +290,7 @@ class TextProcessor:
             # Higher the percentage the more the hesitations
             return self.dicToArray(self.hesitations_per_person)
 
-    # Basic Func that transforms dictionary output to an array (Practical use for working with ruby)
+    # Basic Func that transforms HESITATION dictionary output to an array (Practical use for working with ruby)
     def dicToArray(self, dic):
         arrToReturn = []
         for name in self.hesitations_per_person:
@@ -395,12 +591,17 @@ if __name__ == "__main__":
     demoInput1 = [["Tuan2", "yes %HESITATION Starscream. ", 1.65, 3.93], ["Christina1", "I worked on the front end to display simple homepage. ", 4.29, 6.83], ["Tuan2", "what have you were done. ", 8.14, 9.13], ["Christina1", "I will be working on setting up a container platform to manager application. ", 10.74, 14.75], ["Tuan2", "but will you be doing next. ", 13.22, 14.71], ["Christina1", "action item set up a container platform to manage application. ", 15.26, 18.55], ["Christina1", "what about you. ", 19.57, 20.32], ["Tuan2", "I do some diagrams for our product requirements document. ", 26.91, 30.65], ["Tuan2", "and now I will be working on hosting the application the clout action item prepare to host application in the %HESITATION clout. ", 31.34, 38.82], ["Tuan2", "all right see you tomorrow. ", 40.46, 41.48]]
     # Processing Object
     tp = TextProcessor(demoInput1)
-    print("Summary: ***** \n")
-    print(tp.summarize())
-    print("Question List: \n")
-    print(tp.getQuestionList())
-    print("Action Items: \n")
-    print(tp.getActionItems())
-    print("RAW TRANSCRIPTION: \n")
-    print(tp.raw_data)
-    print(tp.analyzeHesitations())
+    print("*****************************************************\n")
+    # print("Summary: ***** \n")
+    # print(tp.summarize())
+    # print("Question List: \n")
+    # print(tp.getQuestionList())
+    # print("Action Items: \n")
+    # print(tp.getActionItems())
+    # print("RAW TRANSCRIPTION: \n")
+    # print(tp.raw_data)
+    # print(tp.analyzeHesitations())
+    # print("*****************************************************\n")
+    #print(tp.timeSpoken())
+    print(tp.tfidf())
+
