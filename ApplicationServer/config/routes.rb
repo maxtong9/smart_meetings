@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
   post 'login', to: 'sessions#create'
+  get 'welcome', to: 'sessions#welcome'
   get 'logout', to: 'sessions#destroy', as: 'logout'
 
 end

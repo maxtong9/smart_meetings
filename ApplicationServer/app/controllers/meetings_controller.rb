@@ -4,7 +4,11 @@ class MeetingsController < ApplicationController
   # GET /meetings
   # GET /meetings.json
   def index
-    @meetings = Meeting.all
+    @user_meeting1 = Meeting.find_by(id: current_user.meeting_1)
+    @user_meeting2 = Meeting.find_by(id: current_user.meeting_2)
+    @user_meeting3 = Meeting.find_by(id: current_user.meeting_3)
+    @user_meeting4 = Meeting.find_by(id: current_user.meeting_4)
+    @user_meeting5 = Meeting.find_by(id: current_user.meeting_5)
   end
 
   # GET /meetings/1
@@ -26,7 +30,6 @@ class MeetingsController < ApplicationController
   # POST /meetings.json
   def create
     @meeting = Meeting.new(create_params)
-
     respond_to do |format|
       if @meeting.save
         format.html { redirect_to @meeting, notice: 'Meeting was successfully created.' }
@@ -35,6 +38,17 @@ class MeetingsController < ApplicationController
         format.html { render :new }
         format.json { render json: @meeting.errors, status: :unprocessable_entity }
       end
+    end
+    if current_user.meeting_1.nil?
+      current_user.update(meeting_1: @meeting.id)
+    elsif current_user.meeting_2.nil?
+      current_user.update(meeting_2: @meeting.id)
+    elsif current_user.meeting_3.nil?
+      current_user.update(meeting_3: @meeting.id)
+    elsif current_user.meeting_4.nil?
+      current_user.update(meeting_4: @meeting.id)
+    elsif current_user.meeting_5.nil?
+      current_user.update(meeting_5: @meeting.id)
     end
   end
 
@@ -80,7 +94,7 @@ class MeetingsController < ApplicationController
 
     def send_to_socket(meeting)
       # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
-      hostname = '192.168.99.100' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
+      hostname = '169.231.188.101' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)
