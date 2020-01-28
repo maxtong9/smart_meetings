@@ -90,9 +90,7 @@ Comment/uncomment the marked lines in ApplicationServer/config/database.yml, pyt
 
 `docker-compose build`
 
-`docker-compose run app rake db:setup`
-
-`docker-compose run app rake db:migrate`
+`docker-compose run app bundle exec rake db:migrate:reset`
 
 `docker-compose up`
 
