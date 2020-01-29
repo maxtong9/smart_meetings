@@ -4,7 +4,11 @@ class MeetingsController < ApplicationController
   # GET /meetings
   # GET /meetings.json
   def index
-    @meetings = Meeting.all
+    @user_meeting1 = Meeting.find_by(id: current_user.meeting_1)
+    @user_meeting2 = Meeting.find_by(id: current_user.meeting_2)
+    @user_meeting3 = Meeting.find_by(id: current_user.meeting_3)
+    @user_meeting4 = Meeting.find_by(id: current_user.meeting_4)
+    @user_meeting5 = Meeting.find_by(id: current_user.meeting_5)
   end
 
   # GET /meetings/1
@@ -26,7 +30,6 @@ class MeetingsController < ApplicationController
   # POST /meetings.json
   def create
     @meeting = Meeting.new(create_params)
-
     respond_to do |format|
       if @meeting.save
         format.html { redirect_to @meeting, notice: 'Meeting was successfully created.' }
@@ -36,6 +39,7 @@ class MeetingsController < ApplicationController
         format.json { render json: @meeting.errors, status: :unprocessable_entity }
       end
     end
+    add_user_meeting_relation
   end
 
   # PATCH/PUT /meetings/1
@@ -57,6 +61,7 @@ class MeetingsController < ApplicationController
   # DELETE /meetings/1
   # DELETE /meetings/1.json
   def destroy
+    delete_meetings_from_users
     @meeting.destroy
     respond_to do |format|
       format.html { redirect_to meetings_url, notice: 'Meeting was successfully destroyed.' }
@@ -70,6 +75,66 @@ class MeetingsController < ApplicationController
       @meeting = Meeting.find(params[:id])
     end
 
+    def add_user_meeting_relation
+      params[:user_ids].each do |user_id|
+        add_meeting_foreign_key(User.find(user_id))
+        add_user_foreign_key(user_id)
+      end
+    end
+
+    def add_user_foreign_key(user_id)
+      if @meeting.user1.nil?
+        @meeting.update(user1: user_id)
+      elsif @meeting.user2.nil?
+        @meeting.update(user2: user_id)
+      elsif @meeting.user3.nil?
+        @meeting.update(user3: user_id)
+      end
+    end
+
+    def add_meeting_foreign_key(user)
+      if user.meeting_1.nil?
+        user.update(meeting_1: @meeting.id)
+      elsif user.meeting_2.nil?
+        user.update(meeting_2: @meeting.id)
+      elsif user.meeting_3.nil?
+        user.update(meeting_3: @meeting.id)
+      elsif user.meeting_4.nil?
+        user.update(meeting_4: @meeting.id)
+      elsif user.meeting_5.nil?
+        user.update(meeting_5: @meeting.id)
+      end
+    end
+
+    def delete_meetings_from_users
+      if !@meeting.user1.nil?
+        delete_meeting_foreign_key(User.find(@meeting.user1))
+      end
+      if !@meeting.user2.nil?
+        delete_meeting_foreign_key(User.find(@meeting.user2))
+      end
+      if !@meeting.user3.nil?
+        delete_meeting_foreign_key(User.find(@meeting.user3))
+      end
+    end
+
+    def delete_meeting_foreign_key(user)
+      if !user.meeting_1.nil?
+        user.update(meeting_1: nil)
+      end
+      if !user.meeting_2.nil?
+        user.update(meeting_2: nil)
+      end
+      if !user.meeting_3.nil?
+        user.update(meeting_3: nil)
+      end
+      if !user.meeting_4.nil?
+        user.update(meeting_4: nil)
+      end
+      if !user.meeting_5.nil?
+        user.update(meeting_5: nil)
+      end
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def edit_params
       params.require(:meeting).permit(:name, file: [])
@@ -81,7 +146,7 @@ class MeetingsController < ApplicationController
 
     def send_to_socket(meeting)
       # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
-      hostname = '192.168.99.100' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
+      hostname = '169.231.189.251' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)

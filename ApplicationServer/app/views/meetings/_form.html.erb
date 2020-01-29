@@ -20,7 +20,21 @@
     <%= form.label "Number of Participants" %>
     <%= form.text_field :participants, :required => true %>
   </div>
-
+  <div class="user lists">
+    <ul>
+      <% User.all.each do |user| %>
+        <li>
+          <% if user.id == current_user.id %>
+              <%= check_box_tag 'user_ids[]', user.id, true -%>
+              <%= user.name %>
+          <% else %>
+            <%= check_box_tag 'user_ids[]', user.id -%>
+            <%= user.name %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
   <div class="text-style actions">
     <%= form.submit %>
   </div>

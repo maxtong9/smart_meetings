@@ -39,6 +39,21 @@ ActiveRecord::Schema.define(version: 2019_10_29_050751) do
   create_table "meetings", force: :cascade do |t|
     t.string "name"
     t.integer "participants"
+    t.integer "user1"
+    t.integer "user2"
+    t.integer "user3"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "password"
+    t.integer "meeting_1"
+    t.integer "meeting_2"
+    t.integer "meeting_3"
+    t.integer "meeting_4"
+    t.integer "meeting_5"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -11,14 +11,46 @@
   </thead>
 
   <tbody>
-    <% @meetings.each do |meeting| %>
+      <% if @user_meeting1 != nil %>
       <tr>
-        <td><%= meeting.name %></td>
-        <td><%= link_to 'Show', meeting %></td>
-        <td><%= link_to 'Edit', edit_meeting_path(meeting) %></td>
-        <td><%= link_to 'Destroy', meeting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= @user_meeting1.name %></td>
+        <td><%= link_to 'Show', @user_meeting1 %></td>
+        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting1) %></td>
+        <td><%= link_to 'Destroy', @user_meeting1, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
-    <% end %>
+      <% end %>
+      <% if @user_meeting2 != nil %>
+      <tr>
+        <td><%= @user_meeting2.name %></td>
+        <td><%= link_to 'Show', @user_meeting2 %></td>
+        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting2) %></td>
+        <td><%= link_to 'Destroy', @user_meeting2, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      <% end %>
+      <% if @user_meeting3 != nil %>
+      <tr>
+        <td><%= @user_meeting3.name %></td>
+        <td><%= link_to 'Show', @user_meeting3 %></td>
+        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting3) %></td>
+        <td><%= link_to 'Destroy', @user_meeting3, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      <% end %>
+      <% if @user_meeting4 != nil %>
+      <tr>
+        <td><%= @user_meeting4.name %></td>
+        <td><%= link_to 'Show', @user_meeting4 %></td>
+        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting4) %></td>
+        <td><%= link_to 'Destroy', @user_meeting4, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      <% end %>
+      <% if @user_meeting5 != nil %>
+      <tr>
+        <td><%= @user_meeting5.name %></td>
+        <td><%= link_to 'Show', @user_meeting5 %></td>
+        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting5) %></td>
+        <td><%= link_to 'Destroy', @user_meeting5, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      <% end %>
   </tbody>
 </table>
 

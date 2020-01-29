@@ -52,6 +52,27 @@
     </div>
 </div>
 
+<p>
+  <b>Participants:</b>
+    <ul>
+      <% if !@meeting.user1.nil? %>
+        <li>
+          <%= User.find(@meeting.user1).name %>
+        </li>
+      <% end %>
+      <% if !@meeting.user2.nil? %>
+        <li>
+          <%= User.find(@meeting.user2).name %>
+        </li>
+      <% end %>
+      <% if !@meeting.user3.nil? %>
+        <li>
+          <%= User.find(@meeting.user3).name %>
+        </li>
+      <% end %>
+    </ul>
+</p>
+
 <% if @meeting.file.attachments.first != nil %>
     <% json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s()) %>
     <% hash = JSON.parse(json_from_file, object_class: OpenStruct) %>

@@ -25,6 +25,18 @@
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="/meetings">Meetings</a>
             </li>
+            <% if logged_in? %>
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/welcome"><%= current_user.name %></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/logout">Log out</a>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="/welcome"">Login</a>
+              </li>
+            <% end %>
           </ul>
         </div>
       </div>
