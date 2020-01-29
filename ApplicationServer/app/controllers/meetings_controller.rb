@@ -81,7 +81,7 @@ class MeetingsController < ApplicationController
 
     def send_to_socket(meeting)
       # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
-      hostname = '169.231.41.182' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
+      hostname = '169.231.137.49' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)
@@ -133,7 +133,6 @@ class MeetingsController < ApplicationController
       boards_json = Net::HTTP.get(boards_uri)
       boards = JSON.parse(boards_json)
       board_id = boards.find {|b| b['name']=='Demo Board'}['id']
-      puts "board_id=#{board_id}"
 
       # get the id of the list within the board to add the new card to
       lists_url = "#{trello_url}/boards/#{board_id}/lists?key=#{trello_key}&token=#{trello_token}"
@@ -141,13 +140,12 @@ class MeetingsController < ApplicationController
       lists_json = Net::HTTP.get(lists_uri)
       lists = JSON.parse(lists_json)
       list_id = lists.find {|l| l['name']=='Demo List'}['id']
-      puts "list_id=#{list_id}"
 
       json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s())
       hash = JSON.parse(json_from_file, object_class: OpenStruct)
 
       for i in hash.action_items
-        card_name = i[1]
+        card_name = i[1][0...-1]
         card_description = "Test Description"
         card_member_username = "christinatao31"
 
@@ -157,7 +155,6 @@ class MeetingsController < ApplicationController
         member_json = Net::HTTP.get(member_uri)
         member = JSON.parse(member_json)
         member_id = member['id']
-        puts "member_id=#{member_id}"
 
         url = URI("#{trello_url}/cards?name=#{card_name}&desc=#{card_description}&idList=#{list_id}&idMembers=#{member_id}&key=#{trello_key}&token=#{trello_token}")
 
@@ -168,7 +165,6 @@ class MeetingsController < ApplicationController
         request = Net::HTTP::Post.new(url)
 
         response = http.request(request)
-        puts response.read_body
       end
     end
 end
