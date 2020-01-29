@@ -16,6 +16,26 @@
     <%= form.text_field :name %>
   </div>
 
-  <%= render 'upload_form', meeting: @meeting, {:style=>'margin:5px 60px;', :class => "css_class"} %>
+  <div class="text-style field">
+    <%= form.label "Number of Participants" %>
+    <%= form.text_field :participants, :required => true %>
+  </div>
+  <div class="user lists">
+    <ul>
+      <% User.all.each do |user| %>
+        <li>
+          <% if user.id == current_user.id %>
+              <%= check_box_tag 'user_ids[]', user.id, true -%>
+              <%= user.name %>
+          <% else %>
+            <%= check_box_tag 'user_ids[]', user.id -%>
+            <%= user.name %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  
+  <%= render 'upload_form', meeting: @meeting %>
 
 <% end %>

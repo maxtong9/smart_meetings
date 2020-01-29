@@ -8,15 +8,37 @@
   <strong>Number of Participants:</strong>
   <%= @meeting.participants %>
 </p>
+<p>
+  <b>Participants:</b>
+    <ul>
+      <% if !@meeting.user1.nil? %>
+        <li>
+          <%= User.find(@meeting.user1).name %>
+        </li>
+      <% end %>
+      <% if !@meeting.user2.nil? %>
+        <li>
+          <%= User.find(@meeting.user2).name %>
+        </li>
+      <% end %>
+      <% if !@meeting.user3.nil? %>
+        <li>
+          <%= User.find(@meeting.user3).name %>
+        </li>
+      <% end %>
+    </ul>
+</p>
 <% if @meeting.file.attachments.first != nil %>
   <p>
     <b>Attached Files: </b>
     <br />
-    <% for i in 0..@meeting.participants-1 do %>
-      <ul> <li class="li-style">
-        <%=  @meeting.file.attachments[i].filename %>
-      </li> </ul>
-    <% end %>
+    <ul>
+      <% for i in 0..@meeting.participants-1 do %>
+        <li class="li-style">
+          <%=  @meeting.file.attachments[i].filename %>
+        </li>
+      <% end %>
+    </ul>
   </p>
   <p>
     <% json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s()) %>
