@@ -44,6 +44,7 @@ class MeetingsController < ApplicationController
     respond_to do |format|
       if @meeting.update(edit_params)
         send_to_socket(@meeting)
+        create_trello_cards()
         format.html { redirect_to @meeting, notice: 'Meeting was successfully updated.' }
         format.json { render :show, status: :ok, location: @meeting }
       else
@@ -79,8 +80,8 @@ class MeetingsController < ApplicationController
     end
 
     def send_to_socket(meeting)
-      hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
-      # hostname = '169.231.51.177' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
+      # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
+      hostname = '192.168.99.100' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)
@@ -112,5 +113,58 @@ class MeetingsController < ApplicationController
       obj = s3.bucket(bucket).object(object_key)
       # Get the item's content and save it to a file
       obj.get(response_target: file_path)
+    end
+
+    def create_trello_cards
+      require 'uri'
+      require 'net/http'
+      require 'openssl'
+      require 'json'
+
+      trello_key = ENV['TRELLO_PUBLIC_KEY']
+      trello_token = ENV['TRELLO_MEMBER_TOKEN']
+      trello_url = 'https://api.trello.com/1'
+
+      username = 'christinatao31'
+
+      # get the id of the board to add the new card to
+      boards_url = "#{trello_url}/members/#{username}/boards?key=#{trello_key}&token=#{trello_token}"
+      boards_uri = URI(boards_url)
+      boards_json = Net::HTTP.get(boards_uri)
+      boards = JSON.parse(boards_json)
+      board_id = boards.find {|b| b['name']=='Demo Board'}['id']
+
+      # get the id of the list within the board to add the new card to
+      lists_url = "#{trello_url}/boards/#{board_id}/lists?key=#{trello_key}&token=#{trello_token}"
+      lists_uri = URI(lists_url)
+      lists_json = Net::HTTP.get(lists_uri)
+      lists = JSON.parse(lists_json)
+      list_id = lists.find {|l| l['name']=='Demo List'}['id']
+
+      json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s())
+      hash = JSON.parse(json_from_file, object_class: OpenStruct)
+
+      for i in hash.action_items
+        card_name = i[1][0...-1]
+        card_description = "Test Description"
+        card_member_username = "christinatao31"
+
+         # get id of the card member
+        member_url = "#{trello_url}/members/#{card_member_username}?key=#{trello_key}&token=#{trello_token}"
+        member_uri = URI(member_url)
+        member_json = Net::HTTP.get(member_uri)
+        member = JSON.parse(member_json)
+        member_id = member['id']
+
+        url = URI("#{trello_url}/cards?name=#{card_name}&desc=#{card_description}&idList=#{list_id}&idMembers=#{member_id}&key=#{trello_key}&token=#{trello_token}")
+
+        http = Net::HTTP.new(url.host, url.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+        request = Net::HTTP::Post.new(url)
+
+        response = http.request(request)
+      end
     end
 end
