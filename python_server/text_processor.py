@@ -19,8 +19,10 @@ Design Choice:
 '''
 import nltk
 import pickle
+from string import punctuation
 import math
 from sklearn.feature_extraction.text import TfidfVectorizer
+
 class TextProcessor:
     def __init__(self, rawData):
         # Percentage of original text the summary length should be
@@ -41,7 +43,7 @@ class TextProcessor:
         # Master Raw List of the Sentences. This will only be initialized. Never mutated ( Same order as the sentence list)
         self.sentenceList = None
 
-        self.stopwords = nltk.corpus.stopwords.words('english')
+        self.stopwords = nltk.corpus.stopwords.words('english') + list(punctuation)
 
 
         self.questionStarters = ['what', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would', 'whose'] # Add as you think of more
