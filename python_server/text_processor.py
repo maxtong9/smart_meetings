@@ -20,6 +20,7 @@ Design Choice:
 import nltk
 import pickle
 import math
+from sklearn.feature_extraction.text import TfidfVectorizer
 class TextProcessor:
     def __init__(self, rawData):
         # Percentage of original text the summary length should be
@@ -63,162 +64,172 @@ class TextProcessor:
 
 
     '''
-    Implementation of the tfidf algorithm
-    This function will gather keywords from the Meeting.
+    Implements the tfidf algorithm to extract keywords
     '''
     def tfidf(self):
-        # Remove Action Items
-        sentNoActionItems = self.removeActionItemKeywords(self.sentenceList)
+        print(self)
 
-        # Remove HESITATIONS
-        sentNoHesitations = self.removeHesitationFromList(sentNoActionItems)
 
-        # Get the summary length relative to the original length
-        summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
+
+
+
+    # '''
+    # Implementation of the tfidf algorithm
+    # This function will gather keywords from the Meeting.
+    # '''
+    # def tfidf(self):
+    #     # Remove Action Items
+    #     sentNoActionItems = self.removeActionItemKeywords(self.sentenceList)
+
+    #     # Remove HESITATIONS
+    #     sentNoHesitations = self.removeHesitationFromList(sentNoActionItems)
+
+    #     # Get the summary length relative to the original length
+    #     summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
         
-        # Number of sentences in this case
-        total_documents = len(self.sentenceList)
-        # Generate Frequency Matrix
-        freq_matrix = self.create_frequency_matrix(sentNoHesitations)
+    #     # Number of sentences in this case
+    #     total_documents = len(self.sentenceList)
+    #     # Generate Frequency Matrix
+    #     freq_matrix = self.create_frequency_matrix(sentNoHesitations)
         
-        # Generate Term Frequency Matrix
-        tf_matrix = self.create_tf_matrix(freq_matrix)
+    #     # Generate Term Frequency Matrix
+    #     tf_matrix = self.create_tf_matrix(freq_matrix)
         
-        # Generate documents per words table
-        word_per_doc_table = self.create_documents_per_words(freq_matrix)
+    #     # Generate documents per words table
+    #     word_per_doc_table = self.create_documents_per_words(freq_matrix)
 
-        # Generate idf matrix
-        idf_matrix = self.create_idf_matrix(freq_matrix, word_per_doc_table, total_documents)
+    #     # Generate idf matrix
+    #     idf_matrix = self.create_idf_matrix(freq_matrix, word_per_doc_table, total_documents)
         
-        # Generate tf_idf matrix
-        tf_idf_matrix = self.create_tf_idf_matrix(tf_matrix, idf_matrix)
+    #     # Generate tf_idf matrix
+    #     tf_idf_matrix = self.create_tf_idf_matrix(tf_matrix, idf_matrix)
 
-        # Score the sentences
-        sentenceValue = self.score_sentences(tf_idf_matrix)
+    #     # Score the sentences
+    #     sentenceValue = self.score_sentences(tf_idf_matrix)
         
-        average_score = self.find_average_score(sentenceValue)
+    #     average_score = self.find_average_score(sentenceValue)
 
-        print(tf_idf_matrix)
+    #     print(tf_idf_matrix)
 
 
-    '''
-    Finds the average sentence score
-    '''
-    def find_average_score(self, sentenceValue) ->int:
-        sumValues = 0
-        for entry in sentenceValue:
-            sumValues += sentenceValue[entry]
+    # '''
+    # Finds the average sentence score
+    # '''
+    # def find_average_score(self, sentenceValue) ->int:
+    #     sumValues = 0
+    #     for entry in sentenceValue:
+    #         sumValues += sentenceValue[entry]
 
-        average = (sumValues / len(sentenceValue))
+    #     average = (sumValues / len(sentenceValue))
 
-        return average
+    #     return average
 
-    '''
-    Gives weight to the sentences
+    # '''
+    # Gives weight to the sentences
 
-    '''
-    def score_sentences(self, tf_idf_matrix) -> dict:
-        sentenceValue = {}
+    # '''
+    # def score_sentences(self, tf_idf_matrix) -> dict:
+    #     sentenceValue = {}
 
-        for sent, f_table in tf_idf_matrix.items():
-            total_score_per_sentence = 0
+    #     for sent, f_table in tf_idf_matrix.items():
+    #         total_score_per_sentence = 0
 
-            count_words_in_sentence = len(f_table)
-            for word, score in f_table.items():
-                total_score_per_sentence += score
-            sentenceValue[sent] = total_score_per_sentence / count_words_in_sentence
+    #         count_words_in_sentence = len(f_table)
+    #         for word, score in f_table.items():
+    #             total_score_per_sentence += score
+    #         sentenceValue[sent] = total_score_per_sentence / count_words_in_sentence
 
-        return sentenceValue
+    #     return sentenceValue
 
     
-    '''
-    creates the tf-idf matrix
-    '''
+    # '''
+    # creates the tf-idf matrix
+    # '''
     
-    def create_tf_idf_matrix(self, tf_matrix, idf_matrix):
-        tf_idf_matrix = {}
+    # def create_tf_idf_matrix(self, tf_matrix, idf_matrix):
+    #     tf_idf_matrix = {}
 
-        for (sent1, f_table1), (sent2, f_table2) in zip(tf_matrix.items(), idf_matrix.items()):
-            tf_idf_table = {}
+    #     for (sent1, f_table1), (sent2, f_table2) in zip(tf_matrix.items(), idf_matrix.items()):
+    #         tf_idf_table = {}
 
-            for (word1, value1), (word2, value2) in zip(f_table1.items(), f_table2.items()):
-                tf_idf_table[word1] = float(value1 * value2)
+    #         for (word1, value1), (word2, value2) in zip(f_table1.items(), f_table2.items()):
+    #             tf_idf_table[word1] = float(value1 * value2)
 
-            tf_idf_matrix[sent1] = tf_idf_table
+    #         tf_idf_matrix[sent1] = tf_idf_table
 
-        return tf_idf_matrix
+    #     return tf_idf_matrix
     
-    '''
-    Calculate IDF and generate a matrix
-    '''
-    def create_idf_matrix(self, freq_matrix, count_doc_per_words, total_documents):
-        idf_matrix = {}
+    # '''
+    # Calculate IDF and generate a matrix
+    # '''
+    # def create_idf_matrix(self, freq_matrix, count_doc_per_words, total_documents):
+    #     idf_matrix = {}
 
-        for sent, f_table in freq_matrix.items():
-            idf_table = {}
+    #     for sent, f_table in freq_matrix.items():
+    #         idf_table = {}
 
-            for word in f_table.keys():
-                idf_table[word] = math.log10(total_documents / float(count_doc_per_words[word]))
+    #         for word in f_table.keys():
+    #             idf_table[word] = math.log10(total_documents / float(count_doc_per_words[word]))
 
-            idf_matrix[sent] = idf_table
-        return idf_matrix
+    #         idf_matrix[sent] = idf_table
+    #     return idf_matrix
 
-    '''
-    Creates the documents per word table
-    " How many sentences contain a word"?
-    '''
-    def create_documents_per_words(self, freq_matrix):
-        words_per_doc_table = {}
+    # '''
+    # Creates the documents per word table
+    # " How many sentences contain a word"?
+    # '''
+    # def create_documents_per_words(self, freq_matrix):
+    #     words_per_doc_table = {}
 
-        for sent, f_table in freq_matrix.items():
-            for word, count in f_table.items():
-                if word in words_per_doc_table:
-                    words_per_doc_table[word] += 1
-                else:
-                    words_per_doc_table[word] = 1
-        return words_per_doc_table
+    #     for sent, f_table in freq_matrix.items():
+    #         for word, count in f_table.items():
+    #             if word in words_per_doc_table:
+    #                 words_per_doc_table[word] += 1
+    #             else:
+    #                 words_per_doc_table[word] = 1
+    #     return words_per_doc_table
 
-    '''
-    Create the Term Frequency Matrix
-    '''      
-    def create_tf_matrix(self, freq_matrix):
-        tf_matrix = {}
+    # '''
+    # Create the Term Frequency Matrix
+    # '''      
+    # def create_tf_matrix(self, freq_matrix):
+    #     tf_matrix = {}
 
-        for sent, f_table in freq_matrix.items():
-            tf_table = {}
+    #     for sent, f_table in freq_matrix.items():
+    #         tf_table = {}
 
-            count_words_in_sentence = len(f_table)
-            for word, count in f_table.items():
-                tf_table[word] = count / count_words_in_sentence
-            tf_matrix[sent] = tf_table
+    #         count_words_in_sentence = len(f_table)
+    #         for word, count in f_table.items():
+    #             tf_table[word] = count / count_words_in_sentence
+    #         tf_matrix[sent] = tf_table
 
-        return tf_matrix
-
-
+    #     return tf_matrix
 
 
-    '''
-    Creates the frequency matrix of the words in each sentence
-    '''
+
+
+    # '''
+    # Creates the frequency matrix of the words in each sentence
+    # '''
     
-    def create_frequency_matrix(self, sentences):
-        frequency_matrix = {}
-        ps = nltk.PorterStemmer()
+    # def create_frequency_matrix(self, sentences):
+    #     frequency_matrix = {}
+    #     ps = nltk.PorterStemmer()
 
-        for sent in sentences:
-            freq_table = {}
-            words = nltk.word_tokenize(sent)
-            for word in words:
-                word = word.lower()
-                word = ps.stem(word)
-                if word in self.stopwords:
-                    continue
-                if word in freq_table:
-                    freq_table[word] += 1
-                else:
-                    freq_table[word] = 1
-            frequency_matrix[sent[:15]] = freq_table
-        return frequency_matrix
+    #     for sent in sentences:
+    #         freq_table = {}
+    #         words = nltk.word_tokenize(sent)
+    #         for word in words:
+    #             word = word.lower()
+    #             word = ps.stem(word)
+    #             if word in self.stopwords:
+    #                 continue
+    #             if word in freq_table:
+    #                 freq_table[word] += 1
+    #             else:
+    #                 freq_table[word] = 1
+    #         frequency_matrix[sent[:15]] = freq_table
+    #     return frequency_matrix
 
 
     '''
@@ -603,5 +614,6 @@ if __name__ == "__main__":
     # print(tp.analyzeHesitations())
     # print("*****************************************************\n")
     #print(tp.timeSpoken())
-    print(tp.tfidf())
+    #print(tp.tfidf())
+
 
