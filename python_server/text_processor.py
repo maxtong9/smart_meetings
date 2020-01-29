@@ -17,6 +17,17 @@ Design Choice:
 - when needed. And if it's already done, then the class doesn't have to do it again.
 
 '''
+
+
+'''
+Used for tfidf model... 
+'''
+def tokenize(text):
+    words = nltk.word_tokenize(text)
+    words = [w.lower() for w in words]
+    translator = str.maketrans('', '', punctuation)
+    return [w.split('/')[0] for w in words if w not in nltk.corpus.stopwords.words('english') and not w.isdigit()]
+
 import nltk
 import pickle
 from string import punctuation
@@ -27,6 +38,8 @@ class TextProcessor:
     def __init__(self, rawData):
         # Percentage of original text the summary length should be
         self.SUMMARY_PERCENTAGE = .59
+        # Percentage of Keywords against the total number of words in the text
+        self.KEYWORDS_PERCENTAGE = .05
         # Action Item Keywords (lower)
         self.ACTION_ITEM_KEYWORD = ["action", "item"]
 
@@ -64,12 +77,87 @@ class TextProcessor:
 
         self.transform_input() # Initializes speakerList and sentenceList
 
+# def testModel():
+#     tfidf = pickle.load(open('tfidf_model.pickle', 'rb'))
+
+#     X = tfidf.transform(["Here we go, here is a good example here! This is amazing. These are just sentences"])
+
+#     try:
+#         print(X[0, tfidf.vocabulary_['amazaaiang']])
+#         print(tfidf.vocabulary_['amazing'])
+#     except KeyError:
+#         print("Caught the KeyError. Calculate with low idf here")
+#         # Calculate Term Frequency (occurences / total words)
+#         # Multiply by a really low Idf because it's not in the current vocabulary
+
+    '''
+    Gets N  Keywords pertaining to the current transcription
+    '''
+    def get_keywords(self):
+        scores = self.tfidf()
+        # print(scores)
+        total_keywords = int(self.total_words * self.KEYWORDS_PERCENTAGE)
+        # print(total_keywords)
+        sorted_scores =  {k: v for k, v in sorted(scores.items(), key=lambda score: score[1], reverse=True)}
+        # print(sorted_scores)
+        # Get keywords
+        keywords = []
+        for keyword in sorted_scores:
+            if total_keywords > 0:
+                keywords.append(keyword)
+                total_keywords -= 1
+            else:
+                break
+        print(keywords)
+        return keywords
+
+             
+        # print(scores)
+
+    '''
+    Formats the input of our meeting transcription for tfidf use
+    '''
+    def tfidfFormat(self):
+        # Remove Action Items
+        # sentNoActionItems = self.removeActionItemKeywords(self.sentenceList)
+
+        # Remove HESITATIONS
+        sentNoHesitations = self.removeHesitationFromList(self.sentenceList)
+
+        # Get the summary length relative to the original length
+        summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
+
+        
+        return self.joinSentenceListToSentence(sentNoHesitations)
+        # print(self.joinSentenceListToSentence(masterSentList))
+
 
     '''
     Implements the tfidf algorithm to extract keywords
     '''
     def tfidf(self):
-        print(self)
+        tfidf = pickle.load(open('tfidf_model.pickle', 'rb'))
+        raw_text = self.tfidfFormat() # Create function for getting string of entire transcription content
+        # print(raw_text)
+        X = tfidf.transform([raw_text])
+        tfidf_scores = {}
+        
+        for word in nltk.word_tokenize(raw_text):
+            try:
+                if word in self.stopwords:
+                    continue
+                tfidf_scores[word] = X[0, tfidf.vocabulary_[word]]
+                # tfidf_scores.append((word, X[0, tfidf.vocabulary_[word]]))
+            except KeyError:
+                # Not in Brown Corpus
+                # print("Word Not in Brown Corpus")
+                self.get_term_frequency(word)
+                tf = self.get_term_frequency(word) / self.total_words
+                tfidf_scores[word] = tf * .000001
+                # tfidf_scores.append((word, tf * .000001))
+                # Calculate Term Frequency (occurences / total words)
+                # Multiply by a really small Idf because it's not in the current vocabulary
+        return tfidf_scores
 
 
 
@@ -232,7 +320,37 @@ class TextProcessor:
     #                 freq_table[word] = 1
     #         frequency_matrix[sent[:15]] = freq_table
     #     return frequency_matrix
+    '''
+    Gets the Number of occurences of the given word in our document
+    '''
+    def get_term_frequency(self, term):
+        sentNoHesitations = self.removeHesitationFromList(self.sentenceList)
+        count = 0
+        for sent in sentNoHesitations:
+            for word in nltk.word_tokenize(sent):
+                if word == term :
+                    count += 1
+        return count
 
+    
+    
+    '''
+    Gets the total number of words in the transcription
+    '''
+    def get_word_count(self):
+        # Remove HESITATIONS
+        sentNoHesitations = self.removeHesitationFromList(self.sentenceList)
+        # print(sentNoHesitations)
+        count = 0
+        for sent in sentNoHesitations:
+            for word in nltk.word_tokenize(sent):
+                if word in self.stopwords:
+                    continue
+                else:
+                    count+=1
+        return count
+
+        
 
     '''
     This function gives a percentage for each person and how much they spoke
@@ -341,6 +459,7 @@ class TextProcessor:
             self.sentenceList.append(phraseList[1])
             if phraseList[0] not in self.total_speakers:
                 self.total_speakers.append(phraseList[0])
+        self.total_words = self.get_word_count()
 
 
     '''
@@ -617,5 +736,7 @@ if __name__ == "__main__":
     # print("*****************************************************\n")
     #print(tp.timeSpoken())
     #print(tp.tfidf())
+    #tp.tfidfFormat()
+    tp.get_keywords()
 
 

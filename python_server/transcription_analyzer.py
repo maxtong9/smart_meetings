@@ -58,6 +58,8 @@ class TranscriptionAnalyzer:
         self.analyzer_output["action_items"] = self.text_analyzer.getActionItems()
         self.analyzer_output["hesitation_analytics"] = self.text_analyzer.analyzeHesitations()
         self.analyzer_output["interruption"] = self.interruption
+        self.analyzer_output["total_time_spoken"] = self.text_analyzer.timeSpoken()
+        self.analyzer_output["keywords"] = self.text_analyzer.get_keywords()
         self.analyzer_output["raw"] = self.text_analyzer.raw_data
         self.output = json.dumps(self.analyzer_output)
 
