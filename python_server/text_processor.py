@@ -233,7 +233,7 @@ class TextProcessor:
             if len(words) >= 2:
                 for i in range(0, len(words)):
                     if words[i] == self.ACTION_ITEM_KEYWORD[0] and words[i+1] == self.ACTION_ITEM_KEYWORD[1]:
-                        actionItems.append([sentence[0][:-1], self.removeHesitationFromString(self.joinWordsToSentence(words[i+2:]))])
+                        actionItems.append([sentence[0][:-1], self.removeHesitationFromString(self.joinWordsToSentence(words[i+2:])), sentence[2]])
                         break
         return actionItems
     '''
