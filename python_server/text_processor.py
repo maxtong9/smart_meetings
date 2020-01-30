@@ -20,7 +20,7 @@ Design Choice:
 
 
 '''
-Used for tfidf model... 
+Used for tfidf model...
 '''
 def tokenize(text):
     words = nltk.word_tokenize(text)
@@ -70,7 +70,7 @@ class TextProcessor:
         # Keeps track of the total number of hesitations said in the meeting
         self.total_hesitation_count = 0
 
-        # Keeps track of the total number of words in a meeting 
+        # Keeps track of the total number of words in a meeting
         self.total_words = 0
 
 
@@ -111,7 +111,7 @@ class TextProcessor:
         print(keywords)
         return keywords
 
-             
+
         # print(scores)
 
     '''
@@ -127,7 +127,7 @@ class TextProcessor:
         # Get the summary length relative to the original length
         summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
 
-        
+
         return self.joinSentenceListToSentence(sentNoHesitations)
         # print(self.joinSentenceListToSentence(masterSentList))
 
@@ -141,7 +141,7 @@ class TextProcessor:
         # print(raw_text)
         X = tfidf.transform([raw_text])
         tfidf_scores = {}
-        
+
         for word in nltk.word_tokenize(raw_text):
             try:
                 if word in self.stopwords:
@@ -176,27 +176,27 @@ class TextProcessor:
 
     #     # Get the summary length relative to the original length
     #     summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
-        
+
     #     # Number of sentences in this case
     #     total_documents = len(self.sentenceList)
     #     # Generate Frequency Matrix
     #     freq_matrix = self.create_frequency_matrix(sentNoHesitations)
-        
+
     #     # Generate Term Frequency Matrix
     #     tf_matrix = self.create_tf_matrix(freq_matrix)
-        
+
     #     # Generate documents per words table
     #     word_per_doc_table = self.create_documents_per_words(freq_matrix)
 
     #     # Generate idf matrix
     #     idf_matrix = self.create_idf_matrix(freq_matrix, word_per_doc_table, total_documents)
-        
+
     #     # Generate tf_idf matrix
     #     tf_idf_matrix = self.create_tf_idf_matrix(tf_matrix, idf_matrix)
 
     #     # Score the sentences
     #     sentenceValue = self.score_sentences(tf_idf_matrix)
-        
+
     #     average_score = self.find_average_score(sentenceValue)
 
     #     print(tf_idf_matrix)
@@ -231,11 +231,11 @@ class TextProcessor:
 
     #     return sentenceValue
 
-    
+
     # '''
     # creates the tf-idf matrix
     # '''
-    
+
     # def create_tf_idf_matrix(self, tf_matrix, idf_matrix):
     #     tf_idf_matrix = {}
 
@@ -248,7 +248,7 @@ class TextProcessor:
     #         tf_idf_matrix[sent1] = tf_idf_table
 
     #     return tf_idf_matrix
-    
+
     # '''
     # Calculate IDF and generate a matrix
     # '''
@@ -281,7 +281,7 @@ class TextProcessor:
 
     # '''
     # Create the Term Frequency Matrix
-    # '''      
+    # '''
     # def create_tf_matrix(self, freq_matrix):
     #     tf_matrix = {}
 
@@ -301,7 +301,7 @@ class TextProcessor:
     # '''
     # Creates the frequency matrix of the words in each sentence
     # '''
-    
+
     # def create_frequency_matrix(self, sentences):
     #     frequency_matrix = {}
     #     ps = nltk.PorterStemmer()
@@ -332,8 +332,8 @@ class TextProcessor:
                     count += 1
         return count
 
-    
-    
+
+
     '''
     Gets the total number of words in the transcription
     '''
@@ -350,17 +350,16 @@ class TextProcessor:
                     count+=1
         return count
 
-        
+
 
     '''
     This function gives a percentage for each person and how much they spoke
     during a meeting.
     '''
     def timeSpoken(self):
-        print("timeSpoken")
         # Set up the number of words per person
         self.wordsPerPerson = {i: 0 for i in self.total_speakers}
-
+        total_words = 0
         # dataPoint[0] = speaker
         # dataPoint[1] = sentence string
         for dataPoint in self.raw_data:
@@ -368,20 +367,20 @@ class TextProcessor:
             for word in listOfWords:
                 if word == '.' or word == '?' or word == ',' or word == '!': # Doesn't count as a real word
                     continue
-                self.total_words += 1
+                total_words += 1
                 self.wordsPerPerson[dataPoint[0]] += 1
-        if self.total_words == 0:
+        if total_words == 0:
             return self.dicToArray2(self.wordsPerPerson) # should be all 0
         else:
             for person in self.wordsPerPerson:
-                self.wordsPerPerson[person] /= self.total_words
-            return self.dicToArray2(self.total_words)
+                self.wordsPerPerson[person] /= total_words
+            return self.dicToArray2(total_words)
 
 # Basic Func that transforms TIMESPOKEN dictionary output to an array (Practical use for working with ruby)
     def dicToArray2(self, dic):
         arrToReturn = []
         for name in self.wordsPerPerson:
-            arrToReturn.append([name[:-1], self.wordsPerPerson[name]])
+            arrToReturn.append([name, self.wordsPerPerson[name]])
         return arrToReturn
 
     '''
@@ -425,7 +424,7 @@ class TextProcessor:
     def dicToArray(self, dic):
         arrToReturn = []
         for name in self.hesitations_per_person:
-            arrToReturn.append([name[:-1], self.hesitations_per_person[name]])
+            arrToReturn.append([name, self.hesitations_per_person[name]])
         return arrToReturn
 
     '''
@@ -561,7 +560,7 @@ class TextProcessor:
             if len(words) >= 2:
                 for i in range(0, len(words)):
                     if words[i] == self.ACTION_ITEM_KEYWORD[0] and words[i+1] == self.ACTION_ITEM_KEYWORD[1]:
-                        actionItems.append([sentence[0][:-1], self.removeHesitationFromString(self.joinWordsToSentence(words[i+2:]))])
+                        actionItems.append([sentence[0], self.removeHesitationFromString(self.joinWordsToSentence(words[i+2:]))])
                         break
         return actionItems
     '''
@@ -611,11 +610,11 @@ class TextProcessor:
         for sentence in self.raw_data:
             classification = classifier.classify(self.dialogue_act_features(sentence[1]))
             if classification == 'whQuestion':
-                questionList.append([sentence[0][:-1], sentence[1]])
+                questionList.append([sentence[0], sentence[1]])
                 continue
             starting_word = nltk.word_tokenize(sentence[1])[0].lower()
             if starting_word in self.questionStarters:
-                questionList.append([sentence[0][:-1], sentence[1]])
+                questionList.append([sentence[0], sentence[1]])
         return questionList
 
     '''

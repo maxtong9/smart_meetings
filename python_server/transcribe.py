@@ -140,7 +140,8 @@ class Transcribe:
 					name = comp[0]
 		interruption = []
 		for i in overlap:
-			interruption.append([i[:-1], overlap[i]])
+			# interruption.append([i[:-1], overlap[i]])
+			interruption.append([i, overlap[i]])
 
 		return interruption
 
