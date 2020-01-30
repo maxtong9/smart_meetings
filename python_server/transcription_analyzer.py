@@ -42,6 +42,7 @@ class TranscriptionAnalyzer:
         self.transcribe = Transcribe(self.audioFiles, self.nameList)
         self.transcription = self.transcribe.transcription()
         self.interruption = self.transcribe.overlap()
+        self.time = self.transcribe.time()
         print(self.transcription)
 
      # Analyzes the text
@@ -61,6 +62,7 @@ class TranscriptionAnalyzer:
         self.analyzer_output["total_time_spoken"] = self.text_analyzer.timeSpoken()
         self.analyzer_output["keywords"] = self.text_analyzer.get_keywords()
         self.analyzer_output["raw"] = self.text_analyzer.raw_data
+        self.analyzer_output["meeting_time"] = self.time
         self.output = json.dumps(self.analyzer_output)
 
         with open('./tmp/' + self.meeting + '.json', 'w') as outfile:

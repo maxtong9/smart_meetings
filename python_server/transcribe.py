@@ -99,6 +99,10 @@ class Transcribe:
 		self.phrase = phrase
 		return phrase
 
+	def time(self):
+		meeting_time = self.phrase[-1][3]
+		return meeting_time
+
 	def text(self):
 		''' Returns json format of transcript '''
 		data = {}

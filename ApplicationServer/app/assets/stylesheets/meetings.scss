@@ -2,9 +2,24 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-h1, p {
-  margin: 20px 50px;
+// body {
+//   background-color:#D2D2D2;
+// }
+
+h1 {
+  margin: 0 10px;
+  font-family: 'Nunito', sans-serif;
+  color:#737373;
+  font-size: 40px;
 }
+p {
+  margin: 20px 30px;
+  font-family: 'Nunito', sans-serif;
+  color:#737373;
+  font-size:20px;
+}
+
+
 
 table {
   margin:5px 60px;
@@ -15,8 +30,11 @@ table {
 }
 
 .li-style {
-  margin-left: 40px;
+  margin-left: 15px;
   line-height: 14px;
+  font-family: 'Nunito', sans-serif;
+  color:#737373;
+  font-size:15px;
 }
 
 .a-style {

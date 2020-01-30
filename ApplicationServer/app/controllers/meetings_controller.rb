@@ -4,7 +4,11 @@ class MeetingsController < ApplicationController
   # GET /meetings
   # GET /meetings.json
   def index
-    @meetings = Meeting.all
+    @user_meeting1 = Meeting.find_by(id: current_user.meeting_1)
+    @user_meeting2 = Meeting.find_by(id: current_user.meeting_2)
+    @user_meeting3 = Meeting.find_by(id: current_user.meeting_3)
+    @user_meeting4 = Meeting.find_by(id: current_user.meeting_4)
+    @user_meeting5 = Meeting.find_by(id: current_user.meeting_5)
   end
 
   # GET /meetings/1
@@ -26,7 +30,6 @@ class MeetingsController < ApplicationController
   # POST /meetings.json
   def create
     @meeting = Meeting.new(create_params)
-
     respond_to do |format|
       if @meeting.save
         format.html { redirect_to @meeting, notice: 'Meeting was successfully created.' }
@@ -36,6 +39,7 @@ class MeetingsController < ApplicationController
         format.json { render json: @meeting.errors, status: :unprocessable_entity }
       end
     end
+    add_user_meeting_relation
   end
 
   # PATCH/PUT /meetings/1
@@ -44,6 +48,7 @@ class MeetingsController < ApplicationController
     respond_to do |format|
       if @meeting.update(edit_params)
         send_to_socket(@meeting)
+        create_trello_cards()
         format.html { redirect_to @meeting, notice: 'Meeting was successfully updated.' }
         format.json { render :show, status: :ok, location: @meeting }
       else
@@ -56,6 +61,7 @@ class MeetingsController < ApplicationController
   # DELETE /meetings/1
   # DELETE /meetings/1.json
   def destroy
+    delete_meetings_from_users
     @meeting.destroy
     respond_to do |format|
       format.html { redirect_to meetings_url, notice: 'Meeting was successfully destroyed.' }
@@ -69,6 +75,66 @@ class MeetingsController < ApplicationController
       @meeting = Meeting.find(params[:id])
     end
 
+    def add_user_meeting_relation
+      params[:user_ids].each do |user_id|
+        add_meeting_foreign_key(User.find(user_id))
+        add_user_foreign_key(user_id)
+      end
+    end
+
+    def add_user_foreign_key(user_id)
+      if @meeting.user1.nil?
+        @meeting.update(user1: user_id)
+      elsif @meeting.user2.nil?
+        @meeting.update(user2: user_id)
+      elsif @meeting.user3.nil?
+        @meeting.update(user3: user_id)
+      end
+    end
+
+    def add_meeting_foreign_key(user)
+      if user.meeting_1.nil?
+        user.update(meeting_1: @meeting.id)
+      elsif user.meeting_2.nil?
+        user.update(meeting_2: @meeting.id)
+      elsif user.meeting_3.nil?
+        user.update(meeting_3: @meeting.id)
+      elsif user.meeting_4.nil?
+        user.update(meeting_4: @meeting.id)
+      elsif user.meeting_5.nil?
+        user.update(meeting_5: @meeting.id)
+      end
+    end
+
+    def delete_meetings_from_users
+      if !@meeting.user1.nil?
+        delete_meeting_foreign_key(User.find(@meeting.user1))
+      end
+      if !@meeting.user2.nil?
+        delete_meeting_foreign_key(User.find(@meeting.user2))
+      end
+      if !@meeting.user3.nil?
+        delete_meeting_foreign_key(User.find(@meeting.user3))
+      end
+    end
+
+    def delete_meeting_foreign_key(user)
+      if !user.meeting_1.nil?
+        user.update(meeting_1: nil)
+      end
+      if !user.meeting_2.nil?
+        user.update(meeting_2: nil)
+      end
+      if !user.meeting_3.nil?
+        user.update(meeting_3: nil)
+      end
+      if !user.meeting_4.nil?
+        user.update(meeting_4: nil)
+      end
+      if !user.meeting_5.nil?
+        user.update(meeting_5: nil)
+      end
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def edit_params
       params.require(:meeting).permit(:name, file: [])
@@ -79,8 +145,8 @@ class MeetingsController < ApplicationController
     end
 
     def send_to_socket(meeting)
-      hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
-      # hostname = '169.231.51.177' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
+      # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
+      hostname = '169.231.189.251' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)
@@ -112,5 +178,58 @@ class MeetingsController < ApplicationController
       obj = s3.bucket(bucket).object(object_key)
       # Get the item's content and save it to a file
       obj.get(response_target: file_path)
+    end
+
+    def create_trello_cards
+      require 'uri'
+      require 'net/http'
+      require 'openssl'
+      require 'json'
+
+      trello_key = ENV['TRELLO_PUBLIC_KEY']
+      trello_token = ENV['TRELLO_MEMBER_TOKEN']
+      trello_url = 'https://api.trello.com/1'
+
+      username = 'christinatao31'
+
+      # get the id of the board to add the new card to
+      boards_url = "#{trello_url}/members/#{username}/boards?key=#{trello_key}&token=#{trello_token}"
+      boards_uri = URI(boards_url)
+      boards_json = Net::HTTP.get(boards_uri)
+      boards = JSON.parse(boards_json)
+      board_id = boards.find {|b| b['name']=='Demo Board'}['id']
+
+      # get the id of the list within the board to add the new card to
+      lists_url = "#{trello_url}/boards/#{board_id}/lists?key=#{trello_key}&token=#{trello_token}"
+      lists_uri = URI(lists_url)
+      lists_json = Net::HTTP.get(lists_uri)
+      lists = JSON.parse(lists_json)
+      list_id = lists.find {|l| l['name']=='Demo List'}['id']
+
+      json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s())
+      hash = JSON.parse(json_from_file, object_class: OpenStruct)
+
+      for i in hash.action_items
+        card_name = i[1][0...-1]
+        card_description = "Test Description"
+        card_member_username = "christinatao31"
+
+         # get id of the card member
+        member_url = "#{trello_url}/members/#{card_member_username}?key=#{trello_key}&token=#{trello_token}"
+        member_uri = URI(member_url)
+        member_json = Net::HTTP.get(member_uri)
+        member = JSON.parse(member_json)
+        member_id = member['id']
+
+        url = URI("#{trello_url}/cards?name=#{card_name}&desc=#{card_description}&idList=#{list_id}&idMembers=#{member_id}&key=#{trello_key}&token=#{trello_token}")
+
+        http = Net::HTTP.new(url.host, url.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+        request = Net::HTTP::Post.new(url)
+
+        response = http.request(request)
+      end
     end
 end
