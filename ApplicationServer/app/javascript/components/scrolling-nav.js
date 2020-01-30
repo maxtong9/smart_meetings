@@ -26,6 +26,14 @@
     offset: 56
   });
 
+  $(document).on('scroll', function() {
+   var scrollDistance = $(this).scrollTop();
+   if (scrollDistance > 100) {
+     $('.scroll-to-top').fadeIn();
+   } else {
+     $('.scroll-to-top').fadeOut();
+   }
+  });
   var navbarCollapse = function() {
       if ($("#mainNav").offset().top > 100) {
         $("#mainNav").addClass("navbar-shrink");
