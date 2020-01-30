@@ -357,7 +357,6 @@ class TextProcessor:
     during a meeting.
     '''
     def timeSpoken(self):
-        print("timeSpoken")
         # Set up the number of words per person
         self.wordsPerPerson = {i: 0 for i in self.total_speakers}
 
@@ -724,19 +723,22 @@ if __name__ == "__main__":
     # Processing Object
     tp = TextProcessor(demoInput1)
     print("*****************************************************\n")
-    # print("Summary: ***** \n")
-    # print(tp.summarize())
-    # print("Question List: \n")
-    # print(tp.getQuestionList())
-    # print("Action Items: \n")
-    # print(tp.getActionItems())
-    # print("RAW TRANSCRIPTION: \n")
-    # print(tp.raw_data)
-    # print(tp.analyzeHesitations())
-    # print("*****************************************************\n")
-    #print(tp.timeSpoken())
+    print("Summary: ***** \n")
+    print(tp.summarize())
+    print("Question List: \n")
+    print(tp.getQuestionList())
+    print("Action Items: \n")
+    print(tp.getActionItems())
+    print("RAW TRANSCRIPTION: \n")
+    print(tp.raw_data)
+    print("HESITATIONS: \n")
+    print(tp.analyzeHesitations())
+    print("TIME SPOKEN: \n")
+    print(tp.timeSpoken())
     #print(tp.tfidf())
     #tp.tfidfFormat()
-    tp.get_keywords()
+    print("KEYWORDS: \n")
+    print(tp.get_keywords())
+    print("*****************************************************\n")
 
 
