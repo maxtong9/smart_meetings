@@ -19,7 +19,7 @@
                 <% end %>
               </ul>
           </p>
-          
+
           <p> <h5 style="font-size:15px; font-weight:bold">Attached Files:</h5>
             <ul>
               <% if @meeting.file.attachments.first != nil %>
@@ -96,7 +96,7 @@
               <div class="col-lg-4 col-lg-4">
                 <div class="card border-left-success shadow mb-4">
                     <div class="card-header py-2" stlye="font-family: 'Nunito', sans-serif;">
-                       <h6 class="m-0 font-weight-bold">Speakers Percentages</h6>
+                       <h6 class="m-0 font-weight-bold">Speaking Percentages</h6>
                     </div>
                     <div class="card-body">
                       <div class="chart-area">
@@ -105,6 +105,12 @@
                   </div>
                 </div>
               </div>
+              <% spoken_data = [] %>
+              <% spoken_participants = [] %>
+              <% for entry in hash.total_time_spoken %>
+               <% spoken_data.push(entry[1]) %>
+               <% spoken_participants.push(entry[0][0...-1]) %>
+              <% end %>
               <div class="col-lg-4 col-lg-4">
                 <div class="card border-left-success shadow mb-4">
                   <div class="card-header py-2" stlye="font-family: 'Nunito', sans-serif;">
@@ -268,7 +274,7 @@
          type: 'doughnut',
          data: {
            datasets: [{
-             data: [5, 8, 1, 3, 7], //Change data here
+             data: <%= raw spoken_data %>, //Change data here
              backgroundColor: [
                'rgba(255, 99, 132, 1)',
                'rgba(54, 162, 235, 1)',
@@ -279,13 +285,7 @@
              ],
              label: 'Dataset 1'
            }],
-           labels: [
-             'Red',
-             'Blue',
-             'Yellow',
-             'Green',
-             'Purple'
-           ]
+           labels: <%= raw action_participants %>
          },
          options: {
            maintainAspectRatio: false,
