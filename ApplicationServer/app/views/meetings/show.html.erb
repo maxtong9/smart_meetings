@@ -1,3 +1,9 @@
+
+<% if @meeting.file.attachments.first != nil %>
+  <% json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s()) %>
+  <% hash = JSON.parse(json_from_file, object_class: OpenStruct) %>
+<% end %>
+
 <p id="notice"><%= notice %></p>
 <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
 <div class="container-fluid">
@@ -35,6 +41,9 @@
           <p> <h5 style="font-size:15px; font-weight:bold">Tags:</h5>
             <ul>
               <% if @meeting.file.attachments.first != nil %>
+                <% for i in hash.keywords do %>
+                      <li> <%= i %> </li>
+                <% end %>
               <% end %>
             </ul>
           </p>
@@ -54,9 +63,6 @@
     <div class="col" style="margin: 0 0 0 5px">
 
       <% if @meeting.file.attachments.first != nil %>
-          <% json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s()) %>
-          <% hash = JSON.parse(json_from_file, object_class: OpenStruct) %>
-
           <% participants = [] %>
           <!-- Summary card -->
           <div class="card shadow border-left-success mb-4 scroll">
@@ -291,7 +297,7 @@
              ],
              label: 'Dataset 1'
            }],
-           labels: <%= raw action_participants %>
+           labels: <%= raw spoken_participants %>
          },
          options: {
            maintainAspectRatio: false,
@@ -367,6 +373,7 @@
       },
       options: {
           maintainAspectRatio: false,
+          max: 5,
           scales: {
               yAxes: [{
                   ticks: {
