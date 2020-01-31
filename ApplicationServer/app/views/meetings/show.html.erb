@@ -32,6 +32,12 @@
               <% end %>
             </ul>
           </p>
+          <p> <h5 style="font-size:15px; font-weight:bold">Tags:</h5>
+            <ul>
+              <% if @meeting.file.attachments.first != nil %>
+              <% end %>
+            </ul>
+          </p>
           <div class="row no-gutters justify-content-center py-3">
             <div class="btn btn-outline-secondary btn-style">
               <%= link_to 'Edit', edit_meeting_path(@meeting), :class => "btn" %>
