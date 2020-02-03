@@ -4,14 +4,11 @@ class MeetingsController < ApplicationController
   # GET /meetings
   # GET /meetings.json
   def index
-    puts "THIS MESSAGE IS CALLED" 
-    puts ENV["EMAIL_PASS"]
-    
-    # @user_meeting1 = Meeting.find_by(id: current_user.meeting_1)
-    # @user_meeting2 = Meeting.find_by(id: current_user.meeting_2)
-    # @user_meeting3 = Meeting.find_by(id: current_user.meeting_3)
-    # @user_meeting4 = Meeting.find_by(id: current_user.meeting_4)
-    # @user_meeting5 = Meeting.find_by(id: current_user.meeting_5)
+    @user_meeting1 = Meeting.find_by(id: current_user.meeting_1)
+    @user_meeting2 = Meeting.find_by(id: current_user.meeting_2)
+    @user_meeting3 = Meeting.find_by(id: current_user.meeting_3)
+    @user_meeting4 = Meeting.find_by(id: current_user.meeting_4)
+    @user_meeting5 = Meeting.find_by(id: current_user.meeting_5)
     
   end
 
