@@ -146,7 +146,7 @@ class MeetingsController < ApplicationController
 
     def send_to_socket(meeting)
       # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
-      hostname = '169.231.189.74' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
+      hostname = '169.231.189.91' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)
@@ -212,7 +212,7 @@ class MeetingsController < ApplicationController
       for i in hash.action_items
         card_name = i[1][0...-1]
         card_description = "Test Description"
-        card_member_username = "christinatao31"
+        card_member_username = current_user.trello
 
          # get id of the card member
         member_url = "#{trello_url}/members/#{card_member_username}?key=#{trello_key}&token=#{trello_token}"
