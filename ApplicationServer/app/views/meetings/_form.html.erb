@@ -23,10 +23,10 @@
     <% User.all.each do |user| %>
         <% if user.id == current_user.id %>
             <%= check_box_tag 'user_ids[]', user.id, true -%>
-            <%= user.name %> <br />
+            <%= user.first %> <br />
         <% else %>
           <%= check_box_tag 'user_ids[]', user.id -%>
-          <%= user.name %> <br />
+          <%= user.first %> <br />
         <% end %>
     <% end %>
   </div>

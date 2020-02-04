@@ -20,7 +20,7 @@ class UsersTest < ApplicationSystemTestCase
     fill_in "Meeting 3", with: @user.meeting_3
     fill_in "Meeting 4", with: @user.meeting_4
     fill_in "Meeting 5", with: @user.meeting_5
-    fill_in "Name", with: @user.name
+    fill_in "Name", with: @user.first
     click_on "Create User"
 
     assert_text "User was successfully created"
@@ -37,7 +37,7 @@ class UsersTest < ApplicationSystemTestCase
     fill_in "Meeting 3", with: @user.meeting_3
     fill_in "Meeting 4", with: @user.meeting_4
     fill_in "Meeting 5", with: @user.meeting_5
-    fill_in "Name", with: @user.name
+    fill_in "Name", with: @user.first
     click_on "Update User"
 
     assert_text "User was successfully updated"

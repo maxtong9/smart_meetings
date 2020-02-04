@@ -18,13 +18,13 @@
             <p> <h5 style="font-size:15px; font-weight:bold">Participants:</h5>
                 <ul>
                   <% if !@meeting.user1.nil? %>
-                    <li> <%= User.find(@meeting.user1).name %> </li>
+                    <li> <%= User.find(@meeting.user1).first %> </li>
                   <% end %>
                   <% if !@meeting.user2.nil? %>
-                    <li> <%= User.find(@meeting.user2).name %> </li>
+                    <li> <%= User.find(@meeting.user2).first %> </li>
                   <% end %>
                   <% if !@meeting.user3.nil? %>
-                    <li> <%= User.find(@meeting.user3).name %> </li>
+                    <li> <%= User.find(@meeting.user3).first %> </li>
                   <% end %>
                 </ul>
             </p>
