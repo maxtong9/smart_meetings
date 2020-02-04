@@ -212,7 +212,7 @@ class MeetingsController < ApplicationController
       for i in hash.action_items
         card_name = i[1][0...-1]
         card_description = "Test Description"
-        card_member_username = User.find_by_name(i[0]).trello
+        card_member_username = User.find_by(first: i[0]).trello
 
          # get id of the card member
         member_url = "#{trello_url}/members/#{card_member_username}?key=#{trello_key}&token=#{trello_token}"
