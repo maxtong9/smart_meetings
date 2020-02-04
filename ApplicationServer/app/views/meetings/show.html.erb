@@ -31,8 +31,14 @@
 
             <p> <h5 style="font-size:15px; font-weight:bold">Attached Files:</h5>
               <ul>
-                <% for i in 0..@meeting.participants-1 do %>
-                      <li> <%= @meeting.file.attachments[i].filename %> </li>
+                <% if !@meeting.user1.nil? %>
+                  <li> <%= User.find(@meeting.user1).first %> </li>
+                <% end %>
+                <% if !@meeting.user2.nil? %>
+                  <li> <%= User.find(@meeting.user2).first %> </li>
+                <% end %>
+                <% if !@meeting.user3.nil? %>
+                  <li> <%= User.find(@meeting.user3).first %> </li>
                 <% end %>
               </ul>
             </p>

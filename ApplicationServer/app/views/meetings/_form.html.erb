@@ -18,6 +18,7 @@
   <div class="text-style field">
     <%= form.text_field :participants, class: 'form-control', placeholder: 'Participants', :required => true %>
   </div>
+
   <div class="user lists" style="margin: 0 0 0 70px">
     <% User.all.each do |user| %>
         <% if user.id == current_user.id %>

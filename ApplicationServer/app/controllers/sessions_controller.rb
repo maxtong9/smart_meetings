@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by_name(params[:name])
+    user = User.find_by(email: params[:email])
     if user
       session[:user_id] = user.id
       redirect_to '/welcome', notice: "Logged in!"
