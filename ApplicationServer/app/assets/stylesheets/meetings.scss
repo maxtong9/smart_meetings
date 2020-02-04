@@ -7,24 +7,50 @@
 // }
 
 h1 {
-  margin: 0 10px;
+  font-family: 'Nunito', serif;
+  color:#737373;
+  font-weight: 'bold';
+}
+
+h5 {
+  margin: 0 0 0 15px;
   font-family: 'Nunito', sans-serif;
   color:#737373;
-  font-size: 40px;
 }
+
 p {
   margin: 20px 30px;
   font-family: 'Nunito', sans-serif;
   color:#737373;
-  font-size:20px;
 }
 
+li {
+  margin: 0 0 0 10px;
+  font-family: 'Nunito', sans-serif;
+  color:#737373;
+  font-size: 15px;
+}
 
+h6 {
+  margin: 0 0 0 10px;
+  font-family: 'Nunito', sans-serif;
+  color:#5cdb95 !important;
+  font-size: 10px;
+}
 
 table {
   margin:5px 60px;
 }
 
+.scroll {
+    max-height: 200px;
+    overflow: auto;
+}
+
+.btn-style{
+  color:#5cdb95 !important;
+  margin-left:5px;
+}
 .text-style {
   margin:5px 60px;
 }

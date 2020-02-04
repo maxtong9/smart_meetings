@@ -1,6 +1,7 @@
 from transcribe import *
 from text_processor import *
 import json
+from tfidf_model import tokenize
 '''
 Main Class for dealing with Meeting Transcriptions
 
@@ -79,7 +80,6 @@ class TranscriptionAnalyzer:
 
         if self.output == None:
             print("Error: No output available")
-
 
         # print("****JSON*****")
         # print(self.output)

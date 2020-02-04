@@ -16,7 +16,10 @@ from settings import *
 class Transcribe:
 	def __init__(self, input_audio, nameList):
 		self.audio = input_audio
-		self.nameList = nameList
+		self.nameList = []
+		for i in nameList:
+			self.nameList.append(i[:-1])
+
 		self.phrase = None
 
 	def transcription(self):

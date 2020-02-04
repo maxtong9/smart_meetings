@@ -27,7 +27,7 @@
             </li>
             <% if logged_in? %>
               <li class="nav-item">
-                <a class="nav-link js-scroll-trigger" href="/welcome"><%= current_user.name %></a>
+                <a class="nav-link js-scroll-trigger" href="/welcome"><%= current_user.first %></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link js-scroll-trigger" href="/logout">Log out</a>

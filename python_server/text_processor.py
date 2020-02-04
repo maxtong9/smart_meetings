@@ -22,17 +22,18 @@ Design Choice:
 '''
 Used for tfidf model...
 '''
-def tokenize(text):
-    words = nltk.word_tokenize(text)
-    words = [w.lower() for w in words]
-    translator = str.maketrans('', '', punctuation)
-    return [w.split('/')[0] for w in words if w not in nltk.corpus.stopwords.words('english') and not w.isdigit()]
+# def tokenize(text):
+#     words = nltk.word_tokenize(text)
+#     words = [w.lower() for w in words]
+#     translator = str.maketrans('', '', punctuation)
+#     return [w.split('/')[0] for w in words if w not in nltk.corpus.stopwords.words('english') and not w.isdigit()]
 
 import nltk
 import pickle
 from string import punctuation
 import math
 from sklearn.feature_extraction.text import TfidfVectorizer
+from tfidf_model import tokenize
 
 class TextProcessor:
     def __init__(self, rawData):
@@ -740,5 +741,3 @@ if __name__ == "__main__":
     print("KEYWORDS: \n")
     print(tp.get_keywords())
     print("*****************************************************\n")
-
-
