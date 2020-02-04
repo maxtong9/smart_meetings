@@ -81,7 +81,6 @@ class TranscriptionAnalyzer:
         if self.output == None:
             print("Error: No output available")
 
-
         # print("****JSON*****")
         # print(self.output)
 

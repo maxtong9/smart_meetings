@@ -11,31 +11,26 @@
     </div>
   <% end %>
 
-  <div class=" text-style field">
-    <%= form.label "Meeting Name" %>
-    <%= form.text_field :name, :required => true %>
+  <div class=" text-style field form-label-group">
+    <%= form.text_field :name, class: 'form-control', placeholder: 'Meeting Name', :required => true %>
   </div>
 
   <div class="text-style field">
-    <%= form.label "Number of Participants" %>
-    <%= form.text_field :participants, :required => true %>
+    <%= form.text_field :participants, class: 'form-control', placeholder: 'Participants', :required => true %>
   </div>
-  <div class="user lists">
-    <ul>
-      <% User.all.each do |user| %>
-        <li>
-          <% if user.id == current_user.id %>
-              <%= check_box_tag 'user_ids[]', user.id, true -%>
-              <%= user.first %>
-          <% else %>
-            <%= check_box_tag 'user_ids[]', user.id -%>
-            <%= user.first %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
+
+  <div class="user lists" style="margin: 0 0 0 70px">
+    <% User.all.each do |user| %>
+        <% if user.id == current_user.id %>
+            <%= check_box_tag 'user_ids[]', user.id, true -%>
+            <%= user.name %> <br />
+        <% else %>
+          <%= check_box_tag 'user_ids[]', user.id -%>
+          <%= user.name %> <br />
+        <% end %>
+    <% end %>
   </div>
   <div class="text-style actions">
-    <%= form.submit %>
+    <%= form.submit :Submit, class: 'btn btn-secondary'%>
   </div>
 <% end %>
