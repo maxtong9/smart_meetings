@@ -5,273 +5,288 @@
 <% end %>
 
 <p id="notice"><%= notice %></p>
-<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
-<div class="container-fluid">
-  <div class="row" style="margin: 0 0 0 20px">
-    <div class="col-2.5 col-sm-2.5">
-      <div class="card border-left-primary shadow h-50">
-        <div class="card-body">
-          <h1 style="font-size:40px font-weight:bold"> <%= @meeting.name %> </h1>
-          <p> <h5 style="font-size:15px; font-weight:bold">Participants:</h5>
+<% if @meeting.file.attachments.first != nil %>
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Tangerine">
+  <div class="container-fluid">
+    <div class="row" style="margin: 0 0 0 20px">
+      <div class="col-2.5 col-sm-2.5">
+        <div class="card border-left-primary shadow h-50">
+          <div class="card-body">
+            <h1 style="font-size:40px font-weight:bold"> <%= @meeting.name %> </h1>
+            <p> <h5 style="font-size:15px; font-weight:bold">Participants:</h5>
+                <ul>
+                  <% if !@meeting.user1.nil? %>
+                    <li> <%= User.find(@meeting.user1).name %> </li>
+                  <% end %>
+                  <% if !@meeting.user2.nil? %>
+                    <li> <%= User.find(@meeting.user2).name %> </li>
+                  <% end %>
+                  <% if !@meeting.user3.nil? %>
+                    <li> <%= User.find(@meeting.user3).name %> </li>
+                  <% end %>
+                </ul>
+            </p>
+
+            <p> <h5 style="font-size:15px; font-weight:bold">Attached Files:</h5>
               <ul>
-                <% if !@meeting.user1.nil? %>
-                  <li> <%= User.find(@meeting.user1).name %> </li>
-                <% end %>
-                <% if !@meeting.user2.nil? %>
-                  <li> <%= User.find(@meeting.user2).name %> </li>
-                <% end %>
-                <% if !@meeting.user3.nil? %>
-                  <li> <%= User.find(@meeting.user3).name %> </li>
+                <% for i in 0..@meeting.participants-1 do %>
+                      <li> <%= @meeting.file.attachments[i].filename %> </li>
                 <% end %>
               </ul>
-          </p>
-
-          <p> <h5 style="font-size:15px; font-weight:bold">Attached Files:</h5>
-            <ul>
-              <% if @meeting.file.attachments.first != nil %>
-                  <% for i in 0..@meeting.participants-1 do %>
-                        <li> <%= @meeting.file.attachments[i].filename %> </li>
+            </p>
+            <p> <h5 style="font-size:15px; font-weight:bold">Tags:</h5>
+              <ul>
+                <% if @meeting.file.attachments.first != nil %>
+                  <% for i in hash.keywords do %>
+                        <li> <%= i %> </li>
                   <% end %>
-              <% else %>
-                  <h6> No Attached Files</h6>
-                  <%= render 'upload_form', meeting: @meeting %>
-              <% end %>
-            </ul>
-          </p>
-          <p> <h5 style="font-size:15px; font-weight:bold">Tags:</h5>
-            <ul>
-              <% if @meeting.file.attachments.first != nil %>
-                <% for i in hash.keywords do %>
-                      <li> <%= i %> </li>
                 <% end %>
-              <% end %>
-            </ul>
-          </p>
-          <div class="row no-gutters justify-content-center py-3">
-            <div class="btn btn-outline-secondary btn-style">
-              <%= link_to 'Edit', edit_meeting_path(@meeting), :class => "btn" %>
-            </div>
-            <div class="btn btn-outline-secondary btn-style">
-              <%= link_to 'Back', meetings_path, :class => "btn" %>
+              </ul>
+            </p>
+            <div class="row no-gutters justify-content-center py-3">
+              <div class="btn btn-outline-secondary btn-style">
+                <%= link_to 'Edit', edit_meeting_path(@meeting), :class => "btn" %>
+              </div>
+              <div class="btn btn-outline-secondary btn-style">
+                <%= link_to 'Back', meetings_path, :class => "btn" %>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
 
-    </div>
+      <div class="col" style="margin: 0 0 0 5px">
 
-    <div class="col" style="margin: 0 0 0 5px">
-
-      <% if @meeting.file.attachments.first != nil %>
-          <% participants = [] %>
-          <!-- Summary card -->
-          <div class="card shadow border-left-success mb-4 scroll">
-              <div class="card-header py-2" stlye="font-family: 'Nunito', sans-serif;">
-                 <h6 class="m-0 font-weight-bold">Summary</h6>
-              </div>
-              <div class="card-body">
-                  <% temp = 0 %>
-                  <% p = 0 %>
-                  <% string_s = '' %>
-                  <% for i in hash.summary %>
-                      <% if temp == 0 %>
-                        <% string_s = i[1][0...-1] %>
-                        <% p = i[0] %>
-                        <% temp = temp+1 %>
-                      <% else %>
-                        <% if p == i[0] %>
-                          <% string_s = string_s+ ' ' + i[1][0...-1] %>
-                          <% if temp == hash.summary.length-1 %>
-                            <p> <%= p[0...-1] %>: <%=string_s%></p>
-                            <% if (participants.include? p[0...-1].to_s())== false  %>
-                              <% participants.append(p[0...-1]) %>
-                            <%end%>
-                          <% end %>
-                        <% else %>
-                          <p> <%= p[0...-1] %>: <%=string_s%></p>
-                          <% if (participants.include? p[0...-1].to_s()) == false %>
-                            <% participants.append(p[0...-1]) %>
-                          <%end%>
+        <% if @meeting.file.attachments.first != nil %>
+            <% participants = [] %>
+            <!-- Summary card -->
+            <div class="card shadow border-left-success mb-4 scroll">
+                <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
+                   <h6 class="m-0 font-weight-bold">Summary</h6>
+                </div>
+                <div class="card-body">
+                    <% temp = 0 %>
+                    <% p = 0 %>
+                    <% string_s = '' %>
+                    <% for i in hash.summary %>
+                        <% if temp == 0 %>
                           <% string_s = i[1][0...-1] %>
                           <% p = i[0] %>
+                          <% temp = temp+1 %>
+                        <% else %>
+                          <% if p == i[0] %>
+                            <% string_s = string_s+ ' ' + i[1][0...-1] %>
+                            <% if temp == hash.summary.length-1 %>
+                              <p> <%= p %>: <%=string_s%></p>
+                              <% if (participants.include? p.to_s())== false  %>
+                                <% participants.append(p) %>
+                              <%end%>
+                            <% end %>
+                          <% else %>
+                            <p> <%= p %>: <%=string_s%></p>
+                            <% if (participants.include? p.to_s()) == false %>
+                              <% participants.append(p) %>
+                            <%end%>
+                            <% string_s = i[1][0...-1] %>
+                            <% p = i[0] %>
+                          <% end %>
+                          <% temp = temp+1 %>
                         <% end %>
-                        <% temp = temp+1 %>
+
+                    <% end %>
+
+                  </div>
+              </div>
+
+              <!-- Question card -->
+              <div class="row">
+                <div class="col-lg-4 col-lg-4">
+                  <div class="card border-left-success shadow mb-4">
+                      <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
+                         <h6 class="m-2 font-weight-bold">Speaking Percentages</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="chart-area">
+                          <canvas id="speaker_chart"></canvas>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <% spoken_data = [] %>
+                <% spoken_participants = [] %>
+                <% for entry in hash.total_time_spoken %>
+                 <% spoken_data.push(entry[1].round(2)) %>
+                 <% spoken_participants.push(entry[0]) %>
+                <% end %>
+                <div class="col-lg-4 col-lg-4">
+                  <div class="card border-left-success shadow mb-4">
+                    <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
+                       <h6 class="m-2 font-weight-bold">Action Items Frequency</h6>
+                    </div>
+                      <div class="card-body">
+                        <div class="chart-area">
+                          <canvas id="action_chart"></canvas>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-lg-4">
+                  <div class="card border-left-success shadow mb-4">
+                    <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
+                       <h6 class="m-2 font-weight-bold">Interruptions</h6>
+                    </div>
+                      <div class="card-body">
+                      <div class="chart-area">
+                        <canvas id="interruption_chart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             </div>
+
+            <!-- Action Items card -->
+             <% action_counter = {} %>
+             <div class="row">
+               <div class="col-xl-6 col-lg-4 mb-4">
+                 <div class="card border-left-primary shadow h-100">
+                   <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
+                      <h6 class="m-0 font-weight-bold">Action Items</h6>
+                   </div>
+                     <div class="card-body">
+                       <% if hash.action_items.length != 0 %>
+                         <% for i in hash.action_items %>
+                           <% if action_counter.include? i[0] %>
+                             <% action_counter[i[0]] += 1 %>
+                           <% else %>
+                             <% action_counter[i[0]] = 1 %>
+                           <% end %>
+                           <ul> <li class="li-style"> <%= i[0] %>: <%= i[1][0...-1]%> </li> </ul>
+                         <% end %>
+                       <% else %>
+                         <p> No action items were said during the meeting. </p>
+                       <% end %>
+                   </div>
+                 </div>
+               </div>
+               <% action_data = [] %>
+               <% action_participants = [] %>
+               <% for key in action_counter %>
+                <% action_data.push(key[1]) %>
+                <% action_participants.push(key[0]) %>
+               <% end %>
+               <div class="col-xl-6 col-lg-4 mb-4">
+                 <div class="card border-left-primary shadow h-100">
+                   <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
+                      <h6 class="m-0 font-weight-bold">Questions</h6>
+                   </div>
+                     <div class="card-body">
+                      <% if hash.questions.length != 0 %>
+                        <% for i in hash.questions %>
+                           <ul> <li class="li-style"><%= i[0] %>: <%= i[1]%> </li> </ul>
+                        <% end %>
+                      <% else %>
+                        <p> No questions were asked during the meeting. </p>
+                      <% end %>
+                      </div>
+                 </div>
+                </div>
+             </div>
+
+            <% hesitation_counter = {} %>
+            <% if hash.hesitation_analytics.length != 0 %>
+              <% for i in hash.hesitation_analytics %>
+                <% hesitation_counter[i[0]] = i[1] %>
+              <% end %>
+            <% else %>
+              <p> None </p>
+            <% end %>
+
+            <% hesitation_array = [] %>
+            <% for i in participants %>
+              <% hesitation_array.append(hesitation_counter[i])%>
+            <% end %>
+
+            <% interruption_counter = {} %>
+            <% if hash.interruption.to_s.length != 0 %>
+              <% for i in hash.interruption %>
+                <% interruption_counter[i[0]] = i[1] %>
+              <% end %>
+            <% else %>
+              <p> None </p>
+            <% end %>
+
+            <% interruption_array = [] %>
+            <% if hash.interruption.to_s.length != 0 %>
+              <% for i in participants %>
+                <% if interruption_counter.key?(i) == true %>
+                  <% interruption_array.append(interruption_counter[i])%>
+                <% end %>
+              <% end %>
+            <% end %>
+
+            <% max_number = interruption_array[0] +1*2 %>
+            <!-- Transcription card -->
+            <div class="card shadow mb-4 scroll">
+              <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
+                 <h6 class="m-0 font-weight-bold">Transcription</h6>
+              </div>
+                <div class="card-body">
+                  <% temp1 = 0 %>
+                  <% p1 = '' %>
+                  <% string1 = '' %>
+                  <% time1 = 0 %>
+                  <% time2 = 0 %>
+                  <% for i in hash.raw %>
+                      <% if temp1 == 0 %>
+                        <% string1 = i[1] %>
+                        <% p1 = i[0] %>
+                        <% temp1 = temp1+1 %>
+                        <% time1 = i[2] %>
+                        <% time2 = i[3] %>
+                      <% else %>
+                        <% if p1 == i[0] %>
+                          <% string1 = string1+i[1] %>
+                          <% time2 = i[3] %>
+                          <% if temp1 == hash.raw.length-1 %>
+                            <p><%= p1%> (<%= time1 %>, <%= time2 %>): <%=string1%></p>
+                            <% string1 = '' %>
+                          <% end %>
+                        <% else %>
+                          <p><%= p1%> (<%= time1 %>, <%= time2 %>): <%=string1%></p>
+                          <% string1 = '' %>
+                          <% string1 = i[1] %>
+                          <% p1 = i[0] %>
+                          <% time1 = i[2] %>
+                          <% time2 = i[3] %>
+                        <% end %>
+                        <% temp1 = temp1+1 %>
                       <% end %>
 
                   <% end %>
-
                 </div>
             </div>
-
-            <!-- Question card -->
-            <div class="row">
-              <div class="col-lg-4 col-lg-4">
-                <div class="card border-left-success shadow mb-4">
-                    <div class="card-header py-2" stlye="font-family: 'Nunito', sans-serif;">
-                       <h6 class="m-0 font-weight-bold">Speaking Percentages</h6>
-                    </div>
-                    <div class="card-body">
-                      <div class="chart-area">
-                        <canvas id="speaker_chart"></canvas>
-                      </div>
-                  </div>
-                </div>
-              </div>
-              <% spoken_data = [] %>
-              <% spoken_participants = [] %>
-              <% for entry in hash.total_time_spoken %>
-               <% spoken_data.push(entry[1]) %>
-               <% spoken_participants.push(entry[0][0...-1]) %>
-              <% end %>
-              <div class="col-lg-4 col-lg-4">
-                <div class="card border-left-success shadow mb-4">
-                  <div class="card-header py-2" stlye="font-family: 'Nunito', sans-serif;">
-                     <h6 class="m-0 font-weight-bold">Action Items Frequency</h6>
-                  </div>
-                    <div class="card-body">
-                      <div class="chart-area">
-                        <canvas id="action_chart"></canvas>
-                      </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-lg-4">
-                <div class="card border-left-success shadow mb-4">
-                  <div class="card-header py-2" stlye="font-family: 'Nunito', sans-serif;">
-                     <h6 class="m-0 font-weight-bold">Interruptions</h6>
-                  </div>
-                    <div class="card-body">
-                    <div class="chart-area">
-                      <canvas id="interruption_chart"></canvas>
-                    </div>
-                  </div>
-                </div>
-              </div>
-           </div>
-
-          <!-- Action Items card -->
-           <% action_counter = {} %>
-           <div class="row">
-             <div class="col-xl-6 col-lg-4 mb-4">
-               <div class="card border-left-primary shadow h-100">
-                 <div class="card-header py-2" stlye="font-family: 'Nunito', sans-serif;">
-                    <h6 class="m-0 font-weight-bold">Action Items</h6>
-                 </div>
-                   <div class="card-body">
-                     <% if hash.action_items.length != 0 %>
-                       <% for i in hash.action_items %>
-                         <% if action_counter.include? i[0] %>
-                           <% action_counter[i[0]] += 1 %>
-                         <% else %>
-                           <% action_counter[i[0]] = 1 %>
-                         <% end %>
-                         <ul> <li class="li-style"> <%= i[0] %>: <%= i[1][0...-1]%> </li> </ul>
-                       <% end %>
-                     <% else %>
-                       <p> No action items were said during the meeting. </p>
-                     <% end %>
-                 </div>
-               </div>
-             </div>
-             <% action_data = [] %>
-             <% action_participants = [] %>
-             <% for key in action_counter %>
-              <% action_data.push(key[1]) %>
-              <% action_participants.push(key[0]) %>
-             <% end %>
-
-             <div class="col-xl-6 col-lg-4 mb-4">
-               <div class="card border-left-primary shadow h-100">
-                 <div class="card-header py-2" stlye="font-family: 'Nunito', sans-serif;">
-                    <h6 class="m-0 font-weight-bold">Questions</h6>
-                 </div>
-                   <div class="card-body">
-                    <% if hash.questions.length != 0 %>
-                      <% for i in hash.questions %>
-                         <ul> <li class="li-style"><%= i[0] %>: <%= i[1]%> </li> </ul>
-                      <% end %>
-                    <% else %>
-                      <p> No questions were asked during the meeting. </p>
-                    <% end %>
-                    </div>
-               </div>
-              </div>
-           </div>
-
-          <% hesitation_counter = {} %>
-          <% if hash.hesitation_analytics.length != 0 %>
-            <% for i in hash.hesitation_analytics %>
-              <% hesitation_counter[i[0]] = i[1] %>
-            <% end %>
-          <% else %>
-            <p> None </p>
-          <% end %>
-
-          <% hesitation_array = [] %>
-          <% for i in participants %>
-            <% hesitation_array.append(hesitation_counter[i])%>
-          <% end %>
-
-          <% interruption_counter = {} %>
-          <% if hash.interruption.to_s.length != 0 %>
-            <% for i in hash.hesitation_analytics %>
-              <% interruption_counter[i[0]] = i[1] %>
-            <% end %>
-          <% else %>
-            <p> None </p>
-          <% end %>
-
-          <% interruption_array = [] %>
-          <% if hash.interruption.to_s.length != 0 %>
-            <% for i in participants %>
-              <% interruption_array.append(interruption_counter[i])%>
-            <% end %>
-          <% end %>
-
-          <!-- Transcription card -->
-          <div class="card shadow mb-4 scroll">
-            <div class="card-header py-2" stlye="font-family: 'Nunito', sans-serif;">
-               <h6 class="m-0 font-weight-bold">Transcription</h6>
-            </div>
-              <div class="card-body">
-                <% temp1 = 0 %>
-                <% p1 = '' %>
-                <% string1 = '' %>
-                <% time1 = 0 %>
-                <% time2 = 0 %>
-                <% for i in hash.raw %>
-                    <% if temp1 == 0 %>
-                      <% string1 = i[1] %>
-                      <% p1 = i[0] %>
-                      <% temp1 = temp1+1 %>
-                      <% time1 = i[2] %>
-                      <% time2 = i[3] %>
-                    <% else %>
-                      <% if p1 == i[0] %>
-                        <% string1 = string1+i[1] %>
-                        <% time2 = i[3] %>
-                        <% if temp1 == hash.raw.length-1 %>
-                          <p><%= p1[0...-1]%> (<%= time1 %>, <%= time2 %>): <%=string1%></p>
-                          <% string1 = '' %>
-                        <% end %>
-                      <% else %>
-                        <p><%= p1[0...-1]%> (<%= time1 %>, <%= time2 %>): <%=string1%></p>
-                        <% string1 = '' %>
-                        <% string1 = i[1] %>
-                        <% p1 = i[0] %>
-                        <% time1 = i[2] %>
-                        <% time2 = i[3] %>
-                      <% end %>
-                      <% temp1 = temp1+1 %>
-                    <% end %>
-
-                <% end %>
-              </div>
-          </div>
-      <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% else %>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card shadow my-2">
+        <div class="card-body text-center">
+          <h4 class="text-center"> Upload Meeting Files</h4>
+          <%= render 'upload_form', meeting: @meeting %>
+          <%= link_to 'Back', meetings_path, :class => "btn" %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+<% end %>
 
 <!-- Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -286,7 +301,7 @@
          type: 'doughnut',
          data: {
            datasets: [{
-             data: <%= raw spoken_data %>, //Change data here
+             data: <%= raw spoken_data %>,
              backgroundColor: [
                'rgba(255, 99, 132, 1)',
                'rgba(54, 162, 235, 1)',
@@ -377,7 +392,8 @@
           scales: {
               yAxes: [{
                   ticks: {
-                      beginAtZero: true
+                      beginAtZero: true,
+                      max: <%= raw max_number %>
                   }
               }]
           }
