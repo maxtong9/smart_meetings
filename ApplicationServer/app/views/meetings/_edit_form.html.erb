@@ -26,16 +26,17 @@
         <li>
           <% if user.id == current_user.id %>
               <%= check_box_tag 'user_ids[]', user.id, true -%>
-              <%= user.name %>
+              <%= user.first %>
           <% else %>
             <%= check_box_tag 'user_ids[]', user.id -%>
-            <%= user.name %>
+            <%= user.first %>
           <% end %>
         </li>
       <% end %>
     </ul>
   </div>
-  
+
+
   <%= render 'upload_form', meeting: @meeting %>
 
 <% end %>
