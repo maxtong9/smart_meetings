@@ -145,8 +145,11 @@ class MeetingsController < ApplicationController
     end
 
     def send_to_socket(meeting)
+      require 'open-uri'
       # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
-      hostname = '169.231.189.91' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
+      hostname = open('https://api.ipify.org').read
+      puts hostname
+      # hostname = '169.231.42.157' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)
