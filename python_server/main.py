@@ -3,6 +3,7 @@ import socketserver
 import json
 from transcription_analyzer import TranscriptionAnalyzer
 from s3_access.s3_access import download_file_from_S3, upload_file_to_S3
+from tfidf_model import tokenize
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
 

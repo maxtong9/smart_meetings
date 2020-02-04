@@ -1,6 +1,7 @@
 from transcribe import *
 from text_processor import *
 import json
+from tfidf_model import tokenize
 '''
 Main Class for dealing with Meeting Transcriptions
 
