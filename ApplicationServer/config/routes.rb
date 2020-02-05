@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   get 'welcome', to: 'sessions#welcome'
   get 'logout', to: 'sessions#destroy', as: 'logout'
 
+  post 'meetings/analyze'
+
 end
