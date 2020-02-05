@@ -11,7 +11,7 @@ class MeetingsController < ApplicationController
     @user_meeting5 = Meeting.find_by(id: current_user.meeting_5)
   end
 
-  # GET /meetingss/1
+  # GET /meetings/1
   # GET /meetings/1.json
   def show
     @meeting = Meeting.find(params[:id])
