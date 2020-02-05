@@ -1,11 +1,6 @@
 
 <% if @meeting.file.attachments.first != nil %>
-  <% json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s()) %>
-  <% if json_from_file.nil? %>
-    <% download_file_from_s3('smartmeetingsbelieving', "./tmp" + @meeting.file.attachments.last.filename.to_s(), @meeting.file.attachments.last.filename.to_s()) %>
-    <% json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s()) %>
-  <% end %>
-  <% hash = JSON.parse(json_from_file, object_class: OpenStruct) %>
+  <% hash = JSON.parse(@json_from_file, object_class: OpenStruct) %>
 <% end %>
 
 <p id="notice"><%= notice %></p>
