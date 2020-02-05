@@ -5,11 +5,13 @@ class NotificationsMailer < ApplicationMailer
   #
   #   en.notifications_mailer.meeting_processed.subject
   #
+
   def meeting_processed
-    @greeting = "Hi"
+    @first_name = "name"
+    @meeting_id= "123456789"
     # Get User from params to personalize email
     # Send to user.email
     mail to: "maxginier1@gmail.com",
-      subject: "This is a test." 
+      subject: "Meeting Processed. Your analytics are ready" 
   end
 end
