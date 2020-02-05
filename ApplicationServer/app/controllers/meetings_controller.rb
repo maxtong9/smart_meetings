@@ -119,15 +119,15 @@ class MeetingsController < ApplicationController
     end
 
     def delete_meeting_foreign_key(user)
-      if !user.meeting_1.nil?
+      if user.meeting_1 == @meeting.id
         user.update(meeting_1: nil)
-      elsif !user.meeting_2.nil?
+      elsif user.meeting_2 == @meeting.id
         user.update(meeting_2: nil)
-      elsif !user.meeting_3.nil?
+      elsif user.meeting_3 == @meeting.id
         user.update(meeting_3: nil)
-      elsif !user.meeting_4.nil?
+      elsif user.meeting_4 == @meeting.id
         user.update(meeting_4: nil)
-      elsif !user.meeting_5.nil?
+      elsif user.meeting_5 == @meeting.id
         user.update(meeting_5: nil)
       end
     end
