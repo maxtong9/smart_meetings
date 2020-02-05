@@ -16,6 +16,8 @@ class MeetingsController < ApplicationController
   # GET /meetings/1.json
   def show
     @meeting = Meeting.find(params[:id])
+    download_file_from_s3('smartmeetingsbelieving', "./tmp/" + @meeting.file.attachments.last.filename.to_s(), @meeting.file.attachments.last.filename.to_s())
+    @json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s())
   end
 
   # GET /meetings/new

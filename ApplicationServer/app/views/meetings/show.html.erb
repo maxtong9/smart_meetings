@@ -1,7 +1,6 @@
 
 <% if @meeting.file.attachments.first != nil %>
-  <% json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s()) %>
-  <% hash = JSON.parse(json_from_file, object_class: OpenStruct) %>
+  <% hash = JSON.parse(@json_from_file, object_class: OpenStruct) %>
 <% end %>
 
 <p id="notice"><%= notice %></p>
