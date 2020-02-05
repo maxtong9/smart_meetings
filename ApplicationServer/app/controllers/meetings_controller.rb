@@ -9,6 +9,7 @@ class MeetingsController < ApplicationController
     @user_meeting3 = Meeting.find_by(id: current_user.meeting_3)
     @user_meeting4 = Meeting.find_by(id: current_user.meeting_4)
     @user_meeting5 = Meeting.find_by(id: current_user.meeting_5)
+
   end
 
   # GET /meetings/1
@@ -49,6 +50,7 @@ class MeetingsController < ApplicationController
       if @meeting.update(edit_params)
         send_to_socket(@meeting)
         create_trello_cards()
+        send_email()
         format.html { redirect_to @meeting, notice: 'Meeting was successfully updated.' }
         format.json { render :show, status: :ok, location: @meeting }
       else
@@ -230,5 +232,9 @@ class MeetingsController < ApplicationController
 
         response = http.request(request)
       end
+    end
+    def send_email
+      @notifications_mailer = NotificationsMailer
+      @notifications_mailer.meeting_processed(@meeting).deliver_now
     end
 end
