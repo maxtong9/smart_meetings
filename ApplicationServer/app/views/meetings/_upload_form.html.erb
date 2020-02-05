@@ -1,11 +1,11 @@
 <%= form_with(model: meeting, local: true) do |form| %>
 
   <div class=" text-style field text-center">
-    <%= form.file_field :file, multiple: true, :required => true , :class => "btn"%>
+    <%= form.file_field :my_file, multiple: true, :required => true , :class => "btn"%>
   </div>
 
   <div class="text-style actions text-center">
-    <%= form.submit "Upload Meetings"%>
+    <%= form.submit "Upload Audio Files"%>
   </div>
 
 <% end %>

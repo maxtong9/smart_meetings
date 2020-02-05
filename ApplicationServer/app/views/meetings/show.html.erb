@@ -1,10 +1,9 @@
-
-<% if @meeting.file.attachments.first != nil %>
+<% if @json_from_file != 0 %>
   <% hash = JSON.parse(@json_from_file, object_class: OpenStruct) %>
 <% end %>
 
 <p id="notice"><%= notice %></p>
-<% if @meeting.file.attachments.first != nil %>
+<% if @json_from_file != 0 %>
   <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
   <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Tangerine">
@@ -43,7 +42,7 @@
             </p>
             <p> <h5 style="font-size:15px; font-weight:bold">Tags:</h5>
               <ul>
-                <% if @meeting.file.attachments.first != nil %>
+                <% if @json_from_file != 0 %>
                   <% for i in hash.keywords do %>
                         <li> <%= i %> </li>
                   <% end %>
@@ -65,7 +64,7 @@
 
       <div class="col" style="margin: 0 0 0 5px">
 
-        <% if @meeting.file.attachments.first != nil %>
+        <% if @json_from_file != 0 %>
             <% participants = [] %>
             <!-- Summary card -->
             <div class="card shadow border-left-success mb-4 scroll">
@@ -284,7 +283,13 @@
       <div class="card shadow my-2">
         <div class="card-body text-center">
           <h4 class="text-center"> Upload Meeting Files</h4>
+          <p>
+          <% for file in @meeting.file.attachments do %>
+                 <%= file.filename.to_s() %> <br />
+          <% end %>
+          </p>
           <%= render 'upload_form', meeting: @meeting %>
+          <%= button_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id} %>
           <%= link_to 'Back', meetings_path, :class => "btn" %>
         </div>
       </div>
