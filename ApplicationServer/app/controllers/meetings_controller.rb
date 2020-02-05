@@ -121,17 +121,13 @@ class MeetingsController < ApplicationController
     def delete_meeting_foreign_key(user)
       if !user.meeting_1.nil?
         user.update(meeting_1: nil)
-      end
-      if !user.meeting_2.nil?
+      elsif !user.meeting_2.nil?
         user.update(meeting_2: nil)
-      end
-      if !user.meeting_3.nil?
+      elsif !user.meeting_3.nil?
         user.update(meeting_3: nil)
-      end
-      if !user.meeting_4.nil?
+      elsif !user.meeting_4.nil?
         user.update(meeting_4: nil)
-      end
-      if !user.meeting_5.nil?
+      elsif !user.meeting_5.nil?
         user.update(meeting_5: nil)
       end
     end
