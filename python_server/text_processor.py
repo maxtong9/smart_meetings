@@ -32,8 +32,10 @@ import nltk
 import pickle
 from string import punctuation
 import math
+import dateparser
 from sklearn.feature_extraction.text import TfidfVectorizer
 from tfidf_model import tokenize
+from ordinal_to_cardinal import OrdinalToCardinal
 
 class TextProcessor:
     def __init__(self, rawData):
@@ -43,6 +45,8 @@ class TextProcessor:
         self.KEYWORDS_PERCENTAGE = .05
         # Action Item Keywords (lower)
         self.ACTION_ITEM_KEYWORD = ["action", "item"]
+        # Deadline keyword
+        self.DEADLINE_KEYWORD = "by"
 
         # Hesitation, that occurs in the raw transcription
         self.HESITATION1 = '% HESITATION'
@@ -557,13 +561,79 @@ class TextProcessor:
         #sentence_list = self.removeHesitationFromList(self.raw_data[1])
         actionItems = []
         for sentence in self.raw_data:
+            print("sentence: " + str(sentence))
             words = nltk.word_tokenize(sentence[1])
+            print("words: " + str(words))
+            foundActionItem = False
+            foundDeadline = False
             if len(words) >= 2:
                 for i in range(0, len(words)):
+                    print("word: " + words[i])
                     if words[i] == self.ACTION_ITEM_KEYWORD[0] and words[i+1] == self.ACTION_ITEM_KEYWORD[1]:
-                        actionItems.append([sentence[0], self.removeHesitationFromString(self.joinWordsToSentence(words[i+2:]))])
-                        break
+                        print("FOUND ACTION ITEM")
+                        ai_index = i
+                        dl_index = len(words)
+                        # actionItems.append([sentence[0], self.removeHesitationFromString(self.joinWordsToSentence(words[i+2:]))])
+                        foundActionItem = True
+                        continue
+                        # break
+                    if foundActionItem == True and words[i] == self.DEADLINE_KEYWORD:
+                        print("FOUND DEADLINE")
+                        if i+1 < len(words):
+                            deadline = words[i+1:]
+                            otc = OrdinalToCardinal()
+                            deadline = otc.convert_string(deadline)
+                            print("DEADLINE: " + deadline)
+                            deadline = dateparser.parse(deadline)
+                            if deadline is not None:
+                                deadline = self.format_deadline(deadline)
+                                print("deadline: " + deadline)
+                                foundDeadline = True
+                                dl_index = i
+                                # actionItems[len(actionItems)-1].append(deadline)
+                                # actionItems[len(actionItems)-1][1] = actionItems[len(actionItems)-1][1][0:i]
+                                break
+                if foundActionItem is True:
+                    print("BLEHHHH ")
+                    print(words[ai_index+1:dl_index])
+                    actionItems.append([sentence[0], self.removeHesitationFromString(self.joinWordsToSentence(words[ai_index+2:dl_index]))])
+                    if foundDeadline is True:
+                        actionItems[len(actionItems)-1].append(deadline)
+
+
+        print("action items: " + str(actionItems))
         return actionItems
+
+    '''
+    Helper function that formats a deadline string into a datetime object to be used by the Trello API
+    yyyy-mm-ddThh:mm:ss.s+zzzzzz
+    yyyy: year
+    mm (first): month
+    dd: day
+    T: separator indicating that time-of-day follows
+    hh: hour on a 24-hour clock
+    mm (second): minute
+    ss is whole seconds
+    s (optional): fractional second
+    zzzzzz: time zone
+    '''
+    def format_deadline(self, deadline):
+        year = deadline.year
+        month = deadline.month
+        day = deadline.day
+
+        datetime = str(year) + "-"
+        if month < 10:
+            datetime += "0"
+        datetime += str(month) + "-"
+        if day < 10:
+            datetime += "0"
+        datetime += str(day)
+
+        datetime += "T12:00:00-08:00"
+
+        return datetime
+    
     '''
     Helper Function for getQuestionList (formats properly to be classified)
     '''

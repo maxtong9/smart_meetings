@@ -224,7 +224,13 @@ class MeetingsController < ApplicationController
         member = JSON.parse(member_json)
         member_id = member['id']
 
-        url = URI("#{trello_url}/cards?name=#{card_name}&desc=#{card_description}&idList=#{list_id}&idMembers=#{member_id}&key=#{trello_key}&token=#{trello_token}")
+        if i.size() == 3
+          deadline = i[2]
+          puts "RUBY DEADLINE: " + deadline
+          url = URI("#{trello_url}/cards?name=#{card_name}&desc=#{card_description}&idList=#{list_id}&idMembers=#{member_id}&due=#{deadline}&key=#{trello_key}&token=#{trello_token}")
+        else
+          url = URI("#{trello_url}/cards?name=#{card_name}&desc=#{card_description}&idList=#{list_id}&idMembers=#{member_id}&key=#{trello_key}&token=#{trello_token}")
+        end
 
         http = Net::HTTP.new(url.host, url.port)
         http.use_ssl = true
@@ -233,6 +239,8 @@ class MeetingsController < ApplicationController
         request = Net::HTTP::Post.new(url)
 
         response = http.request(request)
+
+        puts response
       end
     end
 end
