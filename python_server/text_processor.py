@@ -109,7 +109,6 @@ class TextProcessor:
                 total_keywords -= 1
             else:
                 break
-        print(keywords)
         return keywords
 
 
@@ -145,7 +144,7 @@ class TextProcessor:
 
         for word in nltk.word_tokenize(raw_text):
             try:
-                if word in self.stopwords:
+                if word in self.stopwords or word == "action" or word == "item":
                     continue
                 tfidf_scores[word] = X[0, tfidf.vocabulary_[word]]
                 # tfidf_scores.append((word, X[0, tfidf.vocabulary_[word]]))
