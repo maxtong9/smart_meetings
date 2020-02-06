@@ -35,7 +35,7 @@ import math
 import dateparser
 from sklearn.feature_extraction.text import TfidfVectorizer
 from tfidf_model import tokenize
-from ordinal_to_cardinal import OrdinalToCardinal
+from word_to_num import WordToNum
 
 class TextProcessor:
     def __init__(self, rawData):
@@ -46,7 +46,7 @@ class TextProcessor:
         # Action Item Keywords (lower)
         self.ACTION_ITEM_KEYWORD = ["action", "item"]
         # Deadline keyword
-        self.DEADLINE_KEYWORD = "by"
+        self.DEADLINE_KEYWORD = ["by", "in", "on"]
 
         # Hesitation, that occurs in the raw transcription
         self.HESITATION1 = '% HESITATION'
@@ -577,11 +577,14 @@ class TextProcessor:
                         foundActionItem = True
                         continue
                         # break
-                    if foundActionItem == True and words[i] == self.DEADLINE_KEYWORD:
+                    if foundActionItem == True and words[i] in self.DEADLINE_KEYWORD:
                         print("FOUND DEADLINE")
                         if i+1 < len(words):
-                            deadline = words[i+1:]
-                            otc = OrdinalToCardinal()
+                            if words[i] == self.DEADLINE_KEYWORD[1]:
+                                deadline = words[i:] # "in" keyword
+                            else:
+                                deadline = words[i+1:] # "by" keyword
+                            otc = WordToNum()
                             deadline = otc.convert_string(deadline)
                             print("DEADLINE: " + deadline)
                             deadline = dateparser.parse(deadline)
