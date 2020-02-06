@@ -609,12 +609,13 @@ class TextProcessor:
         questionList = []
         for sentence in self.raw_data:
             classification = classifier.classify(self.dialogue_act_features(sentence[1]))
+            sent = sentence[1][:-2] + '?'
             if classification == 'whQuestion':
-                questionList.append([sentence[0], sentence[1]])
+                questionList.append([sentence[0], sent])
                 continue
             starting_word = nltk.word_tokenize(sentence[1])[0].lower()
             if starting_word in self.questionStarters:
-                questionList.append([sentence[0], sentence[1]])
+                questionList.append([sentence[0], sent])
         return questionList
 
     '''
