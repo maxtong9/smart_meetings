@@ -1,12 +1,9 @@
 <%= form_with(model: meeting, local: true) do |form| %>
 
-  <!-- <form>
-    <div class="form-group btn btn-outline-secondary">
-      <input type="file" class="form-control-file" required="true" multiple="true">
-    </div>
-  </form> -->
   <div class="row py-2" style="margin:0 0 0 40px;">
     <%= form.file_field :file, multiple: true, required:true %>
+  </div>
+
   </div>
   <table class="table w-auto table-borderless mb-0 span2">
     <tr class="row">

@@ -15,6 +15,13 @@ class MeetingsController < ApplicationController
   # GET /meetings/1.json
   def show
     @meeting = Meeting.find(params[:id])
+    @json_from_file = 0
+    for file in @meeting.file.attachments
+      if file.content_type == 'application/json'
+        download_file_from_s3('smartmeetingsbelieving', "./tmp/" + file.filename.to_s(), file.filename.to_s())
+        @json_from_file = File.read("tmp/" + file.filename.to_s())
+      end
+    end
   end
 
   # GET /meetings/new
@@ -42,13 +49,20 @@ class MeetingsController < ApplicationController
     add_user_meeting_relation
   end
 
+  def analyze
+    @meeting = Meeting.find_by(id: params[:id])
+    send_to_socket(@meeting)
+    create_trello_cards()
+    send_email()
+    redirect_to @meeting
+  end
+
   # PATCH/PUT /meetings/1
   # PATCH/PUT /meetings/1.json
   def update
     respond_to do |format|
       if @meeting.update(edit_params)
-        send_to_socket(@meeting)
-        create_trello_cards()
+        @meeting.file.attach(params[:meeting][:my_file])
         format.html { redirect_to @meeting, notice: 'Meeting was successfully updated.' }
         format.json { render :show, status: :ok, location: @meeting }
       else
@@ -119,19 +133,15 @@ class MeetingsController < ApplicationController
     end
 
     def delete_meeting_foreign_key(user)
-      if !user.meeting_1.nil?
+      if user.meeting_1 == @meeting.id
         user.update(meeting_1: nil)
-      end
-      if !user.meeting_2.nil?
+      elsif user.meeting_2 == @meeting.id
         user.update(meeting_2: nil)
-      end
-      if !user.meeting_3.nil?
+      elsif user.meeting_3 == @meeting.id
         user.update(meeting_3: nil)
-      end
-      if !user.meeting_4.nil?
+      elsif user.meeting_4 == @meeting.id
         user.update(meeting_4: nil)
-      end
-      if !user.meeting_5.nil?
+      elsif user.meeting_5 == @meeting.id
         user.update(meeting_5: nil)
       end
     end
@@ -233,6 +243,19 @@ class MeetingsController < ApplicationController
         request = Net::HTTP::Post.new(url)
 
         response = http.request(request)
+      end
+    end
+    def send_email
+      @notifications_mailer = NotificationsMailer
+
+      if !@meeting.user1.nil?
+        @notifications_mailer.meeting_processed(User.find_by(id: @meeting.user1)).deliver_now
+      end
+      if !@meeting.user2.nil?
+        @notifications_mailer.meeting_processed(User.find_by(id: @meeting.user2)).deliver_now
+      end
+      if !@meeting.user3.nil?
+        @notifications_mailer.meeting_processed(User.find_by(id: @meeting.user3)).deliver_now
       end
     end
 end
