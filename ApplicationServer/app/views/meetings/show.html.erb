@@ -12,10 +12,10 @@
   <div class="container-fluid">
     <div class="row" style="margin: 0 0 0 20px">
       <div class="col-2.5 col-sm-2.5">
-        <div class="card border-left-primary shadow h-50">
+        <div class="card border-left-primary shadow h-100">
           <div class="card-body">
-            <h1 style="font-size:40px font-weight:bold"> <%= @meeting.name %> </h1>
-            <p> <h5 style="font-size:15px; font-weight:bold">Participants:</h5>
+            <h1> <%= @meeting.name %> </h1>
+            <h3>Participants:</h3>
                 <ul>
                   <% if !@meeting.user1.nil? %>
                     <li> <%= User.find(@meeting.user1).first %> </li>
@@ -27,9 +27,9 @@
                     <li> <%= User.find(@meeting.user3).first %> </li>
                   <% end %>
                 </ul>
-            </p>
 
-            <p> <h5 style="font-size:15px; font-weight:bold">Attached Files:</h5>
+
+            <h3>Attached Files:</h3>
               <ul>
                 <% if !@meeting.user1.nil? %>
                   <li> <%= User.find(@meeting.user1).first %> </li>
@@ -41,8 +41,8 @@
                   <li> <%= User.find(@meeting.user3).first %> </li>
                 <% end %>
               </ul>
-            </p>
-            <p> <h5 style="font-size:15px; font-weight:bold">Tags:</h5>
+
+            <h3>Tags:</h3>
               <ul>
                 <% if @meeting.file.attachments.first != nil %>
                   <% for i in hash.keywords do %>
@@ -50,15 +50,13 @@
                   <% end %>
                 <% end %>
               </ul>
-            </p>
-            <div class="row no-gutters justify-content-center py-3">
-              <div class="btn btn-outline-secondary btn-style">
-                <%= link_to 'Edit', edit_meeting_path(@meeting), :class => "btn" %>
-              </div>
-              <div class="btn btn-outline-secondary btn-style">
-                <%= link_to 'Back', meetings_path, :class => "btn" %>
-              </div>
-            </div>
+
+            <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 0 20px;">
+              <tr class="row">
+                <td><%= link_to 'Edit', edit_meeting_path(@meeting), class:"btn btn-outline-secondary btn-md" %> </td>
+                <td><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary btn-md" %> </td>
+              </tr>
+            </table>
           </div>
         </div>
 
@@ -70,8 +68,8 @@
             <% participants = [] %>
             <!-- Summary card -->
             <div class="card shadow border-left-success mb-4 scroll">
-                <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
-                   <h6 class="m-0 font-weight-bold">Summary</h6>
+                <div class="card-header py-2">
+                   <h4 class="m-0 ">Summary</h4>
                 </div>
                 <div class="card-body">
                     <% temp = 0 %>
@@ -111,8 +109,8 @@
               <div class="row">
                 <div class="col-lg-4 col-lg-4">
                   <div class="card border-left-success shadow mb-4">
-                      <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
-                         <h6 class="m-2 font-weight-bold">Speaking Percentages</h6>
+                      <div class="card-header py-2">
+                         <h4 class="m-2 ">Speaking Percentages</h4>
                       </div>
                       <div class="card-body">
                         <div class="chart-area">
@@ -129,8 +127,8 @@
                 <% end %>
                 <div class="col-lg-4 col-lg-4">
                   <div class="card border-left-success shadow mb-4">
-                    <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
-                       <h6 class="m-2 font-weight-bold">Action Items Frequency</h6>
+                    <div class="card-header py-2">
+                       <h4 class="m-2 ">Action Items Frequency</h4>
                     </div>
                       <div class="card-body">
                         <div class="chart-area">
@@ -141,8 +139,8 @@
                 </div>
                 <div class="col-lg-4 col-lg-4">
                   <div class="card border-left-success shadow mb-4">
-                    <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
-                       <h6 class="m-2 font-weight-bold">Interruptions</h6>
+                    <div class="card-header py-2">
+                       <h4 class="m-2 ">Interruptions</h4>
                     </div>
                       <div class="card-body">
                       <div class="chart-area">
@@ -158,8 +156,8 @@
              <div class="row">
                <div class="col-xl-6 col-lg-4 mb-4">
                  <div class="card border-left-primary shadow h-100">
-                   <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
-                      <h6 class="m-0 font-weight-bold">Action Items</h6>
+                   <div class="card-header py-2">
+                      <h4 class="m-0 ">Action Items</h4>
                    </div>
                      <div class="card-body">
                        <% if hash.action_items.length != 0 %>
@@ -178,15 +176,14 @@
                  </div>
                </div>
                <% action_data = [] %>
-               <% action_participants = [] %>
-               <% for key in action_counter %>
-                <% action_data.push(key[1]) %>
-                <% action_participants.push(key[0]) %>
+
+               <% for i in participants %>
+                <% action_data.push(action_counter[i]) %>
                <% end %>
                <div class="col-xl-6 col-lg-4 mb-4">
                  <div class="card border-left-primary shadow h-100">
-                   <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
-                      <h6 class="m-0 font-weight-bold">Questions</h6>
+                   <div class="card-header py-2">
+                      <h4 class="m-0 ">Questions</h4>
                    </div>
                      <div class="card-body">
                       <% if hash.questions.length != 0 %>
@@ -232,12 +229,15 @@
                 <% end %>
               <% end %>
             <% end %>
+            <% if interruption_array.length == 0 %>
+              <%interruption_array.append(0)%>
+            <% end %>
 
-            <% max_number = interruption_array[0] +1*2 %>
+            <% max_number = (interruption_array[0]+1)*2 %>
             <!-- Transcription card -->
             <div class="card shadow mb-4 scroll">
-              <div class="card-header py-2" style="font-family: 'Nunito', sans-serif;">
-                 <h6 class="m-0 font-weight-bold">Transcription</h6>
+              <div class="card-header py-2">
+                 <h4 class="m-0 ">Transcription</h4>
               </div>
                 <div class="card-body">
                   <% temp1 = 0 %>
@@ -280,16 +280,15 @@
   </div>
 <% else %>
 <div class="container">
-  <div class="row">
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+  <div class="row justify-content-center">
+    <!-- <div class="col-sm-9 col-md-7 col-lg-5 mx-auto"> -->
       <div class="card shadow my-2">
         <div class="card-body text-center">
-          <h4 class="text-center"> Upload Meeting Files</h4>
+          <h1 class="card-title text-center">Upload Meeting Files</h1>
           <%= render 'upload_form', meeting: @meeting %>
-          <%= link_to 'Back', meetings_path, :class => "btn" %>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </div>
 <% end %>
@@ -309,16 +308,16 @@
            datasets: [{
              data: <%= raw spoken_data %>,
              backgroundColor: [
-               'rgba(255, 99, 132, 1)',
-               'rgba(54, 162, 235, 1)',
-               'rgba(255, 206, 86, 1)',
-               'rgba(75, 192, 192, 1)',
-               'rgba(153, 102, 255, 1)',
-               'rgba(255, 159, 64, 1)'
+             'rgba(255, 99, 132, 1)',
+             'rgba(54, 162, 235, 1)',
+             'rgba(255, 206, 86, 1)',
+             'rgba(75, 192, 192, 1)',
+             'rgba(153, 102, 255, 1)',
+             'rgba(255, 159, 64, 1)'
              ],
              label: 'Dataset 1'
            }],
-           labels: <%= raw spoken_participants %>
+           labels: participants
          },
          options: {
            maintainAspectRatio: false,
@@ -350,7 +349,7 @@
           ],
           label: 'Dataset 1'
         }],
-        labels: <%= raw action_participants %>
+        labels: participants
       },
       options: {
         maintainAspectRatio: false,
