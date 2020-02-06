@@ -65,11 +65,9 @@
                   <h3> Participants: <%=participants2%> </h3>
                   <h3> Duration: <%= hash2.meeting_time %> </h3>
                   <h3> Tags:
-                    <ul>
                       <% for i in hash2.keywords %>
-                        <li> <%= i %> </li>
+                        <span class="badge badge-pill badge-secondary"><%= i %></span>
                       <% end %>
-                    </ul>
                   </h3>
                 <% else %>
                   <h3> No files were uploaded yet <h3>
@@ -109,11 +107,9 @@
                   <h3> Participants: <%=participants3%> </h3>
                   <h3> Duration: <%= hash3.meeting_time %> </h3>
                   <h3> Tags:
-                    <ul>
                       <% for i in hash3.keywords %>
-                        <li> <%= i %> </li>
+                        <span class="badge badge-pill badge-secondary"><%= i %></span>
                       <% end %>
-                    </ul>
                   </h3>
                 <% else %>
                   <h3> No files were uploaded yet <h3>
@@ -155,11 +151,9 @@
                     <h3> Participants: <%=participants4%> </h3>
                     <h3> Duration: <%= hash4.meeting_time %> </h3>
                     <h3> Tags:
-                      <ul>
                         <% for i in hash4.keywords %>
-                          <li> <%= i %> </li>
+                          <span class="badge badge-pill badge-secondary"><%= i %></span>
                         <% end %>
-                      </ul>
                     </h3>
                   <% else %>
                     <h3> No files were uploaded yet <h3>
@@ -199,11 +193,9 @@
                     <h3> Participants: <%=participants5%> </h3>
                     <h3> Duration: <%= hash5.meeting_time %> </h3>
                     <h3> Tags:
-                      <ul>
                         <% for i in hash5.keywords %>
-                          <li> <%= i %> </li>
+                          <span class="badge badge-pill badge-secondary"><%= i %></span>
                         <% end %>
-                      </ul>
                     </h3>
                   <% else %>
                     <h3> No files were uploaded yet <h3>
