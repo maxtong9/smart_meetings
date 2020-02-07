@@ -1,11 +1,15 @@
 <%= form_with(model: meeting, local: true) do |form| %>
 
-  <div class=" text-style field text-center">
-    <%= form.file_field :my_file, multiple: true, :required => true , :class => "btn"%>
+  <div class="row py-2" style="margin:0 0 0 40px;">
+    <%= form.file_field :file, multiple: true, required:true %>
   </div>
 
-  <div class="text-style actions text-center">
-    <%= form.submit "Upload Audio Files"%>
   </div>
+  <table class="table w-auto table-borderless mb-0 span2">
+    <tr class="row">
+      <td style="width: 65%"><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary" %></td>
+      <td style="width: 35%"> <%= form.submit "Upload Meetings", class:'btn btn-outline-secondary'%></td>
+    </tr>
+  </table>
 
 <% end %>

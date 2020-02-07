@@ -1,68 +1,39 @@
-// Place all the styles related to the Meetings controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
-// body {
-//   background-color:#D2D2D2;
-// }
-
+// // Place all the styles related to the Meetings controller here.
+// // They will automatically be included in application.css.
+// // You can use Sass (SCSS) here: http://sass-lang.com/
+//
+// // body {
+// //   background-color:#D2D2D2;
+// // }
+//
 h1 {
-  font-family: 'Nunito', serif;
   color:#737373;
   font-weight: 'bold';
+  font-size: 30px;
 }
 
-h5 {
-  margin: 0 0 0 15px;
-  font-family: 'Nunito', sans-serif;
+h2 {
   color:#737373;
+  font-size: 25px !important;
+}
+
+h3 {
+  padding-left: 20px;
+  color:#737373;
+  font-size: 18px !important;
+}
+
+h4 {
+  color:#737373;
+  font-size: 18px !important;
 }
 
 p {
-  margin: 20px 30px;
-  font-family: 'Nunito', sans-serif;
   color:#737373;
+  font-size: 15px !important;
 }
 
 li {
-  margin: 0 0 0 10px;
-  font-family: 'Nunito', sans-serif;
   color:#737373;
-  font-size: 15px;
-}
-
-h6 {
-  margin: 0 0 0 10px;
-  font-family: 'Nunito', sans-serif;
-  color:#5cdb95 !important;
-  font-size: 10px;
-}
-
-table {
-  margin:5px 60px;
-}
-
-.scroll {
-    max-height: 200px;
-    overflow: auto;
-}
-
-.btn-style{
-  color:#5cdb95 !important;
-  margin-left:5px;
-}
-.text-style {
-  margin:5px 60px;
-}
-
-.li-style {
-  margin-left: 15px;
-  line-height: 14px;
-  font-family: 'Nunito', sans-serif;
-  color:#737373;
-  font-size:15px;
-}
-
-.a-style {
-  margin-left: 50px;
+  font-size: 15px !important;
 }

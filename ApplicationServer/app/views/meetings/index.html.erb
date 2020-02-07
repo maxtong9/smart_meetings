@@ -1,59 +1,231 @@
 <p id="notice"><%= notice %></p>
-
-<h1>Meetings</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-      <% if @user_meeting1 != nil %>
-      <tr>
-        <td><%= @user_meeting1.name %></td>
-        <td><%= link_to 'Show', @user_meeting1 %></td>
-        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting1) %></td>
-        <td><%= link_to 'Destroy', @user_meeting1, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-      <% end %>
-      <% if @user_meeting2 != nil %>
-      <tr>
-        <td><%= @user_meeting2.name %></td>
-        <td><%= link_to 'Show', @user_meeting2 %></td>
-        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting2) %></td>
-        <td><%= link_to 'Destroy', @user_meeting2, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-      <% end %>
-      <% if @user_meeting3 != nil %>
-      <tr>
-        <td><%= @user_meeting3.name %></td>
-        <td><%= link_to 'Show', @user_meeting3 %></td>
-        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting3) %></td>
-        <td><%= link_to 'Destroy', @user_meeting3, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-      <% end %>
+<div class="container-fluid">
+  <div id="textbox">
+    <h1 style="float:left;">Meetings</h1>
+    <div style="float:right">  <%= link_to 'Create Meeting', new_meeting_path, class:"btn btn-secondary", style:"color:white;"%></div>
+    <div style="clear: both;"></div>
+  </div>
+  <div class="row mt-3 mb-4">
+    <% if @user_meeting1 != nil %>
+        <div class="col-auto">
+          <div class="card shadow mb-2 h-100" style="width: 21rem;">
+              <div class="card-header py-2">
+                 <h2 class="m-2"><%= @user_meeting1.name %></h2>
+              </div>
+              <div class="card-body">
+                <% if @user_meeting1.file.attachments.first != nil %>
+                  <% json_from_file = File.read("tmp/" + @user_meeting1.file.attachments.last.filename.to_s()) %>
+                  <% hash1 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                  <% participants1 = "" %>
+                  <% for i in hash1.total_time_spoken %>
+                    <% participants1 = participants1 + i[0].to_s() + " " %>
+                  <% end %>
+                  <h3> Participants: <%=participants1%> </h3>
+                  <h3> Duration: <%= hash1.meeting_time %> </h3>
+                  <h3> Tags:
+                    <% for i in hash1.keywords %>
+                      <span class="badge badge-pill badge-secondary"><%= i %></span>
+                    <% end %>
+                  </h3>
+                <% else %>
+                  <h3> No files were uploaded yet <h3>
+                <% end %>
+            </div>
+            <div class="card-footer bg-transparent border-0 text-center mb-3">
+              <% if @user_meeting1.file.attachments.first != nil %>
+                <tr>
+                  <td><%= link_to 'Show', @user_meeting1, class:"btn btn-outline-secondary btn-md"%></td>
+                  <td><%= link_to 'Edit', edit_meeting_path(@user_meeting1), class:"btn btn-outline-secondary btn-md"%></td>
+                  <td><%= link_to 'Destroy', @user_meeting1, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                </tr>
+              <% else %>
+                  <tr>
+                    <td><%= link_to "Upload Files", @user_meeting1, class:"btn btn-outline-secondary btn-md"%></td>
+                    <td><%= link_to 'Destroy', @user_meeting1, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+              <% end %>
+            </div>
+          </div>
+        </div>
+    <% end %>
+    <% if @user_meeting2 != nil %>
+          <div class="col-auto">
+            <div class="card shadow mb-2 h-100" style="width: 21rem;">
+              <div class="card-header py-2">
+                 <h2 class="m-2"><%= @user_meeting2.name %></h2>
+              </div>
+              <div class="card-body">
+                <% if @user_meeting2.file.attachments.first != nil %>
+                  <% json_from_file = File.read("tmp/" + @user_meeting2.file.attachments.last.filename.to_s()) %>
+                  <% hash2 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                  <% participants2 = "" %>
+                  <% for i in hash2.total_time_spoken %>
+                    <% participants2 = participants2 + i[0].to_s() + " " %>
+                  <% end %>
+                  <h3> Participants: <%=participants2%> </h3>
+                  <h3> Duration: <%= hash2.meeting_time %> </h3>
+                  <h3> Tags:
+                    <ul>
+                      <% for i in hash2.keywords %>
+                        <li> <%= i %> </li>
+                      <% end %>
+                    </ul>
+                  </h3>
+                <% else %>
+                  <h3> No files were uploaded yet <h3>
+                <% end %>
+            </div>
+            <div class="card-footer bg-transparent border-0 text-center mb-3">
+              <% if @user_meeting2.file.attachments.first != nil %>
+                <tr>
+                  <td><%= link_to 'Show', @user_meeting2, class:"btn btn-outline-secondary btn-md"%></td>
+                  <td><%= link_to 'Edit', edit_meeting_path(@user_meeting2), class:"btn btn-outline-secondary btn-md"%></td>
+                  <td><%= link_to 'Destroy', @user_meeting2, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                </tr>
+              <% else %>
+                  <tr>
+                    <td><%= link_to "Upload Files", @user_meeting2, class:"btn btn-outline-secondary btn-md"%></td>
+                    <td><%= link_to 'Destroy', @user_meeting2, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+              <% end %>
+            </div>
+          </div>
+        </div>
+    <% end %>
+    <% if @user_meeting3 != nil %>
+        <div class="col-auto">
+          <div class="card shadow mb-2 h-100" style="width: 21rem;">
+              <div class="card-header py-2">
+                 <h2 class="m-2"><%= @user_meeting3.name %></h2>
+              </div>
+              <div class="card-body">
+                <% if @user_meeting3.file.attachments.first != nil %>
+                  <% json_from_file = File.read("tmp/" + @user_meeting3.file.attachments.last.filename.to_s()) %>
+                  <% hash3 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                  <% participants3 = "" %>
+                  <% for i in hash3.total_time_spoken %>
+                    <% participants3 = participants3 + i[0].to_s() + " " %>
+                  <% end %>
+                  <h3> Participants: <%=participants3%> </h3>
+                  <h3> Duration: <%= hash3.meeting_time %> </h3>
+                  <h3> Tags:
+                    <ul>
+                      <% for i in hash3.keywords %>
+                        <li> <%= i %> </li>
+                      <% end %>
+                    </ul>
+                  </h3>
+                <% else %>
+                  <h3> No files were uploaded yet <h3>
+                <% end %>
+            </div>
+            <div class="card-footer bg-transparent border-0 text-center mb-3">
+              <% if @user_meeting3.file.attachments.first != nil %>
+                <tr>
+                  <td><%= link_to 'Show', @user_meeting3, class:"btn btn-outline-secondary btn-md"%></td>
+                  <td><%= link_to 'Edit', edit_meeting_path(@user_meeting3), class:"btn btn-outline-secondary btn-md"%></td>
+                  <td><%= link_to 'Destroy', @user_meeting3, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                </tr>
+              <% else %>
+                  <tr>
+                    <td><%= link_to "Upload Files", @user_meeting3, class:"btn btn-outline-secondary btn-md"%></td>
+                    <td><%= link_to 'Destroy', @user_meeting3, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+              <% end %>
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+  <div class="row mt-3 mb-4">
       <% if @user_meeting4 != nil %>
-      <tr>
-        <td><%= @user_meeting4.name %></td>
-        <td><%= link_to 'Show', @user_meeting4 %></td>
-        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting4) %></td>
-        <td><%= link_to 'Destroy', @user_meeting4, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+          <div class="col-auto">
+            <div class="card shadow mb-2 h-100" style="width: 21rem;">
+                <div class="card-header py-2">
+                   <h2 class="m-2"><%= @user_meeting4.name %></h2>
+                </div>
+                <div class="card-body">
+                  <% if @user_meeting4.file.attachments.first != nil %>
+                    <% json_from_file = File.read("tmp/" + @user_meeting4.file.attachments.last.filename.to_s()) %>
+                    <% hash4 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                    <% participants4 = "" %>
+                    <% for i in hash4.total_time_spoken %>
+                      <% participants4 = participants4 + i[0].to_s() + " " %>
+                    <% end %>
+                    <h3> Participants: <%=participants4%> </h3>
+                    <h3> Duration: <%= hash4.meeting_time %> </h3>
+                    <h3> Tags:
+                      <ul>
+                        <% for i in hash4.keywords %>
+                          <li> <%= i %> </li>
+                        <% end %>
+                      </ul>
+                    </h3>
+                  <% else %>
+                    <h3> No files were uploaded yet <h3>
+                  <% end %>
+              </div>
+              <div class="card-footer bg-transparent border-0 text-center mb-3">
+                <% if @user_meeting4.file.attachments.first != nil %>
+                  <tr>
+                    <td><%= link_to 'Show', @user_meeting4, class:"btn btn-outline-secondary btn-md"%></td>
+                    <td><%= link_to 'Edit', edit_meeting_path(@user_meeting4), class:"btn btn-outline-secondary btn-md"%></td>
+                    <td><%= link_to 'Destroy', @user_meeting4, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+                <% else %>
+                    <tr>
+                      <td><%= link_to "Upload Files", @user_meeting4, class:"btn btn-outline-secondary btn-md"%></td>
+                      <td><%= link_to 'Destroy', @user_meeting4, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    </tr>
+                <% end %>
+              </div>
+            </div>
+          </div>
       <% end %>
       <% if @user_meeting5 != nil %>
-      <tr>
-        <td><%= @user_meeting5.name %></td>
-        <td><%= link_to 'Show', @user_meeting5 %></td>
-        <td><%= link_to 'Edit', edit_meeting_path(@user_meeting5) %></td>
-        <td><%= link_to 'Destroy', @user_meeting5, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+          <div class="col-auto">
+            <div class="card shadow mb-2 h-100" style="width: 21rem;">
+                <div class="card-header py-2">
+                   <h2 class="m-2"><%= @user_meeting5.name %></h2>
+                </div>
+                <div class="card-body">
+                  <% if @user_meeting5.file.attachments.first != nil %>
+                    <% json_from_file = File.read("tmp/" + @user_meeting2.file.attachments.last.filename.to_s()) %>
+                    <% hash5 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                    <% participants5 = "" %>
+                    <% for i in hash5.total_time_spoken %>
+                      <% participants5 = participants5 + i[0].to_s() + " " %>
+                    <% end %>
+                    <h3> Participants: <%=participants5%> </h3>
+                    <h3> Duration: <%= hash5.meeting_time %> </h3>
+                    <h3> Tags:
+                      <ul>
+                        <% for i in hash5.keywords %>
+                          <li> <%= i %> </li>
+                        <% end %>
+                      </ul>
+                    </h3>
+                  <% else %>
+                    <h3> No files were uploaded yet <h3>
+                  <% end %>
+              </div>
+              <div class="card-footer bg-transparent border-0 text-center mb-3">
+                <% if @user_meeting5.file.attachments.first != nil %>
+                  <tr>
+                    <td><%= link_to 'Show', @user_meeting5, class:"btn btn-outline-secondary btn-md"%></td>
+                    <td><%= link_to 'Edit', edit_meeting_path(@user_meeting5), class:"btn btn-outline-secondary btn-md"%></td>
+                    <td><%= link_to 'Destroy', @user_meeting5, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+                <% else %>
+                    <tr>
+                      <td><%= link_to "Upload Files", @user_meeting5, class:"btn btn-outline-secondary btn-md"%></td>
+                      <td><%= link_to 'Destroy', @user_meeting5, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    </tr>
+                <% end %>
+              </div>
+            </div>
+          </div>
       <% end %>
-  </tbody>
-</table>
 
-<br>
-
-<%= link_to 'New Meeting', new_meeting_path, {:style=>'margin:5px 60px;', :class => "css_class"}%>
+    </div>
+</div>
