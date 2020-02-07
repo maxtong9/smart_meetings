@@ -13,22 +13,28 @@
                  <h2 class="m-2"><%= @user_meeting1.name %></h2>
               </div>
               <div class="card-body">
-                <% if @user_meeting1.file.attachments.first != nil %>
-                  <% json_from_file = File.read("tmp/" + @user_meeting1.file.attachments.last.filename.to_s()) %>
-                  <% hash1 = JSON.parse(json_from_file, object_class: OpenStruct) %>
-                  <% participants1 = "" %>
-                  <% for i in hash1.total_time_spoken %>
-                    <% participants1 = participants1 + i[0].to_s() + " " %>
-                  <% end %>
-                  <h3> Participants: <%=participants1%> </h3>
-                  <h3> Duration: <%= hash1.meeting_time %> </h3>
-                  <h3> Tags:
-                    <% for i in hash1.keywords %>
-                      <span class="badge badge-pill badge-secondary"><%= i %></span>
+                <% analyzed_1 = false %>
+                <% for file in @user_meeting1.file.attachments %>
+                  <% if file.content_type == 'application/json' %>
+                    <% analyzed_1 = true %>
+                    <% download_file_from_s3('smartmeetingsbelieving', "./tmp/" + file.filename.to_s(), file.filename.to_s()) %>
+                    <% json_from_file = File.read("tmp/" + file.filename.to_s()) %>
+                    <% hash1 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                    <% participants1 = "" %>
+                    <% for i in hash1.total_time_spoken %>
+                      <% participants1 = participants1 + i[0].to_s() + " " %>
                     <% end %>
-                  </h3>
-                <% else %>
-                  <h3> No files were uploaded yet <h3>
+                    <h3> Participants: <%=participants1%> </h3>
+                    <h3> Duration: <%= hash1.meeting_time %> </h3>
+                    <h3> Tags:
+                      <% for i in hash1.keywords %>
+                        <span class="badge badge-pill badge-secondary"><%= i %></span>
+                      <% end %>
+                    </h3>
+                  <% end %>
+                <% end %>
+                <% if !analyzed_1 %>
+                  <h3> Not Yet Analyzed </h3>
                 <% end %>
             </div>
             <div class="card-footer bg-transparent border-0 text-center mb-3">
@@ -55,24 +61,28 @@
                  <h2 class="m-2"><%= @user_meeting2.name %></h2>
               </div>
               <div class="card-body">
-                <% if @user_meeting2.file.attachments.first != nil %>
-                  <% json_from_file = File.read("tmp/" + @user_meeting2.file.attachments.last.filename.to_s()) %>
-                  <% hash2 = JSON.parse(json_from_file, object_class: OpenStruct) %>
-                  <% participants2 = "" %>
-                  <% for i in hash2.total_time_spoken %>
-                    <% participants2 = participants2 + i[0].to_s() + " " %>
-                  <% end %>
-                  <h3> Participants: <%=participants2%> </h3>
-                  <h3> Duration: <%= hash2.meeting_time %> </h3>
-                  <h3> Tags:
-                    <ul>
+                <% analyzed_2 = false %>
+                <% for file in @user_meeting2.file.attachments %>
+                  <% if file.content_type == 'application/json' %>
+                    <% analyzed_2 = true %>
+                    <% download_file_from_s3('smartmeetingsbelieving', "./tmp/" + file.filename.to_s(), file.filename.to_s()) %>
+                    <% json_from_file = File.read("tmp/" + file.filename.to_s()) %>
+                    <% hash2 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                    <% participants2 = "" %>
+                    <% for i in hash2.total_time_spoken %>
+                      <% participants2 = participants2 + i[0].to_s() + " " %>
+                    <% end %>
+                    <h3> Participants: <%=participants2%> </h3>
+                    <h3> Duration: <%= hash2.meeting_time %> </h3>
+                    <h3> Tags:
                       <% for i in hash2.keywords %>
-                        <li> <%= i %> </li>
+                        <span class="badge badge-pill badge-secondary"><%= i %></span>
                       <% end %>
-                    </ul>
-                  </h3>
-                <% else %>
-                  <h3> No files were uploaded yet <h3>
+                    </h3>
+                  <% end %>
+                <% end %>
+                <% if !analyzed_2 %>
+                  <h3> Not Yet Analyzed </h3>
                 <% end %>
             </div>
             <div class="card-footer bg-transparent border-0 text-center mb-3">
@@ -99,24 +109,28 @@
                  <h2 class="m-2"><%= @user_meeting3.name %></h2>
               </div>
               <div class="card-body">
-                <% if @user_meeting3.file.attachments.first != nil %>
-                  <% json_from_file = File.read("tmp/" + @user_meeting3.file.attachments.last.filename.to_s()) %>
-                  <% hash3 = JSON.parse(json_from_file, object_class: OpenStruct) %>
-                  <% participants3 = "" %>
-                  <% for i in hash3.total_time_spoken %>
-                    <% participants3 = participants3 + i[0].to_s() + " " %>
-                  <% end %>
-                  <h3> Participants: <%=participants3%> </h3>
-                  <h3> Duration: <%= hash3.meeting_time %> </h3>
-                  <h3> Tags:
-                    <ul>
+                <% analyzed_3 = false %>
+                <% for file in @user_meeting3.file.attachments %>
+                  <% if file.content_type == 'application/json' %>
+                    <% analyzed_3 = true %>
+                    <% download_file_from_s3('smartmeetingsbelieving', "./tmp/" + file.filename.to_s(), file.filename.to_s()) %>
+                    <% json_from_file = File.read("tmp/" + file.filename.to_s()) %>
+                    <% hash3 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                    <% participants3 = "" %>
+                    <% for i in hash3.total_time_spoken %>
+                      <% participants3 = participants3 + i[0].to_s() + " " %>
+                    <% end %>
+                    <h3> Participants: <%=participants3%> </h3>
+                    <h3> Duration: <%= hash3.meeting_time %> </h3>
+                    <h3> Tags:
                       <% for i in hash3.keywords %>
-                        <li> <%= i %> </li>
+                        <span class="badge badge-pill badge-secondary"><%= i %></span>
                       <% end %>
-                    </ul>
-                  </h3>
-                <% else %>
-                  <h3> No files were uploaded yet <h3>
+                    </h3>
+                  <% end %>
+                <% end %>
+                <% if !analyzed_3 %>
+                  <h3> Not Yet Analyzed </h3>
                 <% end %>
             </div>
             <div class="card-footer bg-transparent border-0 text-center mb-3">
@@ -145,24 +159,28 @@
                    <h2 class="m-2"><%= @user_meeting4.name %></h2>
                 </div>
                 <div class="card-body">
-                  <% if @user_meeting4.file.attachments.first != nil %>
-                    <% json_from_file = File.read("tmp/" + @user_meeting4.file.attachments.last.filename.to_s()) %>
-                    <% hash4 = JSON.parse(json_from_file, object_class: OpenStruct) %>
-                    <% participants4 = "" %>
-                    <% for i in hash4.total_time_spoken %>
-                      <% participants4 = participants4 + i[0].to_s() + " " %>
-                    <% end %>
-                    <h3> Participants: <%=participants4%> </h3>
-                    <h3> Duration: <%= hash4.meeting_time %> </h3>
-                    <h3> Tags:
-                      <ul>
+                  <% analyzed_4 = false %>
+                  <% for file in @user_meeting4.file.attachments %>
+                    <% if file.content_type == 'application/json' %>
+                      <% analyzed_4 = true %>
+                      <% download_file_from_s3('smartmeetingsbelieving', "./tmp/" + file.filename.to_s(), file.filename.to_s()) %>
+                      <% json_from_file = File.read("tmp/" + file.filename.to_s()) %>
+                      <% hash4 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                      <% participants4 = "" %>
+                      <% for i in hash4.total_time_spoken %>
+                        <% participants4 = participants4 + i[0].to_s() + " " %>
+                      <% end %>
+                      <h3> Participants: <%=participants4%> </h3>
+                      <h3> Duration: <%= hash4.meeting_time %> </h3>
+                      <h3> Tags:
                         <% for i in hash4.keywords %>
-                          <li> <%= i %> </li>
+                          <span class="badge badge-pill badge-secondary"><%= i %></span>
                         <% end %>
-                      </ul>
-                    </h3>
-                  <% else %>
-                    <h3> No files were uploaded yet <h3>
+                      </h3>
+                    <% end %>
+                  <% end %>
+                  <% if !analyzed_4 %>
+                    <h3> Not Yet Analyzed </h3>
                   <% end %>
               </div>
               <div class="card-footer bg-transparent border-0 text-center mb-3">
@@ -189,24 +207,28 @@
                    <h2 class="m-2"><%= @user_meeting5.name %></h2>
                 </div>
                 <div class="card-body">
-                  <% if @user_meeting5.file.attachments.first != nil %>
-                    <% json_from_file = File.read("tmp/" + @user_meeting2.file.attachments.last.filename.to_s()) %>
-                    <% hash5 = JSON.parse(json_from_file, object_class: OpenStruct) %>
-                    <% participants5 = "" %>
-                    <% for i in hash5.total_time_spoken %>
-                      <% participants5 = participants5 + i[0].to_s() + " " %>
-                    <% end %>
-                    <h3> Participants: <%=participants5%> </h3>
-                    <h3> Duration: <%= hash5.meeting_time %> </h3>
-                    <h3> Tags:
-                      <ul>
+                  <% analyzed_5 = false %>
+                  <% for file in @user_meeting5.file.attachments %>
+                    <% if file.content_type == 'application/json' %>
+                      <% analyzed_5 = true %>
+                      <% download_file_from_s3('smartmeetingsbelieving', "./tmp/" + file.filename.to_s(), file.filename.to_s()) %>
+                      <% json_from_file = File.read("tmp/" + file.filename.to_s()) %>
+                      <% hash5 = JSON.parse(json_from_file, object_class: OpenStruct) %>
+                      <% participants5 = "" %>
+                      <% for i in hash5.total_time_spoken %>
+                        <% participants5 = participants5 + i[0].to_s() + " " %>
+                      <% end %>
+                      <h3> Participants: <%=participants5%> </h3>
+                      <h3> Duration: <%= hash5.meeting_time %> </h3>
+                      <h3> Tags:
                         <% for i in hash5.keywords %>
-                          <li> <%= i %> </li>
+                          <span class="badge badge-pill badge-secondary"><%= i %></span>
                         <% end %>
-                      </ul>
-                    </h3>
-                  <% else %>
-                    <h3> No files were uploaded yet <h3>
+                      </h3>
+                    <% end %>
+                  <% end %>
+                  <% if !analyzed_5 %>
+                    <h3> Not Yet Analyzed </h3>
                   <% end %>
               </div>
               <div class="card-footer bg-transparent border-0 text-center mb-3">
