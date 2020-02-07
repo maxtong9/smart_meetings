@@ -192,6 +192,7 @@ class MeetingsController < ApplicationController
       # Get the item's content and save it to a file
       obj.get(response_target: file_path)
     end
+    helper_method :download_file_from_s3
 
     def create_trello_cards
       require 'uri'
