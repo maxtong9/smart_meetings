@@ -1,7 +1,7 @@
 <%= form_with(model: meeting, local: true) do |form| %>
 
   <div class="row py-2" style="margin:0 0 0 40px;">
-    <%= form.file_field :file, multiple: true, required:true %>
+    <%= form.file_field :my_file, multiple: true, :required => true, :class => "btn" %>
   </div>
 
   <div class="text-center mb-3 mt-3">
