@@ -1,16 +1,13 @@
 <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
 <div class="container">
-  <div class="row">
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-      <div class="card shadow my-5">
+  <div class="row justify-content-center">
+    <!-- <div class="col-sm-9 col-md-7 col-lg-5 mx-auto"> -->
+      <div class="card shadow my-5" style="width:22em">
         <div class="card-body">
           <h1 class="card-title text-center" style="font-size:30px; font-weight:bold;">New Meeting</h1>
-
           <%= render 'form', meeting: @meeting %>
-
-          <%= link_to 'Back', meetings_path, {:style=>'margin:5px 60px;', :class => "css_class btn"} %>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
   </div>
 </div>
