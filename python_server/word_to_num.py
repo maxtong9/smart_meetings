@@ -51,5 +51,5 @@ class WordToNum:
                 print("not alpha")
         
         print(str(words_arr))
-        return ' '.join(words_arr)
+        return words_arr
         
