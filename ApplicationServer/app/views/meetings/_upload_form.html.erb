@@ -4,12 +4,13 @@
     <%= form.file_field :file, multiple: true, required:true %>
   </div>
 
-  </div>
-  <table class="table w-auto table-borderless mb-0 span2">
-    <tr class="row">
-      <td style="width: 65%"><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary" %></td>
-      <td style="width: 35%"> <%= form.submit "Upload Meetings", class:'btn btn-outline-secondary'%></td>
+  <div class="text-center mb-3 mt-3">
+  <!-- <table class="table w-auto table-borderless mb-0"> -->
+    <tr>
+      <td"><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary" %></td>
+      <td"> <%= form.submit "Upload Meetings", class:'btn btn-outline-secondary'%></td>
+      <td> <%= link_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id}, class:"btn btn-outline-secondary"%></td
     </tr>
-  </table>
+  </div>
 
 <% end %>
