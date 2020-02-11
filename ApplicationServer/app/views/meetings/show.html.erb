@@ -231,7 +231,11 @@
               <%interruption_array.append(0)%>
             <% end %>
 
-            <% max_number = (interruption_array[0]+1)*2 %>
+            <% if interruption_array.length > 0%>
+              <% max_number = (interruption_array[0]+1)*2 %>
+            <% else %>
+              <% max_number = 0%>
+            <% end %>            
             <!-- Transcription card -->
             <div class="card shadow mb-4 scroll">
               <div class="card-header py-2">

@@ -18,9 +18,9 @@ FROM python:3
 WORKDIR /smart_meetings/python_server/
 
 # Copy and install requirements.txt and nltk
-COPY requirements.txt install_nltk.py ./
+COPY requirements.txt nltk_downloader_script.py ./
 RUN pip install -r requirements.txt \
- && python install_nltk.py
+ && python nltk_downloader_script.py
 
 # Install and configure aws cli
 # RUN pip install awscli
