@@ -5,12 +5,10 @@
 <p id="notice"><%= notice %></p>
 <% if @json_from_file != 0 %>
   <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
-  <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Tangerine">
   <div class="container-fluid">
     <div class="row" style="margin: 0 0 0 20px">
       <div class="col-2.5 col-sm-2.5">
-        <div class="card border-left-primary shadow h-100">
+        <div class="card border-left-primary shadow h-50">
           <div class="card-body">
             <h1> <%= @meeting.name %> </h1>
             <h3>Participants:</h3>
@@ -289,6 +287,7 @@
           <% end %>
           </p>
           <%= render 'upload_form', meeting: @meeting %>
+          <%= button_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id}, class:"btn btn-outline-secondary"%>
         </div>
       </div>
     <!-- </div> -->

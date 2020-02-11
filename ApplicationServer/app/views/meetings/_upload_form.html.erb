@@ -1,15 +1,13 @@
 <%= form_with(model: meeting, local: true) do |form| %>
 
-  <div class="row py-2" style="margin:0 0 0 40px;">
+  <div class="row py-2 ml-5">
     <%= form.file_field :my_file, multiple: true, :required => true, :class => "btn" %>
   </div>
 
   <div class="text-center mb-3 mt-3">
-  <!-- <table class="table w-auto table-borderless mb-0"> -->
     <tr>
       <td"><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary" %></td>
       <td"> <%= form.submit "Upload Meetings", class:'btn btn-outline-secondary'%></td>
-      <td> <%= link_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id}, class:"btn btn-outline-secondary"%></td
     </tr>
   </div>
 

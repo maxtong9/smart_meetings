@@ -1,19 +1,256 @@
 <p id="notice"><%= notice %></p>
+<% meeting_number = @user_hash['spoken'].keys%>
 
-<p>
-  <strong>Id:</strong>
-  <%= @user.id %>
-</p>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+<div class="container-fluid">
+  <div class="row" style="margin: 0 0 0 20px">
+    <div class="col-sm-3 col-sm-3">
+      <div class="card border-left-primary shadow h-50">
+        <div class="card-body">
+        <h1> <%= @user.first %> </h1>
+        <h4> Email: <%= @user.email %> </h4>
+        <h4> Trello: <%= @user.trello %> </h4>
+          <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 0 30px;">
+            <tr class="row text-center">
+              <td><%= link_to 'Edit', edit_user_path(@user), class:"btn btn-outline-secondary btn-md" %> </td>
+              <td><%= link_to 'Back', users_path, class:"btn btn-outline-secondary btn-md" %> </td>
+            </tr>
+          </table>
+        </div>
+      </div>
 
-<p>
-  <strong>Name:</strong>
-  <%= @user.email %>
-</p>
+    </div>
 
-<p>
-  <strong>User Hash Test:</strong>
-  <%= @user_hash %>
-</p>
+    <div class="col" style="margin: 0 0 0 5px">
+          <!-- Speaking Percentages card -->
+          <div class="row">
+            <div class="col-lg-5 col-lg-4">
+              <div class="card border-left-success shadow mb-4">
+                  <div class="card-header py-2">
+                     <h4 class="m-2 ">Speaking Percentages</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-area">
+                      <canvas id="speaker_chart"></canvas>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <!-- Hesitations card -->
+            <div class="col-lg-5 col-lg-4">
+              <div class="card border-left-success shadow mb-4">
+                <div class="card-header py-2">
+                   <h4 class="m-2 ">Hesitations</h4>
+                </div>
+                  <div class="card-body">
+                    <div class="chart-area">
+                      <canvas id="hesitation_chart"></canvas>
+                    </div>
+                </div>
+              </div>
+            </div>
+         </div>
+         <div class="row">
+           <!-- Interruptions card -->
+           <div class="col-lg-5 col-lg-4">
+             <div class="card border-left-success shadow mb-4">
+               <div class="card-header py-2">
+                  <h4 class="m-2 ">Interruptions</h4>
+               </div>
+                 <div class="card-body">
+                   <div class="chart-area">
+                     <canvas id="interruption_chart"></canvas>
+                   </div>
+               </div>
+             </div>
+           </div>
+           <!-- Action Items card -->
+           <div class="col-lg-5 col-lg-4">
+             <div class="card border-left-success shadow mb-4">
+               <div class="card-header py-2">
+                  <h4 class="m-2 ">Action Items</h4>
+               </div>
+                 <div class="card-body">
+                   <div class="chart-area">
+                     <canvas id="action_chart"></canvas>
+                   </div>
+               </div>
+             </div>
+           </div>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+       </div>
+    </div>
+  </div>
+</div>
+<!-- Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script type="text/javascript">
+  var ctx0 = document.getElementById('chart').getContext('2d');
+  var ctx = document.getElementById('speaker_chart').getContext('2d');
+  var ctx1 = document.getElementById('hesitation_chart').getContext('2d');
+  var ctx2 = document.getElementById('interruption_chart').getContext('2d');
+  var ctx3 = document.getElementById('action_chart').getContext('2d');
+
+  //Speakers Percentage Chart
+  var speaker = new Chart(ctx, {
+       type: 'line',
+       data: {
+         datasets: [{
+           data: <%= raw @user_hash['spoken'].values %>,
+           borderColor: 'rgba(54, 162, 235, 1)',
+           label: 'Dataset 1'
+         }],
+         labels: <% raw meeting_number %>
+       },
+       options: {
+         responsive: true,
+				title: {
+					display: false,
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					x: {
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Meetings'
+						}
+					},
+					y: {
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: '% Spoken'
+						}
+					}
+        }
+      }
+   });
+   //Hesitation chart
+  var hesitation= new Chart(ctx1, {
+    type: 'line',
+    data: {
+      datasets: [{
+        data: <%= raw @user_hash['hesitations'].values %>,
+        borderColor: 'rgba(255, 99, 132, 1)',
+        label: 'Dataset 2'
+      }],
+      labels: <% raw meeting_number %>
+    },
+    options: {
+      responsive: true,
+     title: {
+       display: false,
+     },
+     tooltips: {
+       mode: 'index',
+       intersect: false,
+     },
+     hover: {
+       mode: 'nearest',
+       intersect: true
+     },
+     scales: {
+       x: {
+         display: true,
+         scaleLabel: {
+           display: true,
+           labelString: 'Meetings'
+         }
+       },
+       y: {
+         display: true,
+         scaleLabel: {
+           display: true,
+           labelString: '# of Hesitations'
+         }
+       }
+    }
+  });
+  //Interruptions chart
+  var interruptions = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      datasets: [{
+        data: <%= raw @user_hash['interruptions'].values %>,
+        borderColor: 'rgba(255, 206, 86, 1)',
+        label: 'Dataset 3'
+      }],
+      labels: <% raw meeting_number %>
+    },
+    options: {
+      responsive: true,
+     title: {
+       display: false,
+     },
+     tooltips: {
+       mode: 'index',
+       intersect: false,
+     },
+     hover: {
+       mode: 'nearest',
+       intersect: true
+     },
+     scales: {
+       x: {
+         display: true,
+         scaleLabel: {
+           display: true,
+           labelString: 'Meetings'
+         }
+       },
+       y: {
+         display: true,
+         scaleLabel: {
+           display: true,
+           labelString: '# of Interruptions'
+         }
+       }
+    }
+    });
+    //Action chart
+    var action = new Chart(ctx3, {
+      type: 'line',
+      data: {
+        datasets: [{
+          data: <%= raw @user_hash['action_items'].values %>,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          label: 'Dataset 2'
+        }],
+        labels: <% raw meeting_number %>
+      },
+      options: {
+        responsive: true,
+       title: {
+         display: false,
+       },
+       hover: {
+         mode: 'nearest',
+         intersect: true
+       },
+       scales: {
+         x: {
+           display: true,
+           scaleLabel: {
+             display: true,
+             labelString: 'Meetings'
+           }
+         },
+         y: {
+           display: true,
+           scaleLabel: {
+             display: true,
+             labelString: '# of Action Items'
+           }
+         }
+       }
+     }
+    });
+</script>
