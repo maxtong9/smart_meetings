@@ -1,19 +1,174 @@
 <p id="notice"><%= notice %></p>
+<% meeting_number = @user_hash['spoken'].keys%>
 
-<p>
-  <strong>Id:</strong>
-  <%= @user.id %>
-</p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @user.email %>
-</p>
-
-<p>
-  <strong>User Hash Test:</strong>
-  <%= @user_hash %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+<div class="container-fluid">
+  <div class="row" style="margin: 0 0 0 20px">
+    <div class="col col-lg-3">
+      <div class="card border-left-primary shadow h-100">
+        <div class="card-body">
+        <h1> <%= @user.first %> </h1>
+        <h4> Email: <%= @user.email %> </h4>
+        <h4> Trello: <%= @user.trello %> </h4>
+          <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 0 30px;">
+            <tr class="row text-center">
+              <td><%= link_to 'Edit', edit_user_path(@user), class:"btn btn-outline-secondary btn-md" %> </td>
+              <td><%= link_to 'Back', users_path, class:"btn btn-outline-secondary btn-md" %> </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-4">
+      <div class="card border-left-primary shadow mb-4 h-100">
+        <div class="card-header py-2">
+           <h4 class="m-2 ">Speakers Percentage</h4>
+        </div>
+          <div class="card-body">
+              <canvas id="speaker_chart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-4">
+      <div class="card border-left-primary shadow mb-4 h-100">
+        <div class="card-header py-2">
+           <h4 class="m-2 ">Hesitations</h4>
+        </div>
+          <div class="card-body">
+              <canvas id="hesitation_chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3" style="margin: 0 0 0 20px">
+    <div class="col col-lg-3">
+      <div class="card border-left-primary shadow h-100">
+        <div class="card-body">
+        <h2> Personalized Suggestions </h2>
+        <h4> Coming Soon </h4>
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-4">
+      <div class="card border-left-primary shadow mb-4 h-100">
+        <div class="card-header py-2">
+           <h4 class="m-2 ">Interruptions</h4>
+        </div>
+          <div class="card-body">
+              <canvas id="interruption_chart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col col-lg-4">
+      <div class="card border-left-primary shadow mb-4 h-100">
+        <div class="card-header py-2">
+           <h4 class="m-2 ">Action Items</h4>
+        </div>
+          <div class="card-body">
+              <canvas id="action_chart"></canvas>
+        </div>
+      </div>
+    </div>
+ </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script type="text/javascript">
+  var ctx0 = document.getElementById('speaker_chart').getContext('2d');
+  var ctx1 = document.getElementById('hesitation_chart').getContext('2d');
+  var ctx2 = document.getElementById('interruption_chart').getContext('2d');
+  var ctx3 = document.getElementById('action_chart').getContext('2d');
+  //Speakers chart
+  var chart0 = {
+    type: 'line',
+    data: {
+      datasets: [{
+        data: <%=raw @user_hash['spoken'].values %>,
+        borderColor: 'rgba(54, 162, 235, 1)', //blue
+        fill: false
+      }],
+      labels: <%=raw meeting_number %> ,
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: false
+      },
+      scales: {
+          xAxes: {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Meetings'
+            }
+          },
+          yAxes: {
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: '% Spoken'
+            }
+          }
+      }
+    }
+  };
+  //Hesitation chart
+   var chart1= {
+     type: 'line',
+     data: {
+       datasets: [{
+         data: <%=raw @user_hash['hesitations'].values %>,
+         borderColor: 'rgba(255, 159, 64, 1)', //orage
+         fill: false
+       }],
+       labels: <%=raw meeting_number %>,
+     },
+     options: {
+       responsive: true,
+       legend: {
+         display: false
+       }
+     }
+   };
+   //Interruptions chart
+   var chart2 = {
+     type: 'line',
+     data: {
+       datasets: [{
+         data:<%=raw @user_hash['interruptions'].values %>,
+         borderColor: 'rgb(255, 99, 132)', //red
+         fill: false
+       }],
+       labels: <%=raw meeting_number %>,
+     },
+     options: {
+       responsive: true,
+       legend: {
+         display: false
+       }
+      }
+     };
+     //Action chart
+     var chart3 = {
+       type: 'line',
+       data: {
+         datasets: [{
+           data: <%=raw @user_hash['action_items'].values %>,
+           borderColor: 'rgba(75, 192, 192, 1)', //blue
+           fill: false
+         }],
+         labels: <%=raw meeting_number %>,
+       },
+       options: {
+         responsive: true,
+         legend: {
+           display: false
+         }
+       }
+     };
+  window.onload = function() {
+			window.myLine = new Chart(ctx0, chart0);
+      window.myLine = new Chart(ctx1, chart1);
+      window.myLine = new Chart(ctx2, chart2);
+      window.myLine = new Chart(ctx3, chart3);
+		};
+</script>

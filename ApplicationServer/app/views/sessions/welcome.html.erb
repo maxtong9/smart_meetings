@@ -1,11 +1,19 @@
-<h1>Welcome</h1>
-
 <% if logged_in? %>
-    <h1>You are Logged In, <%= current_user.first %></h1>
+    <h1>Welcome</h1>
+    <h2>You are Logged In, <%= current_user.first %></h2>
 
 <% else %>
-
-  <%= button_to "Login", '/login', method: :get%>
-  <%= button_to "Sign Up", '/users/new', method: :get%>
-
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card shadow my-5">
+          <div class="card-body text-center">
+            <h1 class="card-title" style="font-size:30px; font-weight:bold;">Welcome</h1>
+                <%= button_to "Login", '/login', method: :get, :class=> "btn btn-outline-secondary"%>
+                <%= button_to "Sign Up", '/users/new', method: :get, :class=> "btn btn-outline-secondary mt-3"%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <%end%>

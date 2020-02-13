@@ -15,11 +15,6 @@
     <%= form.text_field :first, class: 'form-control', placeholder: 'First Name', :required => true %>
   </div>
 
-  <!-- <div class="field"> -->
-    <%# <%= form.label "First Name" %>
-    <%# <%= form.text_field :first %>
-  <!-- </div> -->
-
   <div class=" text-style field form-label-group">
     <%= form.text_field :last, class: 'form-control', placeholder: 'Last Name', :required => true %>
   </div>
@@ -35,36 +30,10 @@
   <div class=" text-style field form-label-group">
     <%= form.text_field :trello, class: 'form-control', placeholder: 'Trello Username' %>
   </div>
-  <!-- <div class="field"> -->
-    <%# <%= form.label "Last Name" %>
-    <%# <%= form.text_field :last %>
-  <!-- </div> -->
 
-  <!-- <div class="field"> -->
-    <%# <%= form.label "Password" %>
-    <%# <%= form.password_field :password %>
-  <!-- </div> -->
-
-  <!-- <div class="field"> -->
-    <%# <%= form.label "Email" %>
-    <%# <%= form.text_field :email %>
-  <!-- </div> -->
-
-  <!-- <div class="field"> -->
-    <%# <%= form.label "Trello Username" %>
-    <%# <%= form.text_field :trello %>
-  <!-- </div> -->
-  <!-- <div class="container">
-    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-      <div class="btn-group mr-2" role="group" aria-label="First group"> -->
-
-
-  <!-- <div class="actions"> -->
-    <%# <%= form.submit %>
-  <!-- </div> -->
   <table class="table w-auto table-borderless mb-0 span2" style="margin: 0 0 0 120px;">
     <tr class="row">
-      <td><%= link_to 'Back', users_path, class:"btn btn-outline-secondary" %></td>
+      <td><%= link_to 'Back', welcome_path, class:"btn btn-outline-secondary" %></td>
       <td> <%= form.submit :Submit, class:'btn btn-outline-secondary'%></td>
     </tr>
   </table>

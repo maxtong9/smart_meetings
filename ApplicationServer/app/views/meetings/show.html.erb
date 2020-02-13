@@ -5,12 +5,10 @@
 <p id="notice"><%= notice %></p>
 <% if @json_from_file != 0 %>
   <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
-  <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Tangerine">
   <div class="container-fluid">
     <div class="row" style="margin: 0 0 0 20px">
       <div class="col-2.5 col-sm-2.5">
-        <div class="card border-left-primary shadow h-100">
+        <div class="card border-left-primary shadow h-50">
           <div class="card-body">
             <h1> <%= @meeting.name %> </h1>
             <h3>Participants:</h3>
@@ -224,6 +222,8 @@
               <% for i in participants %>
                 <% if interruption_counter.key?(i) == true %>
                   <% interruption_array.append(interruption_counter[i])%>
+                <% else %>
+                  <% interruption_array.append(0)%>
                 <% end %>
               <% end %>
             <% end %>
@@ -293,14 +293,13 @@
           <% end %>
           </p>
           <%= render 'upload_form', meeting: @meeting %>
-          <%= button_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id} %>
+          <%= button_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id}, class:"btn btn-outline-secondary"%>
         </div>
       </div>
     <!-- </div> -->
   </div>
 </div>
 <% end %>
-
 <!-- Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script type="text/javascript">
@@ -308,9 +307,8 @@
     var ctx2 = document.getElementById('action_chart').getContext('2d');
     var ctx4 = document.getElementById('interruption_chart').getContext('2d');
     var participants = <%=raw participants%>;
-    var ctx = document.getElementById('speaker_chart').getContext('2d');
     //Speakers Percentage Chart
-    var myDoughnutChart = new Chart(ctx, {
+    var chart1 ={
          type: 'doughnut',
          data: {
            datasets: [{
@@ -340,9 +338,9 @@
              animateRotate: true
            }
          }
-     });
+     };
      //Action data chart
-    var chart = new Chart(ctx2, {
+    var chart2 = {
       type: 'doughnut',
       data: {
         datasets: [{
@@ -372,8 +370,8 @@
           animateRotate: true
         }
       }
-    });
-  var interruption_chart = new Chart(ctx4, {
+    };
+  var chart3 = {
       type: 'bar',
       data: {
           labels: participants,
@@ -408,8 +406,16 @@
                       beginAtZero: true,
                       max: <%= raw max_number %>
                   }
-              }]
+              }],
+            animation: {
+              animateScale: true
+            }
           }
       }
-    });
+    };
+    window.onload = function() {
+  			window.myDoughnut = new Chart(ctx, chart1);
+        window.myDoughnut = new Chart(ctx2, chart2);
+  			window.myBar = new Chart(ctx4, chart3);
+		};
 </script>
