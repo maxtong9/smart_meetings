@@ -222,6 +222,8 @@
               <% for i in participants %>
                 <% if interruption_counter.key?(i) == true %>
                   <% interruption_array.append(interruption_counter[i])%>
+                <% else %>
+                  <% interruption_array.append(0)%>
                 <% end %>
               <% end %>
             <% end %>
@@ -294,7 +296,6 @@
   </div>
 </div>
 <% end %>
-
 <!-- Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script type="text/javascript">
@@ -302,9 +303,8 @@
     var ctx2 = document.getElementById('action_chart').getContext('2d');
     var ctx4 = document.getElementById('interruption_chart').getContext('2d');
     var participants = <%=raw participants%>;
-    var ctx = document.getElementById('speaker_chart').getContext('2d');
     //Speakers Percentage Chart
-    var myDoughnutChart = new Chart(ctx, {
+    var chart1 ={
          type: 'doughnut',
          data: {
            datasets: [{
@@ -334,9 +334,9 @@
              animateRotate: true
            }
          }
-     });
+     };
      //Action data chart
-    var chart = new Chart(ctx2, {
+    var chart2 = {
       type: 'doughnut',
       data: {
         datasets: [{
@@ -366,8 +366,8 @@
           animateRotate: true
         }
       }
-    });
-  var interruption_chart = new Chart(ctx4, {
+    };
+  var chart3 = {
       type: 'bar',
       data: {
           labels: participants,
@@ -402,8 +402,16 @@
                       beginAtZero: true,
                       max: <%= raw max_number %>
                   }
-              }]
+              }],
+            animation: {
+              animateScale: true
+            }
           }
       }
-    });
+    };
+    window.onload = function() {
+  			window.myDoughnut = new Chart(ctx, chart1);
+        window.myDoughnut = new Chart(ctx2, chart2);
+  			window.myBar = new Chart(ctx4, chart3);
+		};
 </script>
