@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
+  <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
   <head>
     <title><%= content_for?(:title) ? yield(:title) : "Smart Meeting" %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <body style="padding: 20px 70px;">
+  <body id="page-top">
     <header>
         <%= render "layouts/index" %>
     </header>
     <%= yield %>
+
   </body>
 </html>

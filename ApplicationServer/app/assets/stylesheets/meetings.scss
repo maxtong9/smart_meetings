@@ -10,30 +10,54 @@ h1 {
   color:#737373;
   font-weight: 'bold';
   font-size: 30px;
+  font-family: 'Lato', sans-serif;
 }
 
 h2 {
   color:#737373;
   font-size: 25px !important;
+  font-family: 'Lato', sans-serif;
 }
 
 h3 {
   padding-left: 20px;
   color:#737373;
   font-size: 18px !important;
+  font-family: 'Lato', sans-serif;
 }
 
 h4 {
   color:#737373;
   font-size: 18px !important;
+  font-family: 'Lato', sans-serif;
 }
 
 p {
   color:#737373;
   font-size: 15px !important;
+  font-family: 'Lato', sans-serif;
 }
 
 li {
   color:#737373;
   font-size: 15px !important;
+  font-family: 'Lato', sans-serif;
+}
+
+.btn-outline-primary{
+  color: white !important;
+  background: #00c07f !important;
+  border-color: #00c07f !important;
+}
+
+.btn-outline-primary:hover {
+  color: #00c07f !important;
+  background: white !important;
+  border-color: #00c07f !important;
+}
+
+.btn-secondary:hover {
+  // color: #00c07f !important;
+  background: #00c07f !important;
+  border-color: #00c07f !important;
 }

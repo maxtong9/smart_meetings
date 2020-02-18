@@ -1,3 +1,23 @@
 // Place all the styles related to the sessions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.body {
+  color: #FFF;
+  // background: #cec9c9;
+  background: #efefef;
+  // background: rgb(0,192,127);
+  // background: linear-gradient(45deg, rgba(0,192,127,1) 0%, rgba(228,222,205,1) 100%);
+}
+
+.btn-primary{
+  color: white !important;
+  background: #00c07f !important;
+  border-color: #00c07f !important;
+}
+
+.btn-primary:hover {
+  color: #00c07f !important;
+  background: white !important;
+  border-color: #00c07f !important;
+}
