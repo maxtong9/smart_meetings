@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,12 +11,13 @@
 
   <body id="page-top">
    <%= render "layouts/index" %>
-
    <header class="head">
       <div class="container text-center">
-        <h1 style="color:white">Welcome to Smart Meetings</h1>
-        <p class="lead" style="color:white">We provide powerful tools to keep your conferences efficient and meaningful.</p>
-      </div>
+        <p id="notice"><%= notice %></p>
+        <h1 class="title">Welcome to Smart Meetings</h1>
+        <h2 class="subtitle" style="padding-bottom:20px;">A tool to get the most out of meetings</h2>
+        <%= link_to 'Get Started', new_user_path, class:"btn btn-default btn-md" %>
+
     </header>
 
     <section id="about">
@@ -35,7 +37,7 @@
       </div>
     </section>
 
-    <footer class="py-5 bg-dark">
+    <footer class="py-4 bg-dark">
       <div class="container">
         <p class="m-0 text-center text-white">2019-2020 CS Capstone</p>
       </div>

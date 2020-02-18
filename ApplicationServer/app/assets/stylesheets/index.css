@@ -1,19 +1,44 @@
 .head {
-  padding: 200px 0 200px;
-  background-color: #5cdb95;
+  padding: 200px 0 240px;
+  /* background-color: #5cdb95; */
   color: #FFF;
+  background: rgb(0,192,127);
+  background: linear-gradient(45deg, rgba(0,192,127,1) 0%, rgba(228,222,205,1) 100%);
+  font-family: 'Lato', sans-serif;
 }
 
 section {
   padding: 200px 0;
+  font-family: 'Lato', sans-serif;
 }
 
+.btn-default {
+  font-family: 'Lato', sans-serif !important;
+  font-size: 20px !important;
+  color: #00c07f !important;
+  background: white !important;
+  border-radius: 40px !important;
+  width: 240px;
+}
 
-.custon-btn{
-  background-color: #00887A;
-  color: white;
+.btn-default:hover {
+  color: white !important;
+  background: #00c07f !important;
 }
 
 .a1 {
   color: white;
+  font-family: 'Lato', sans-serif;
+}
+
+.title {
+  color: white;
+  font-weight: bold;
+  font-size: 40px;
+  padding: 50px 0 0 0;
+}
+
+.subtitle {
+  color: white;
+  font-size: 25px;
 }

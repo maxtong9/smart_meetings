@@ -1,0 +1,97 @@
+// Place all the styles related to the sessions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.body {
+  color: #FFF;
+  background: #efefef;
+  // background: #cec9c9;
+  // background: rgb(0,192,127);
+  // background: linear-gradient(45deg, rgba(0,192,127,1) 0%, rgba(228,222,205,1) 100%);
+}
+
+h2 {
+  font-family: 'Lato', sans-serif;
+}
+
+h4 {
+  color:#737373;
+  font-size: 20px !important;
+  font-family: 'Lato', sans-serif;
+}
+
+h5 {
+  color:#737373;
+  font-size: 15px !important;
+  font-family: 'Lato', sans-serif;
+}
+
+.card-header-1{
+  margin:-40px 0 0 18px;
+  // margin-top:-30px!important;
+  border-bottom:none;
+  width: 90%;
+  z-index:3!important;
+}
+
+.card-header-1:first-child{
+  border-radius:0.25rem;
+}
+
+.card-header-bg1{
+  background:linear-gradient(45deg, #2193b0, #6dd5ed);
+}
+
+.card-header-bg2{
+  background:linear-gradient(45deg, #fb8c00, #ffa726);
+}
+
+.card-header-bg3{
+  background:linear-gradient(45deg, #d66d75, #e29587);
+}
+
+.card-header-bg4{
+  background:linear-gradient(45deg, #56ab2f, #a8e063);
+}
+
+.btn-primary{
+  color: white !important;
+  background: #00c07f !important;
+  border-color: #00c07f !important;
+}
+
+.btn-primary:hover {
+  color: #00c07f !important;
+  background: white !important;
+  border-color: #00c07f !important;
+}
+
+.nav li.nav-item a.active{
+  // border: 1px solid transparent;
+  border-bottom: 3px solid #00c07f !important;
+  // margin-bottom: -2px !important;
+}
+
+// .nav li.nav-item:hover {
+  // border: 1px solid transparent !important;
+  // border-bottom: 1px solid #00c07f !important;
+// }
+
+.nav li.nav-item a.nav-link:hover {
+  color: #707070 !important;
+  // border: 1px solid transparent;
+  border-bottom: none;
+}
+// .nav-link a {
+//   display: block;
+//   color: #00c07f !important;
+//   border-bottom: 3px solid transparent !important;
+// }
+//
+// .nav-link a:hover {
+//   border-bottom: 3px solid #00c07f !important;
+// }
+//
+// .nav-link a.active {
+//   border-bottom: 3px solid #00c07f !important;
+// }

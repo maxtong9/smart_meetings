@@ -1,90 +1,147 @@
-<p id="notice"><%= notice %></p>
-<% meeting_number = @user_hash['spoken'].keys%>
+<body class="body" style="margin: 0 30px 50px 30px">
+  <p id="notice"><%= notice %></p>
+  <% meeting_number = @user_hash['spoken'].keys%>
 
-<link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
-<div class="container-fluid">
-  <div class="row" style="margin: 0 0 0 20px">
-    <div class="col col-lg-3">
-      <div class="card border-left-primary shadow h-100">
-        <div class="card-body">
-        <h1> <%= @user.first %> </h1>
-        <h4> Email: <%= @user.email %> </h4>
-        <h4> Trello: <%= @user.trello %> </h4>
-          <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 0 30px;">
-            <tr class="row text-center">
-              <td><%= link_to 'Edit', edit_user_path(@user), class:"btn btn-outline-secondary btn-md" %> </td>
-              <td><%= link_to 'Back', users_path, class:"btn btn-outline-secondary btn-md" %> </td>
-            </tr>
-          </table>
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col col-lg-3">
+        <div class="card border-left-primary shadow h-100">
+          <div class="card-body">
+          <h1> <%= @user.first %> </h1>
+          <h4> Email: <%= @user.email %> </h4>
+          <h4> Trello: <%= @user.trello %> </h4>
+            <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 -10px 50px;">
+              <tr class="row text-center">
+                <td><%= link_to 'Edit', edit_user_path(@user), class:"btn btn-outline-secondary btn-md" %> </td>
+                <td><%= link_to 'Back', users_path, class:"btn btn-outline-secondary btn-md" %> </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col col-lg-4">
-      <div class="card border-left-primary shadow mb-4 h-100">
-        <div class="card-header py-2">
-           <h4 class="m-2 ">Speakers Percentage</h4>
+
+
+      <!-- <div class="col col-lg-9">
+        <div class="card chart-card border-left-primary shadow mb-4 h-100">
+          <div class="card-body pb-0">
+             <h2 class="m-2 ">Meeting Statistics</h2>
+          </div>
+          <nav class="nav-extended">
+            <div class="nav-content">
+              <ul class="nav tabs-white nav-fill" role="tablist">
+                <li class="nav-item ml-0">
+                  <a class="nav-link waves-light active" data-toggle="tab" href="#panel1001" role="tab">Spoken Percentage</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link waves-light" data-toggle="tab" href="#panel1002" role="tab">Hesitations</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link waves-light" data-toggle="tab" href="#panel1003" role="tab">Interruptions</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link waves-light" data-toggle="tab" href="#panel1004" role="tab">Action Items</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+            <div class="tab-content rounded-bottom">
+              <div class="tab-pane fade in show active" id="panel1001" role="tabpanel">
+                <div class="chart-area">
+                  <canvas id="speaker_chart"></canvas>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="panel1002" role="tabpanel">
+                <div class="chart-area">
+                  <canvas id="hesitation_chart"></canvas>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="panel1003" role="tabpanel">
+                <div class="chart-area">
+                  <canvas id="interruption_chart"></canvas>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="panel1004" role="tabpanel">
+                <div class="chart-area">
+                  <canvas id="action_chart"></canvas>
+                </div>
+              </div>
+            </div>
+
         </div>
-          <div class="card-body">
+      </div> -->
+
+      <div class="col col-lg-4">
+        <div class="card border-left-success shadow mb-2 h-80" style="margin:40px 0;">
+          <div class="card-header-1 card-header-bg1">
               <canvas id="speaker_chart"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="col col-lg-4">
-      <div class="card border-left-primary shadow mb-4 h-100">
-        <div class="card-header py-2">
-           <h4 class="m-2 ">Hesitations</h4>
-        </div>
+          </div>
           <div class="card-body">
-              <canvas id="hesitation_chart"></canvas>
+            <h4 class="card-title">Speaker's Percentage</h4>
+            <h5> Spoken percentage per each meeting. </h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="col col-lg-4">
+        <div class="card border-left-success shadow mb-4 h-80" style="margin:40px 0;">
+          <div class="card-header-1 card-header-bg4">
+            <canvas id="action_chart"></canvas>
+          </div>
+            <div class="card-body">
+                <h4 class="card-title">Action Items</h4>
+                <h5> Tasks that you assigned in each meetings. </h5>
+          </div>
         </div>
       </div>
     </div>
+    <div class="row mt-3" style="margin 0 20px 10px 0;">
+      <div class="col col-lg-3">
+        <div class="card border-left-primary shadow h-100">
+          <div class="card-body">
+          <h2> Personalized Suggestions </h2>
+          <h4> Coming Soon </h4>
+          </div>
+        </div>
+      </div>
+      <div class="col col-lg-4">
+        <div class="card border-left-success shadow mb-4 h-80" style="margin:20px 0;">
+          <div class="card-header-1 card-header-bg3">
+            <canvas id="interruption_chart"></canvas>
+          </div>
+            <div class="card-body">
+                <h4 class="card-title">Interruptions</h4>
+                <h5> The amount you tried speaking or spoke while someone else was speaking. </h5>
+          </div>
+        </div>
+      </div>
+      <div class="col col-lg-4">
+          <div class="card border-left-success shadow mb-4 h-80" style="margin:20px 0;">
+            <div class="card-header-1 card-header-bg2">
+                <canvas id="hesitation_chart"></canvas>
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">Hesitations</h4>
+              <h5> Words and sounds that fill a silence or cause a discourse in speech.  </h5>
+            </div>
+          </div>
+      </div>
+    </div>
+
   </div>
-  <div class="row mt-3" style="margin: 0 0 0 20px">
-    <div class="col col-lg-3">
-      <div class="card border-left-primary shadow h-100">
-        <div class="card-body">
-        <h2> Personalized Suggestions </h2>
-        <h4> Coming Soon </h4>
-        </div>
-      </div>
-    </div>
-    <div class="col col-lg-4">
-      <div class="card border-left-primary shadow mb-4 h-100">
-        <div class="card-header py-2">
-           <h4 class="m-2 ">Interruptions</h4>
-        </div>
-          <div class="card-body">
-              <canvas id="interruption_chart"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="col col-lg-4">
-      <div class="card border-left-primary shadow mb-4 h-100">
-        <div class="card-header py-2">
-           <h4 class="m-2 ">Action Items</h4>
-        </div>
-          <div class="card-body">
-              <canvas id="action_chart"></canvas>
-        </div>
-      </div>
-    </div>
- </div>
-</div>
+</body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script type="text/javascript">
-  var ctx0 = document.getElementById('speaker_chart').getContext('2d');
-  var ctx1 = document.getElementById('hesitation_chart').getContext('2d');
-  var ctx2 = document.getElementById('interruption_chart').getContext('2d');
-  var ctx3 = document.getElementById('action_chart').getContext('2d');
-  //Speakers chart
+  // Speakers chart
   var chart0 = {
     type: 'line',
     data: {
       datasets: [{
         data: <%=raw @user_hash['spoken'].values %>,
-        borderColor: 'rgba(54, 162, 235, 1)', //blue
-        fill: false
+        borderColor: "rgba(255, 255, 255, 1)",
+        backgroundColor: "rgba(255, 255, 255, 1)",
+        pointBackgroundColor: "white",
+        fill: false,
       }],
       labels: <%=raw meeting_number %> ,
     },
@@ -94,20 +151,36 @@
         display: false
       },
       scales: {
-          xAxes: {
+          yAxes: [{
             display: true,
-            scaleLabel: {
+            gridLines: {
               display: true,
-              labelString: 'Meetings'
+              borderDash: [2, 2],
+              color:"rgba(255, 255, 255, 0.5)",
+            },
+            ticks:{
+              fontColor:"rgba(255, 255, 255, 0.7)",
             }
-          },
-          yAxes: {
+          }],
+          xAxes: [{
             display: true,
-            scaleLabel: {
+            gridLines: {
               display: true,
-              labelString: '% Spoken'
+              borderDash: [2, 2],
+              color:"rgba(255, 255, 255, 0.5)",
+            },
+            ticks:{
+              fontColor:"rgba(255, 255, 255, 0.7)",
             }
-          }
+          }]
+      },
+      layout: {
+        padding: {
+            left: 10,
+            right: 20,
+            top: 20,
+            bottom: 20
+        }
       }
     }
   };
@@ -117,7 +190,8 @@
      data: {
        datasets: [{
          data: <%=raw @user_hash['hesitations'].values %>,
-         borderColor: 'rgba(255, 159, 64, 1)', //orage
+         borderColor: "white",
+         backgroundColor:"white",
          fill: false
        }],
        labels: <%=raw meeting_number %>,
@@ -126,6 +200,38 @@
        responsive: true,
        legend: {
          display: false
+       },
+       scales: {
+           yAxes: [{
+             display: true,
+             gridLines: {
+               display: true,
+               borderDash: [2, 2],
+               color:"rgba(255, 255, 255, 0.5)",
+             },
+             ticks:{
+               fontColor:"rgba(255, 255, 255, 0.7)",
+             }
+           }],
+           xAxes: [{
+             display: true,
+             gridLines: {
+               display: true,
+               borderDash: [2, 2],
+               color:"rgba(255, 255, 255, 0.5)",
+             },
+             ticks:{
+               fontColor:"rgba(255, 255, 255, 0.7)",
+             }
+           }]
+       },
+       layout: {
+         padding: {
+             left: 10,
+             right: 20,
+             top: 20,
+             bottom: 20
+         }
        }
      }
    };
@@ -135,7 +241,8 @@
      data: {
        datasets: [{
          data:<%=raw @user_hash['interruptions'].values %>,
-         borderColor: 'rgb(255, 99, 132)', //red
+         borderColor: "white",
+         backgroundColor:"white",
          fill: false
        }],
        labels: <%=raw meeting_number %>,
@@ -144,8 +251,40 @@
        responsive: true,
        legend: {
          display: false
+       },
+       scales: {
+           yAxes: [{
+             display: true,
+             gridLines: {
+               display: true,
+               borderDash: [2, 2],
+               color:"rgba(255, 255, 255, 0.5)",
+             },
+             ticks:{
+               fontColor:"rgba(255, 255, 255, 0.7)",
+             }
+           }],
+           xAxes: [{
+             display: true,
+             gridLines: {
+               display: true,
+               borderDash: [2, 2],
+               color:"rgba(255, 255, 255, 0.5)",
+             },
+             ticks:{
+               fontColor:"rgba(255, 255, 255, 0.7)",
+             }
+           }]
+       },
+       layout: {
+         padding: {
+             left: 10,
+             right: 20,
+             top: 20,
+             bottom: 20
+         }
        }
-      }
+     }
      };
      //Action chart
      var chart3 = {
@@ -153,7 +292,8 @@
        data: {
          datasets: [{
            data: <%=raw @user_hash['action_items'].values %>,
-           borderColor: 'rgba(75, 192, 192, 1)', //blue
+           borderColor: "white",
+           backgroundColor:"white",
            fill: false
          }],
          labels: <%=raw meeting_number %>,
@@ -162,13 +302,61 @@
          responsive: true,
          legend: {
            display: false
+         },
+         scales: {
+             yAxes: [{
+               display: true,
+               gridLines: {
+                 display: true,
+                 borderDash: [2, 2],
+                 color:"rgba(255, 255, 255, 0.5)",
+               },
+               ticks:{
+                 fontColor:"rgba(255, 255, 255, 0.7)",
+               }
+             }],
+             xAxes: [{
+               display: true,
+               gridLines: {
+                 display: true,
+                 borderDash: [2, 2],
+                 color:"rgba(255, 255, 255, 0.5)",
+               },
+               ticks:{
+                 fontColor:"rgba(255, 255, 255, 0.7)",
+               }
+             }]
+         },
+         layout: {
+           padding: {
+               left: 10,
+               right: 20,
+               top: 20,
+               bottom: 20
+           }
          }
        }
      };
-  window.onload = function() {
-			window.myLine = new Chart(ctx0, chart0);
-      window.myLine = new Chart(ctx1, chart1);
-      window.myLine = new Chart(ctx2, chart2);
-      window.myLine = new Chart(ctx3, chart3);
-		};
+
+  setTimeout(() => {
+    var ctx0 = document.getElementById('speaker_chart').getContext('2d');
+    var ctx1 = document.getElementById('hesitation_chart').getContext('2d');
+    var ctx2 = document.getElementById('interruption_chart').getContext('2d');
+    var ctx3 = document.getElementById('action_chart').getContext('2d');
+   	window.myLine = new Chart(ctx0, chart0);
+    window.myLine = new Chart(ctx1, chart1);
+    window.myLine = new Chart(ctx2, chart2);
+    window.myLine = new Chart(ctx3, chart3);
+  }, 300);
+  // window.onload = function() {
+  //     var ctx0 = document.getElementById('speaker_chart').getContext('2d');
+	// 		window.myLine = new Chart(ctx0, chart0);
+  //     var ctx1 = document.getElementById('hesitation_chart').getContext('2d');
+  //     window.myLine = new Chart(ctx1, chart1);
+  //     var ctx2 = document.getElementById('interruption_chart').getContext('2d');
+  //     window.myLine = new Chart(ctx2, chart2);
+  //     var ctx3 = document.getElementById('action_chart').getContext('2d');
+  //     window.myLine = new Chart(ctx3, chart3);
+	// 	};
+
 </script>
