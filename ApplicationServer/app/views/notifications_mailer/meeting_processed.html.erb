@@ -1,6 +1,7 @@
-<h2>Hi,</h2>
-<p>
-Check out your meeting Analytics here: <a href="localhost:3000/meetings/<%=@meeting_id%>"></a>
+<h2>Hi <%= @first_name %>,</h2>
+<h2>
+Check out your meeting analytics <%= link_to 'here', meeting_url(@meeting_id) %>.
  <br />
   The action items from your meeting are exported to the corresponding trello board.
-</p>
+</h2>
+<h2>- Smart Meetings Team<h2>
