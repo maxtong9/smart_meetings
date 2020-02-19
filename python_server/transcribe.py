@@ -21,6 +21,85 @@ class Transcribe:
 			self.nameList.append(i[:-1])
 
 		self.phrase = None
+		self.speakerByStamp = {}
+
+	'''
+	Gets the speaker at the current timestamp
+	'''
+	def getSpeakerAtTimestamp(self, beg_time_stamp):
+		return self.speakerByStamp[beg_time_stamp]
+		# print(self.speakerByStamp)
+
+
+	'''Assumptions:
+		1. Only 1 Audio file
+		2. Speaker names in list of names in order of who spoke first
+	'''
+	def transcription_with_recognition(self):
+		authenticator = IAMAuthenticator(WATSON_API_KEY)
+		speech_to_text = SpeechToTextV1(authenticator=authenticator)
+		speech_to_text.set_service_url(SERVICE_URL)
+		item = self.audio[0]
+		# Open Audio file, call API
+		file_type = "audio/flac"
+		if ".wav" in item:
+			file_type = "audio/wav"
+		elif ".mpeg" in item:
+			file_type = "audio/mpeg"
+		elif ".mp3" in item:
+			file_type = "audio/mp3"
+		file = open(item, "rb")
+		#API CAlL
+		response = speech_to_text.recognize(file, content_type=file_type, smart_formatting=True, timestamps=True, inactivity_timeout=90, speaker_labels=True)
+		results = response.get_result()
+		phrase = []
+		# Obtain the timestamps of each word to include periods.
+		for label in results['speaker_labels']:
+			self.speakerByStamp[label['from']] = label['speaker']
+
+		
+		for r_index, i in enumerate(results['results']):
+			for j in i['alternatives']:
+				words = j['timestamps']
+				currentPhrase = (self.getSpeakerAtTimestamp(words[0][1]), words[0][0], words[0][1], words[0][2])
+				didAppend = False
+				for index, word in enumerate(words):
+					# Skip the first word
+					if index == 0: continue
+					# word[0] = word; word[1] = start_time; word[2] = end_time
+					didAppend = False
+					speaker = self.getSpeakerAtTimestamp(word[1])
+					# If word speaker == current speaker
+					if (speaker == currentPhrase[0]):
+						period = "." if word[1] - words[index-1][2] > .45 else ""
+						currentPhrase = (currentPhrase[0], currentPhrase[1] + period + " " + word[0], currentPhrase[2], currentPhrase[3])
+						# print(currentPhrase)
+					else:
+						# Append to phrase
+						currentPhrase = (currentPhrase[0], currentPhrase[1] + ".", currentPhrase[2], currentPhrase[3])
+						phrase.append(currentPhrase)
+						didAppend = True
+						currentPhrase = (speaker, word[0], word[1], word[2])
+
+				if not didAppend:
+					# Append to phrase
+					currentPhrase = (currentPhrase[0], currentPhrase[1] + ".", currentPhrase[2], currentPhrase[3])
+					phrase.append(currentPhrase)
+					currentPhrase = None
+
+					#currentPhrase = (self.getSpeakerAtTimestamp(word[1]), word[0], word[1], word[2])
+					
+					# print(word[0])
+					# for word in words:
+					# 	print(word[0])
+		self.phrase = phrase
+		print(self.phrase)
+		return phrase
+
+	#def transcribeAudio(self):
+
+
+
 
 	def transcription(self):
 		''' Returns transcription of the inputed audio files '''
@@ -101,7 +180,9 @@ class Transcribe:
 		phrase.sort(key = lambda x: x[2])
 		self.phrase = phrase
 		return phrase
-
+	def mergeTranscripts(self):
+		if self.phrase is not None:
+			self.phrase.sort(key = lambda x: x[2])
 	def time(self):
 		meeting_time = self.phrase[-1][3]
 		return meeting_time
@@ -154,6 +235,6 @@ class Transcribe:
 
 
 
-# if __name__ == "__main__":
-# 	t = Transcribe(["Recording.wav"])
-# 	t.transcription()
+if __name__ == "__main__":
+    transcribe = Transcribe(['data4.wav'], ['Sarita', 'Christina'])
+    transcription = transcribe.transcription_with_recognition()
