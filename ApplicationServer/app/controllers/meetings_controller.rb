@@ -264,13 +264,13 @@ class MeetingsController < ApplicationController
       @notifications_mailer = NotificationsMailer
 
       if !@meeting.user1.nil?
-        @notifications_mailer.meeting_processed(User.find_by(id: @meeting.user1)).deliver_now
+        @notifications_mailer.meeting_processed(User.find_by(id: @meeting.user1), @meeting.id).deliver_now
       end
       if !@meeting.user2.nil?
-        @notifications_mailer.meeting_processed(User.find_by(id: @meeting.user2)).deliver_now
+        @notifications_mailer.meeting_processed(User.find_by(id: @meeting.user2), @meeting.id).deliver_now
       end
       if !@meeting.user3.nil?
-        @notifications_mailer.meeting_processed(User.find_by(id: @meeting.user3)).deliver_now
+        @notifications_mailer.meeting_processed(User.find_by(id: @meeting.user3), @meeting.id).deliver_now
       end
     end
 end
