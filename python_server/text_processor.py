@@ -61,7 +61,7 @@ class TextProcessor:
         # Master Raw List of the Sentences. This will only be initialized. Never mutated ( Same order as the sentence list)
         self.sentenceList = None
 
-        self.stopwords = nltk.corpus.stopwords.words('english') + list(punctuation)
+        self.stopwords = nltk.corpus.stopwords.words('english') + list(punctuation) + list("\'")
 
 
         self.questionStarters = ['what', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would', 'whose'] # Add as you think of more
@@ -148,9 +148,9 @@ class TextProcessor:
 
         for word in nltk.word_tokenize(raw_text):
             try:
-                if word in self.stopwords or word == "action" or word == "item":
+                if word in self.stopwords or word == "action" or word == "item" or '\'' in word:
                     continue
-                tfidf_scores[word] = X[0, tfidf.vocabulary_[word]]
+                tfidf_scores[word] = X[0, tfidf.vocabulary_[word]] 
                 # tfidf_scores.append((word, X[0, tfidf.vocabulary_[word]]))
             except KeyError:
                 # Not in Brown Corpus
