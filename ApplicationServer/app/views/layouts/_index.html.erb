@@ -18,15 +18,12 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link js-scroll-trigger" href="#about">About</a>
-              </li>
               <% if logged_in? %>
                 <li class="nav-item">
-                  <a class="nav-link js-scroll-trigger" href="/users/<%= current_user.id %>"><%= current_user.first %></a>
+                  <a class="nav-link js-scroll-trigger" href="/meetings">Meetings</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link js-scroll-trigger" href="/meetings">Meetings</a>
+                  <a class="nav-link js-scroll-trigger" href="/users/<%= current_user.id %>"><%= current_user.first %></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link js-scroll-trigger" href="/logout">Log out</a>
