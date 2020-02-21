@@ -25,7 +25,7 @@
                 </ul>
 
 
-            <h3>Attached Files:</h3>
+            <!-- <h3>Attached Files:</h3>
               <ul>
                 <% if !@meeting.user1.nil? %>
                   <li> <%= User.find(@meeting.user1).first %> </li>
@@ -36,7 +36,7 @@
                 <% if !@meeting.user3.nil? %>
                   <li> <%= User.find(@meeting.user3).first %> </li>
                 <% end %>
-              </ul>
+              </ul> -->
 
             <h3>Tags:</h3>
               <ul>
@@ -46,13 +46,15 @@
                   <% end %>
                 <% end %>
               </ul>
-
-            <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 0 20px;">
+            <div style="margin:0 0 0 40px;">
+              <%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary btn-md" %>
+            </div>
+            <!-- <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 0 20px;">
               <tr class="row">
                 <td><%= link_to 'Edit', edit_meeting_path(@meeting), class:"btn btn-outline-secondary btn-md" %> </td>
                 <td><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary btn-md" %> </td>
               </tr>
-            </table>
+            </table> -->
           </div>
         </div>
 
@@ -235,7 +237,7 @@
               <% max_number = (interruption_array[0]+1)*2 %>
             <% else %>
               <% max_number = 0%>
-            <% end %>            
+            <% end %>
             <!-- Transcription card -->
             <div class="card shadow mb-4 scroll">
               <div class="card-header py-2">
@@ -312,12 +314,19 @@
            datasets: [{
              data: <%= raw spoken_data %>,
              backgroundColor: [
-             'rgba(255, 99, 132, 1)',
-             'rgba(54, 162, 235, 1)',
-             'rgba(255, 206, 86, 1)',
-             'rgba(75, 192, 192, 1)',
-             'rgba(153, 102, 255, 1)',
-             'rgba(255, 159, 64, 1)'
+             // 'rgba(255, 99, 132, 1)',
+             // 'rgba(54, 162, 235, 1)',
+             // 'rgba(255, 206, 86, 1)',
+             // 'rgba(75, 192, 192, 1)',
+             // 'rgba(153, 102, 255, 1)',
+             // 'rgba(255, 159, 64, 1)'
+
+             // 'rgba(67,215,217,1)',
+             'rgba(255,71,145,1)',
+             'rgba(0,190,255,1)',
+             'rgba(179,141,251, 1)',
+             'rgba(106,169,255,1)',
+             'rgba(67,215,217,1)'
              ],
              label: 'Dataset 1'
            }],
@@ -326,7 +335,9 @@
          options: {
            maintainAspectRatio: false,
            legend: {
+             position: 'right',
              labels: {
+               fontSize:15,
                usePointStyle: true
              },
               position: 'right',
@@ -344,12 +355,17 @@
         datasets: [{
           data: <%= raw action_data %>,
           backgroundColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
+            // 'rgba(255, 99, 132, 1)',
+            // 'rgba(54, 162, 235, 1)',
+            // 'rgba(255, 206, 86, 1)',
+            // 'rgba(75, 192, 192, 1)',
+            // 'rgba(153, 102, 255, 1)',
+            // 'rgba(255, 159, 64, 1)'
+            'rgba(255,71,145,1)',
+            'rgba(0,190,255,1)',
+            'rgba(179,141,251, 1)',
+            'rgba(106,169,255,1)',
+            'rgba(67,215,217,1)'
           ],
           label: 'Dataset 1'
         }],
@@ -360,6 +376,7 @@
         legend: {
           position: 'right',
           labels: {
+            fontSize:15,
             usePointStyle: true
           }
         },
@@ -377,32 +394,55 @@
               label: '# of Interruptions',
               data: <%=raw interruption_array%>,
               backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
+                  // 'rgba(255, 99, 132, 0.2)',
+                  // 'rgba(54, 162, 235, 0.2)',
+                  // 'rgba(255, 206, 86, 0.2)',
+                  // 'rgba(75, 192, 192, 0.2)',
+                  // 'rgba(153, 102, 255, 0.2)',
+                  // 'rgba(255, 159, 64, 0.2)'
+                  'rgba(255,71,145,1)',
+                  'rgba(0,190,255,1)',
+                  'rgba(179,141,251, 1)',
+                  'rgba(106,169,255,1)',
+                  'rgba(67,215,217,1)'
               ],
               borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
+                  // 'rgba(255, 99, 132, 1)',
+                  // 'rgba(54, 162, 235, 1)',
+                  // 'rgba(255, 206, 86, 1)',
+                  // 'rgba(75, 192, 192, 1)',
+                  // 'rgba(153, 102, 255, 1)',
+                  // 'rgba(255, 159, 64, 1)'
+                  'rgba(255,71,145,1)',
+                  'rgba(0,190,255,1)',
+                  'rgba(179,141,251, 1)',
+                  'rgba(106,169,255,1)',
+                  'rgba(67,215,217,1)'
               ],
               borderWidth: 1
           }]
       },
       options: {
           maintainAspectRatio: false,
+          legend: {
+            display: true,
+            labels:{
+              fontSize:15,
+            }
+          },
           max: 5,
           scales: {
+              xAxes:[{
+                ticks:{
+                  fontSize:15
+                }
+              }],
               yAxes: [{
                   ticks: {
                       beginAtZero: true,
-                      max: <%= raw max_number %>
+                      max: <%= raw max_number %>,
+                      fontSize:15,
+                      stepSize:1
                   }
               }],
             animation: {

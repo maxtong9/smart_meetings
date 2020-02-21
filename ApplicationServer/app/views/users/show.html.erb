@@ -1,133 +1,93 @@
 <body class="body" style="margin: 0 30px 50px 30px">
   <p id="notice"><%= notice %></p>
-  <% meeting_number = @user_hash['spoken'].keys%>
+  <% meeting_number = [0] %>
+  <% meeting_number = meeting_number+ @user_hash['spoken'].keys%>
 
+  <% spoken_percent = [0]%>
+  <% for i in @user_hash['spoken'].values %>
+      <% spoken_percent = spoken_percent + [(i*100).ceil]%>
+  <% end %>
   <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
   <div class="container-fluid">
     <div class="row">
-      <div class="col col-lg-3">
-        <div class="card border-left-primary shadow h-100">
+      <div class="col col-lg-12">
+        <div class="card chart-card border-left-primary shadow h-100">
           <div class="card-body">
-          <h1> <%= @user.first %> </h1>
-          <h4> Email: <%= @user.email %> </h4>
-          <h4> Trello: <%= @user.trello %> </h4>
-            <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 -10px 50px;">
-              <tr class="row text-center">
-                <td><%= link_to 'Edit', edit_user_path(@user), class:"btn btn-outline-secondary btn-md" %> </td>
-                <td><%= link_to 'Back', users_path, class:"btn btn-outline-secondary btn-md" %> </td>
+            <table class="table w-auto table-borderless">
+              <tr class="row">
+                <td style="padding: 0 0 0 16px"><h2 class="m-2">Meeting Statistics</h2></td>
+                <td style="padding: 0 0 0 750px"><h3 class="m-3"> <%=@user_hash['spoken'].length%> Total Meetings </h3></td>
               </tr>
             </table>
           </div>
-        </div>
-      </div>
 
-
-      <!-- <div class="col col-lg-9">
-        <div class="card chart-card border-left-primary shadow mb-4 h-100">
-          <div class="card-body pb-0">
-             <h2 class="m-2 ">Meeting Statistics</h2>
-          </div>
           <nav class="nav-extended">
             <div class="nav-content">
               <ul class="nav tabs-white nav-fill" role="tablist">
+                <li class="nav-item">
+                  <a id="view-all" class="nav-link waves-light active" data-toggle="tab" href="#panel1001" role="tab">View All</a>
+                </li>
                 <li class="nav-item ml-0">
-                  <a class="nav-link waves-light active" data-toggle="tab" href="#panel1001" role="tab">Spoken Percentage</a>
+                  <a class="nav-link waves-ligh" data-toggle="tab" href="#panel1002" role="tab">Spoken Percentage</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link waves-light" data-toggle="tab" href="#panel1002" role="tab">Hesitations</a>
+                  <a class="nav-link waves-light" data-toggle="tab" href="#panel1003" role="tab">Action Items</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link waves-light" data-toggle="tab" href="#panel1003" role="tab">Interruptions</a>
+                  <a class="nav-link waves-light" data-toggle="tab" href="#panel1004" role="tab">Interruptions</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link waves-light" data-toggle="tab" href="#panel1004" role="tab">Action Items</a>
+                  <a class="nav-link waves-light" data-toggle="tab" href="#panel1005" role="tab">Hesitations</a>
                 </li>
               </ul>
             </div>
           </nav>
             <div class="tab-content rounded-bottom">
-              <div class="tab-pane fade in show active" id="panel1001" role="tabpanel">
-                <div class="chart-area">
-                  <canvas id="speaker_chart"></canvas>
+              <div class="tab-pane fade in show active" id="panel1001" role="tabpanel" style="margin:20px 30px 20px 20px">
+                <div class="row">
+                  <div class="col col-sm-6">
+                      <canvas id="speaker_chart1"></canvas>
+                  </div>
+                  <div class="col col-sm-6">
+                    <canvas id="action_chart1"></canvas>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col col-sm-6">
+                    <canvas id="interruption_chart1"></canvas>
+                  </div>
+                  <div class="col col-sm-6">
+                    <canvas id="hesitation_chart1"></canvas>
+                  </div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="panel1002" role="tabpanel">
-                <div class="chart-area">
-                  <canvas id="hesitation_chart"></canvas>
-                </div>
+
+              <div class="tab-pane fade" id="panel1002" role="tabpanel" style="margin:20px 30px 20px 20px">
+                  <div style="margin:0 100px 0 100px">
+                    <canvas id="speaker_chart"></canvas>
+                  </div>
               </div>
-              <div class="tab-pane fade" id="panel1003" role="tabpanel">
-                <div class="chart-area">
-                  <canvas id="interruption_chart"></canvas>
-                </div>
-              </div>
-              <div class="tab-pane fade" id="panel1004" role="tabpanel">
-                <div class="chart-area">
+              <div class="tab-pane fade" id="panel1003" role="tabpanel" style="margin:20px 30px 20px 20px">
+                <div style="margin:0 100px 0 100px">
                   <canvas id="action_chart"></canvas>
                 </div>
               </div>
+              <div class="tab-pane fade" id="panel1004" role="tabpanel" style="margin:20px 30px 20px 20px">
+                <div style="margin:0 100px 0 100px">
+                  <canvas id="interruption_chart"></canvas>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="panel1005" role="tabpanel" style="margin:20px 30px 20px 20px">
+                <div style="margin:0 100px 0 100px">
+                  <canvas id="hesitation_chart"></canvas>
+                </div>
+              </div>
             </div>
 
-        </div>
-      </div> -->
-
-      <div class="col col-lg-4">
-        <div class="card border-left-success shadow mb-2 h-80" style="margin:40px 0;">
-          <div class="card-header-1 card-header-bg1">
-              <canvas id="speaker_chart"></canvas>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">Speaker's Percentage</h4>
-            <h5> Spoken percentage per each meeting. </h5>
-          </div>
-        </div>
-      </div>
-
-      <div class="col col-lg-4">
-        <div class="card border-left-success shadow mb-4 h-80" style="margin:40px 0;">
-          <div class="card-header-1 card-header-bg4">
-            <canvas id="action_chart"></canvas>
-          </div>
-            <div class="card-body">
-                <h4 class="card-title">Action Items</h4>
-                <h5> Tasks that you assigned in each meetings. </h5>
-          </div>
         </div>
       </div>
     </div>
-    <div class="row mt-3" style="margin 0 20px 10px 0;">
-      <div class="col col-lg-3">
-        <div class="card border-left-primary shadow h-100">
-          <div class="card-body">
-          <h2> Personalized Suggestions </h2>
-          <h4> Coming Soon </h4>
-          </div>
-        </div>
-      </div>
-      <div class="col col-lg-4">
-        <div class="card border-left-success shadow mb-4 h-80" style="margin:20px 0;">
-          <div class="card-header-1 card-header-bg3">
-            <canvas id="interruption_chart"></canvas>
-          </div>
-            <div class="card-body">
-                <h4 class="card-title">Interruptions</h4>
-                <h5> The amount you tried speaking or spoke while someone else was speaking. </h5>
-          </div>
-        </div>
-      </div>
-      <div class="col col-lg-4">
-          <div class="card border-left-success shadow mb-4 h-80" style="margin:20px 0;">
-            <div class="card-header-1 card-header-bg2">
-                <canvas id="hesitation_chart"></canvas>
-            </div>
-            <div class="card-body">
-              <h4 class="card-title">Hesitations</h4>
-              <h5> Words and sounds that fill a silence or cause a discourse in speech.  </h5>
-            </div>
-          </div>
-      </div>
-    </div>
-
   </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -137,10 +97,9 @@
     type: 'line',
     data: {
       datasets: [{
-        data: <%=raw @user_hash['spoken'].values %>,
-        borderColor: "rgba(255, 255, 255, 1)",
-        backgroundColor: "rgba(255, 255, 255, 1)",
-        pointBackgroundColor: "white",
+        data: <%=raw spoken_percent %>,
+        borderColor: "rgba(67,215,217,1)",
+        backgroundColor: "rgba(67,215,217,1)",
         fill: false,
       }],
       labels: <%=raw meeting_number %> ,
@@ -150,38 +109,43 @@
       legend: {
         display: false
       },
+      title:{
+        display:true,
+        text:'% of Spoken Time',
+        fontSize:16,
+      },
       scales: {
           yAxes: [{
             display: true,
             gridLines: {
-              display: true,
-              borderDash: [2, 2],
-              color:"rgba(255, 255, 255, 0.5)",
+              display: true
             },
             ticks:{
-              fontColor:"rgba(255, 255, 255, 0.7)",
+              fontSize:16,
+              // fontColor:"rgba(255, 255, 255, 0.7)",
             }
           }],
           xAxes: [{
             display: true,
             gridLines: {
-              display: true,
-              borderDash: [2, 2],
-              color:"rgba(255, 255, 255, 0.5)",
+              display: true
+              // color:"rgba(255, 255, 255, 0.5)",
             },
             ticks:{
-              fontColor:"rgba(255, 255, 255, 0.7)",
+              fontSize:16,
+              // fontColor:"rgba(255, 255, 255, 0.7)",
+              // beginAtZero: true,
             }
           }]
       },
-      layout: {
-        padding: {
-            left: 10,
-            right: 20,
-            top: 20,
-            bottom: 20
-        }
-      }
+      // layout: {
+      //   padding: {
+      //       left: 40,
+      //       right: 50,
+      //       top: 50,
+      //       bottom: 50
+      //   }
+      // }
     }
   };
   //Hesitation chart
@@ -189,9 +153,9 @@
      type: 'line',
      data: {
        datasets: [{
-         data: <%=raw @user_hash['hesitations'].values %>,
-         borderColor: "white",
-         backgroundColor:"white",
+         data: <%=raw [0]+@user_hash['hesitations'].values %>,
+         borderColor: "rgba(179,141,251, 1)",
+         backgroundColor:"rgba(179,141,251, 1)",
          fill: false
        }],
        labels: <%=raw meeting_number %>,
@@ -201,38 +165,46 @@
        legend: {
          display: false
        },
+       title:{
+         display:true,
+         text:'# of Hesitations in Meetings',
+         fontSize:18,
+       },
        scales: {
            yAxes: [{
              display: true,
              gridLines: {
                display: true,
-               borderDash: [2, 2],
-               color:"rgba(255, 255, 255, 0.5)",
+               // borderDash: [2, 2],
+               // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
-               fontColor:"rgba(255, 255, 255, 0.7)",
+               fontSize:16,
+               stepSize: 1,
+               // fontColor:"rgba(255, 255, 255, 0.7)",
              }
            }],
            xAxes: [{
              display: true,
              gridLines: {
                display: true,
-               borderDash: [2, 2],
-               color:"rgba(255, 255, 255, 0.5)",
+               // borderDash: [2, 2],
+               // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
-               fontColor:"rgba(255, 255, 255, 0.7)",
+               fontSize:16,
+               // fontColor:"rgba(255, 255, 255, 0.7)",
              }
            }]
        },
-       layout: {
-         padding: {
-             left: 10,
-             right: 20,
-             top: 20,
-             bottom: 20
-         }
-       }
+       // layout: {
+       //   padding: {
+       //       left: 40,
+       //       right: 50,
+       //       top: 50,
+       //       bottom: 50
+       //   }
+       // }
      }
    };
    //Interruptions chart
@@ -240,9 +212,9 @@
      type: 'line',
      data: {
        datasets: [{
-         data:<%=raw @user_hash['interruptions'].values %>,
-         borderColor: "white",
-         backgroundColor:"white",
+         data:<%=raw [0]+@user_hash['interruptions'].values %>,
+         borderColor: "rgba(255,71,145,1)",
+         backgroundColor:"rgba(255,71,145,1)",
          fill: false
        }],
        labels: <%=raw meeting_number %>,
@@ -252,38 +224,47 @@
        legend: {
          display: false
        },
+       title:{
+         display:true,
+         text:'# of Interruptions in Meetings',
+         fontSize:16,
+       },
        scales: {
            yAxes: [{
              display: true,
              gridLines: {
                display: true,
-               borderDash: [2, 2],
-               color:"rgba(255, 255, 255, 0.5)",
+
+               // borderDash: [2, 2],
+               // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
-               fontColor:"rgba(255, 255, 255, 0.7)",
+               fontSize:16,
+               stepSize: 1,
+               // fontColor:"rgba(255, 255, 255, 0.7)",
              }
            }],
            xAxes: [{
              display: true,
              gridLines: {
                display: true,
-               borderDash: [2, 2],
-               color:"rgba(255, 255, 255, 0.5)",
+               // borderDash: [2, 2],
+               // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
-               fontColor:"rgba(255, 255, 255, 0.7)",
+               fontSize:16,
+               // fontColor:"rgba(255, 255, 255, 0.7)",
              }
            }]
        },
-       layout: {
-         padding: {
-             left: 10,
-             right: 20,
-             top: 20,
-             bottom: 20
-         }
-       }
+       // layout: {
+       //   padding: {
+       //       left: 40,
+       //       right: 50,
+       //       top: 50,
+       //       bottom: 50
+       //   }
+       // }
      }
      };
      //Action chart
@@ -291,9 +272,9 @@
        type: 'line',
        data: {
          datasets: [{
-           data: <%=raw @user_hash['action_items'].values %>,
-           borderColor: "white",
-           backgroundColor:"white",
+           data: <%=raw [0]+@user_hash['action_items'].values %>,
+           borderColor: "rgba(0,190,255,1)",
+           backgroundColor:"rgba(0,190,255,1)",
            fill: false
          }],
          labels: <%=raw meeting_number %>,
@@ -303,51 +284,89 @@
          legend: {
            display: false
          },
+         title:{
+           display:true,
+           text:'# of Action Items Made in Meetings',
+           fontSize:16,
+         },
          scales: {
              yAxes: [{
                display: true,
                gridLines: {
                  display: true,
-                 borderDash: [2, 2],
-                 color:"rgba(255, 255, 255, 0.5)",
+                 // borderDash: [2, 2],
+                 // color:"rgba(255, 255, 255, 0.5)",
                },
                ticks:{
-                 fontColor:"rgba(255, 255, 255, 0.7)",
+                 fontSize:16,
+                 stepSize: 1,
+                 // fontColor:"rgba(255, 255, 255, 0.7)",
                }
              }],
              xAxes: [{
                display: true,
                gridLines: {
                  display: true,
-                 borderDash: [2, 2],
-                 color:"rgba(255, 255, 255, 0.5)",
+                 // borderDash: [2, 2],
+                 // color:"rgba(255, 255, 255, 0.5)",
                },
                ticks:{
-                 fontColor:"rgba(255, 255, 255, 0.7)",
+                 fontSize:16,
+                 // fontColor:"rgba(255, 255, 255, 0.7)",
                }
              }]
          },
-         layout: {
-           padding: {
-               left: 10,
-               right: 20,
-               top: 20,
-               bottom: 20
-           }
-         }
+         // layout: {
+         //   padding: {
+         //       left: 40,
+         //       right: 50,
+         //       top: 50,
+         //       bottom: 50
+         //   }
+         // }
        }
      };
 
   setTimeout(() => {
-    var ctx0 = document.getElementById('speaker_chart').getContext('2d');
-    var ctx1 = document.getElementById('hesitation_chart').getContext('2d');
-    var ctx2 = document.getElementById('interruption_chart').getContext('2d');
-    var ctx3 = document.getElementById('action_chart').getContext('2d');
-   	window.myLine = new Chart(ctx0, chart0);
+    var ctx0 = document.getElementById('speaker_chart1').getContext('2d');
+    var ctx1 = document.getElementById('hesitation_chart1').getContext('2d');
+    var ctx2 = document.getElementById('interruption_chart1').getContext('2d');
+    var ctx3 = document.getElementById('action_chart1').getContext('2d');
+    window.myLine = new Chart(ctx0, chart0);
     window.myLine = new Chart(ctx1, chart1);
     window.myLine = new Chart(ctx2, chart2);
     window.myLine = new Chart(ctx3, chart3);
   }, 300);
+
+  setTimeout(() => {
+    var ctx0 = document.getElementById('speaker_chart').getContext('2d');
+    ctx0.canvas.width = 300;
+    ctx0.canvas.height = 100;
+    var ctx1 = document.getElementById('hesitation_chart').getContext('2d');
+    ctx1.canvas.width = 300;
+    ctx1.canvas.height = 100;
+    var ctx2 = document.getElementById('interruption_chart').getContext('2d');
+    ctx2.canvas.width = 300;
+    ctx2.canvas.height = 100;
+    var ctx3 = document.getElementById('action_chart').getContext('2d');
+    ctx3.canvas.width = 300;
+    ctx3.canvas.height = 100;
+   	window.myLine = new Chart(ctx0, chart0);
+    window.myLine = new Chart(ctx1, chart1);
+    window.myLine = new Chart(ctx2, chart2);
+    window.myLine = new Chart(ctx3, chart3);
+  }, 100);
+
+  // document.getElementById("view-all").addEventListener("click", function(){
+  //   var ctx0 = document.getElementById('speaker_chart1').getContext('2d');
+  //   var ctx1 = document.getElementById('hesitation_chart1').getContext('2d');
+  //   var ctx2 = document.getElementById('interruption_chart1').getContext('2d');
+  //   var ctx3 = document.getElementById('action_chart1').getContext('2d');
+  //   window.myLine = new Chart(ctx0, chart0);
+  //   window.myLine = new Chart(ctx1, chart1);
+  //   window.myLine = new Chart(ctx2, chart2);
+  //   window.myLine = new Chart(ctx3, chart3);
+  // });
   // window.onload = function() {
   //     var ctx0 = document.getElementById('speaker_chart').getContext('2d');
 	// 		window.myLine = new Chart(ctx0, chart0);

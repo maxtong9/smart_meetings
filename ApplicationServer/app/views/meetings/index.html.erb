@@ -257,9 +257,15 @@
 <script>
   var colors = ['#B24159', '#6A92B5', '#7BA187', '#A28B9C', '#7AD1AB', '#DE74C1'];
   var random_color;
+  var prev_color;
   var list = document.getElementsByClassName("pill");
   for (var i = 0; i < list.length; i++) {
       random_color = colors[Math.floor(Math.random() * colors.length)];
+      if (i != 0){
+          while (random_color==prev_color)
+            random_color = colors[Math.floor(Math.random() * colors.length)];
+      }
+      prev_color = random_color;
       list[i].style.background = random_color;
   }
 </script>
