@@ -32,7 +32,7 @@ class TranscriptionAnalyzer:
     # Loads an audio file associated with the name into the object
     def loadAudio(self, name, audioFile):
         self.audioFiles.append(audioFile)
-        self.nameList.append(name)
+        self.nameList = name
 
     # Fetches the transcription from the given audio files
     def transcribeAudio(self):
