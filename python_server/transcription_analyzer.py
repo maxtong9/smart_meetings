@@ -41,7 +41,7 @@ class TranscriptionAnalyzer:
             return -1
 
         self.transcribe = Transcribe(self.audioFiles, self.nameList)
-        self.transcription = self.transcribe.transcription()
+        self.transcription = self.transcribe.transcription_with_recognition()
         self.interruption = self.transcribe.overlap()
         self.time = self.transcribe.time()
         print(self.transcription)

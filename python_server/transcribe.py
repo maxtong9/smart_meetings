@@ -16,18 +16,34 @@ from settings import *
 class Transcribe:
 	def __init__(self, input_audio, nameList):
 		self.audio = input_audio
-		self.nameList = []
-		for i in nameList:
-			self.nameList.append(i[:-1])
+		# self.nameList = []
+		# for i in nameList:
+			# self.nameList.append(i[:-1])
+		self.nameList = nameList
+		print(self.nameList)
+
 
 		self.phrase = None
 		self.speakerByStamp = {}
+		self.speakerMapper = {} # maps that speakers that appear to the list of speakers in the list
 
 	'''
 	Gets the speaker at the current timestamp
 	'''
 	def getSpeakerAtTimestamp(self, beg_time_stamp):
-		return self.speakerByStamp[beg_time_stamp]
+		recognized_speaker = self.speakerByStamp[beg_time_stamp]
+
+		if recognized_speaker in self.speakerMapper:
+			return self.speakerMapper[recognized_speaker]
+		else:
+			# Map the recognized speaker to a person in the list
+			try:
+				self.speakerMapper[recognized_speaker] = self.nameList.pop(0)
+				return self.speakerMapper[recognized_speaker]
+			except IndexError:
+				print("Error: Recognized more speakers than names available. Defaulting to the first speaker..")
+				self.speakerMapper[recognized_speaker] = self.speakerMapper[0] # assuming 0 already exists, because it should be the first speaker available
+				return self.speakerMapper[recognized_speaker] 
 		# print(self.speakerByStamp)
 
 
@@ -236,5 +252,5 @@ class Transcribe:
 
 
 if __name__ == "__main__":
-    transcribe = Transcribe(['data4.wav'], ['Sarita', 'Christina'])
+    transcribe = Transcribe(['3ppl0.wav'], ['Max', 'Sarita', 'Tuan'])
     transcription = transcribe.transcription_with_recognition()
