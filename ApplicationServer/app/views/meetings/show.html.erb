@@ -335,7 +335,9 @@
          options: {
            maintainAspectRatio: false,
            legend: {
+             position: 'right',
              labels: {
+               fontSize:15,
                usePointStyle: true
              },
               position: 'right',
@@ -374,6 +376,7 @@
         legend: {
           position: 'right',
           labels: {
+            fontSize:15,
             usePointStyle: true
           }
         },
@@ -421,12 +424,25 @@
       },
       options: {
           maintainAspectRatio: false,
+          legend: {
+            display: true,
+            labels:{
+              fontSize:15,
+            }
+          },
           max: 5,
           scales: {
+              xAxes:[{
+                ticks:{
+                  fontSize:15
+                }
+              }],
               yAxes: [{
                   ticks: {
                       beginAtZero: true,
-                      max: <%= raw max_number %>
+                      max: <%= raw max_number %>,
+                      fontSize:15,
+                      stepSize:1
                   }
               }],
             animation: {

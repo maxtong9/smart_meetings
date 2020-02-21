@@ -2,13 +2,23 @@
   <p id="notice"><%= notice %></p>
   <% meeting_number = [0] %>
   <% meeting_number = meeting_number+ @user_hash['spoken'].keys%>
+
+  <% spoken_percent = [0]%>
+  <% for i in @user_hash['spoken'].values %>
+      <% spoken_percent = spoken_percent + [(i*100).ceil]%>
+  <% end %>
   <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
   <div class="container-fluid">
     <div class="row">
-      <div class="col col-lg-10">
-        <div class="card chart-card border-left-primary shadow mb-4 h-100">
+      <div class="col col-lg-12">
+        <div class="card chart-card border-left-primary shadow h-100">
           <div class="card-body">
-             <h2 class="m-2 ">Meeting Statistics</h2>
+            <table class="table w-auto table-borderless">
+              <tr class="row">
+                <td style="padding: 0 0 0 16px"><h2 class="m-2">Meeting Statistics</h2></td>
+                <td style="padding: 0 0 0 750px"><h3 class="m-3"> <%=@user_hash['spoken'].length%> Total Meetings </h3></td>
+              </tr>
+            </table>
           </div>
 
           <nav class="nav-extended">
@@ -77,110 +87,6 @@
 
         </div>
       </div>
-
-      <!-- <div class="col col-lg-4">
-        <div class="card border-left-success shadow mb-2 h-80" style="margin:40px 0;">
-          <div class="card-header-1 card-header-bg1">
-              <canvas id="speaker_chart"></canvas>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">Speaker's Percentage</h4>
-            <h5> Spoken percentage per each meeting. </h5>
-          </div>
-        </div>
-      </div>
-
-      <div class="col col-lg-4">
-        <div class="card border-left-success shadow mb-4 h-80" style="margin:40px 0;">
-          <div class="card-header-1 card-header-bg4">
-            <canvas id="action_chart"></canvas>
-          </div>
-            <div class="card-body">
-                <h4 class="card-title">Action Items</h4>
-                <h5> Tasks that you assigned in each meetings. </h5>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-3" style="margin 0 20px 10px 0;">
-      <div class="col col-lg-3">
-        <div class="card border-left-primary shadow h-100">
-          <div class="card-body">
-          <h2> Personalized Suggestions </h2>
-          <h4> Coming Soon </h4>
-          </div>
-        </div>
-      </div>
-      <div class="col col-lg-4">
-        <div class="card border-left-success shadow mb-4 h-80" style="margin:20px 0;">
-          <div class="card-header-1 card-header-bg3">
-            <canvas id="interruption_chart"></canvas>
-          </div>
-            <div class="card-body">
-                <h4 class="card-title">Interruptions</h4>
-                <h5> The amount you tried speaking or spoke while someone else was speaking. </h5>
-          </div>
-        </div>
-      </div>
-      <div class="col col-lg-4">
-          <div class="card border-left-success shadow mb-4 h-80" style="margin:20px 0;">
-            <div class="card-header-1 card-header-bg2">
-                <canvas id="hesitation_chart"></canvas>
-            </div>
-            <div class="card-body">
-              <h4 class="card-title">Hesitations</h4>
-              <h5> Words and sounds that fill a silence or cause a discourse in speech.  </h5>
-            </div>
-          </div>
-      </div>
-    </div> -->
-    <div class="col col-md-2">
-      <div class="row mb-3 w-100">
-        <div class="card shadow card-bg1" style="width:20rem;">
-          <div class="card-body">
-            <h4 style="color:white;"> <%=@user_hash['spoken'].length%> </h4>
-            <h5 style="color:white;"> Total Meetings </h5>
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3 w-100">
-        <div class="card shadow card-bg2" style="width:20rem;">
-          <div class="card-body">
-            <% total_spoken = 0 %>
-            <% for i in @user_hash['spoken'].values %>
-              <%total_spoken = total_spoken+i%>
-            <% end %>
-            <h4 style="color:white;"> <%= ((total_spoken/@user_hash['spoken'].length)*100).ceil() %> % </h4>
-            <h5 style="color:white;"> Average Spoken Time</h5>
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3 w-100">
-        <div class="card shadow card-bg3"  style="width:20rem;">
-          <div class="card-body">
-            <% total_action = 0 %>
-            <% for i in @user_hash['action_items'].values %>
-              <%total_action = total_action+i%>
-            <% end %>
-            <h4 style="color:white;"> <%= total_action %> </h4>
-            <h5 style="color:white;"> Total Action Items</h5>
-          </div>
-        </div>
-      </div>
-
-      <!-- <div class="card border-left-primary shadow h-100">
-        <div class="card-body">
-        <h1> <%= @user.first %> </h1>
-        <h4> Email: <%= @user.email %> </h4>
-        <h4> Trello: <%= @user.trello %> </h4>
-          <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 -10px 50px;">
-            <tr class="row text-center">
-              <td><%= link_to 'Edit', edit_user_path(@user), class:"btn btn-outline-secondary btn-md" %> </td>
-              <td><%= link_to 'Back', users_path, class:"btn btn-outline-secondary btn-md" %> </td>
-            </tr>
-          </table>
-        </div>
-      </div> -->
     </div>
   </div>
 </body>
@@ -191,7 +97,7 @@
     type: 'line',
     data: {
       datasets: [{
-        data: <%=raw [0]+@user_hash['spoken'].values %>,
+        data: <%=raw spoken_percent %>,
         borderColor: "rgba(67,215,217,1)",
         backgroundColor: "rgba(67,215,217,1)",
         fill: false,
@@ -206,7 +112,7 @@
       title:{
         display:true,
         text:'% of Spoken Time',
-        fontSize:18,
+        fontSize:16,
       },
       scales: {
           yAxes: [{
@@ -215,7 +121,7 @@
               display: true
             },
             ticks:{
-              fontSize:18,
+              fontSize:16,
               // fontColor:"rgba(255, 255, 255, 0.7)",
             }
           }],
@@ -226,7 +132,7 @@
               // color:"rgba(255, 255, 255, 0.5)",
             },
             ticks:{
-              fontSize:18,
+              fontSize:16,
               // fontColor:"rgba(255, 255, 255, 0.7)",
               // beginAtZero: true,
             }
@@ -273,7 +179,7 @@
                // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
-               fontSize:18,
+               fontSize:16,
                stepSize: 1,
                // fontColor:"rgba(255, 255, 255, 0.7)",
              }
@@ -286,7 +192,7 @@
                // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
-               fontSize:18,
+               fontSize:16,
                // fontColor:"rgba(255, 255, 255, 0.7)",
              }
            }]
@@ -321,7 +227,7 @@
        title:{
          display:true,
          text:'# of Interruptions in Meetings',
-         fontSize:18,
+         fontSize:16,
        },
        scales: {
            yAxes: [{
@@ -333,7 +239,7 @@
                // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
-               fontSize:18,
+               fontSize:16,
                stepSize: 1,
                // fontColor:"rgba(255, 255, 255, 0.7)",
              }
@@ -346,7 +252,7 @@
                // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
-               fontSize:18,
+               fontSize:16,
                // fontColor:"rgba(255, 255, 255, 0.7)",
              }
            }]
@@ -381,7 +287,7 @@
          title:{
            display:true,
            text:'# of Action Items Made in Meetings',
-           fontSize:18,
+           fontSize:16,
          },
          scales: {
              yAxes: [{
@@ -392,7 +298,7 @@
                  // color:"rgba(255, 255, 255, 0.5)",
                },
                ticks:{
-                 fontSize:18,
+                 fontSize:16,
                  stepSize: 1,
                  // fontColor:"rgba(255, 255, 255, 0.7)",
                }
@@ -405,7 +311,7 @@
                  // color:"rgba(255, 255, 255, 0.5)",
                },
                ticks:{
-                 fontSize:18,
+                 fontSize:16,
                  // fontColor:"rgba(255, 255, 255, 0.7)",
                }
              }]
