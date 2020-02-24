@@ -567,7 +567,6 @@ class TextProcessor:
             foundDeadline = False
             if len(words) >= 2:
                 for i in range(0, len(words)):
-                    print("word: " + words[i])
                     if words[i] == self.ACTION_ITEM_KEYWORD[0] and words[i+1] == self.ACTION_ITEM_KEYWORD[1]:
                         # print("FOUND ACTION ITEM")
                         ai_index = i
@@ -603,7 +602,6 @@ class TextProcessor:
                     if foundDeadline is True:
                         actionItems[len(actionItems)-1].append([datetime, keyword_index-2]) # subtract 2 from keyword_index to account for "action item" keywords
 
-        print("action items: " + str(actionItems))
         return actionItems
 
     '''
@@ -782,6 +780,106 @@ class TextProcessor:
 
 
         return listOfSent
+
+    '''
+    Gets a list of meeting suggestions
+
+    Input: A dict of analysis, i.e. total time spoken, questions, action items, interruptions, meeting time etc.
+    '''
+    def getMeetingSuggestions(self, analyzerOutput):
+        meetingSuggestions = {}
+        # self.total_speakers
+        print("TOTAL SPEAKERS:")
+        print(self.total_speakers)
+
+        numSpeakers = len(self.total_speakers)
+        print("NUM SPEAKERS: " + str(numSpeakers))
+
+        # Suggestions for speaking contributions
+        speakingPercentages = analyzerOutput["total_time_spoken"] # speaking percentages is a list of [name, wordsPerPerson[name]]
+        print("SPEAKING PERCENTAGES:")
+        print(speakingPercentages)
+
+        speakingPercentageIdeal = 1.0/numSpeakers
+        print("IDEAL SPEAKING PERCENTAGES: " + str(speakingPercentageIdeal))
+
+        # aim for each person to speak an equal amount +/- 15%
+        speakingPercentageMin = speakingPercentageIdeal * 0.85
+        speakingPercentageMax = speakingPercentageIdeal * 1.15
+        print("SPEAKING PERCENTAGES RANGE: (" + str(speakingPercentageMin) + ", " + str(speakingPercentageMax) + ")")
+
+        lowSpeakers = [] # list of speakers whose spoken percentages are below speakingPercentageMin
+        highSpeakers = [] # list of speakers whose spoken percentages are above speakingPercentageMax
+
+        for sp in speakingPercentages:
+            percentage = sp[1]
+            if percentage < speakingPercentageMin:
+                lowSpeakers.append(sp)
+            elif percentage > speakingPercentageMax:
+                highSpeakers.append(sp)
+            
+        meetingSuggestions["Speaking Percentages"] = []
+        if len(lowSpeakers) > 0:
+            s = ""
+            for i in range(len(lowSpeakers)):
+                if i == len(lowSpeakers)-2:
+                    s += ", and "
+                elif i > 0:
+                    s += ", "
+                s += lowSpeakers[i][0]
+            s += " appear(s) to be speaking less than their peers. Don't be afraid to contribute your great ideas!"
+            meetingSuggestions["Speaking Percentages"].append(s)
+        if len(highSpeakers) > 0:
+            s = ""
+            for i in range(len(highSpeakers)):
+                if i == len(highSpeakers)-2:
+                    s += ", and "
+                elif i > 0:
+                    s += ", "
+                s += highSpeakers[i][0]
+            s += " appear(s) to be dominating this meeting. Try encourging or opening the floor up to other members of the meeting!"
+            meetingSuggestions["Speaking Percentages"].append(s)
+        
+        if len(meetingSuggestions["Speaking Percentages"]) == 0:
+            meetingSuggestions["Speaking Percentages"].append("Everyone contributed to this meeting. Good job TEAM!")
+
+        # Suggestions for action items frequencies
+        actionItems = analyzerOutput["action_items"]
+        print("ACTION ITEMS:")
+        print(actionItems)
+
+        if len(actionItems) == 0:
+            meetingSuggestions["Action Items"] = "This meeting seems to be lacking action items, which are important and helpful in finishing projects smoothly and on time."
+
+        # Suggestions for interruptions
+        interruptions = analyzerOutput["interruption"]
+        print("INTERRUPTIONS:")
+        print(interruptions)
+        
+        if len(interruptions) == 0:
+            meetingSuggestions["Interruptions"] = "You all did an excellent job of making sure that everyone had the chance to finish what they had to say. Keep up the great work!"
+        else:
+            for i in range(len(interruptions)):
+                if i == len(interruptions)-2:
+                    s += ", and "
+                elif i > 0:
+                    s += ", "
+                s += interruptions[i][0]
+            s += " appear(s) to be interrupting other members. Make sure you're letting other people finish what they have to say!"
+            meetingSuggestions["Interruptions"].append(s)
+
+        # Suggestions for questions
+        questions = analyzerOutput["questions"]
+        print("QUESTIONS:")
+        print(questions)
+
+        if len(questions) == 0:
+            meetingSuggestions["Questions"] = "This meeting seems to be lacking questions. Questions are great for promoting meeting engagement and clarity. If you're confused, don't be afraid to ask a question!"
+        
+
+        print("MEETING SUGGESTIONS:")
+        print(meetingSuggestions)
+        return meetingSuggestions
 
 '''
 Minimal

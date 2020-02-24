@@ -65,6 +65,7 @@ class TranscriptionAnalyzer:
         self.analyzer_output["raw"] = self.text_analyzer.raw_data
         self.analyzer_output["meeting_time"] = self.time
         self.output = json.dumps(self.analyzer_output)
+        self.analyzer_output["meeting_suggestions"] = self.text_analyzer.getMeetingSuggestions(self.analyzer_output)
 
         with open('./tmp/' + self.meeting + '.json', 'w') as outfile:
             json.dump(self.analyzer_output, outfile)
