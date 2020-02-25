@@ -1,12 +1,42 @@
 <body class="body" style="margin: 0 30px 50px 30px">
   <p id="notice"><%= notice %></p>
-  <% meeting_number = [0] %>
-  <% meeting_number = meeting_number+ @user_hash['spoken'].keys%>
-
-  <% spoken_percent = [0]%>
+  <% meeting_number =  @user_hash['spoken'].keys %>
+  <% meetings = @user_hash['spoken'].length %>
+  <% spoken_percent = []%>
   <% for i in @user_hash['spoken'].values %>
       <% spoken_percent = spoken_percent + [(i*100).ceil]%>
   <% end %>
+
+  <% scale = {'0'=>0, '1'=>0, '2'=>0} %>
+  <% count = 1 %>
+  <% for i in @user_hash['participants'] %>
+    <% if i[1] == 2 %>
+      <% if @user_hash['spoken'][count] < 0.40 %>
+        <% scale['1'] +=1 %>
+      <% elsif @user_hash['spoken'][count] > 0.60 %>
+        <% scale['2'] +=1 %>
+      <% else %>
+        <% scale['0'] +=1 %>
+      <% end %>
+    <% elsif i[1] == 3 %>
+      <% if @user_hash['spoken'][count] < 0.25 %>
+        <% scale['1'] +=1 %>
+      <% elsif @user_hash['spoken'][count] > 0.45 %>
+        <% scale['2'] +=1 %>
+      <% else %>
+        <% scale['0'] +=1 %>
+      <% end %>
+    <% end %>
+  <% count = count + 1 %>
+  <% end %>
+
+  <% zero_count = 0 %>
+  <% for i in @user_hash['action_items'] %>
+    <% if i[1] == 0 %>
+      <%zero_count = zero_count+1 %>
+    <% end %>
+  <% end %>
+
   <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
   <div class="container-fluid">
     <div class="row">
@@ -16,14 +46,14 @@
             <table class="table w-auto table-borderless">
               <tr class="row">
                 <td style="padding: 0 0 0 16px"><h2 class="m-2">Meeting Statistics</h2></td>
-                <td style="padding: 0 0 0 750px"><h3 class="m-3"> <%=@user_hash['spoken'].length%> Total Meetings </h3></td>
+                <td style="padding: 0 0 0 730px"><h3 class="m-3"> <strong><%=@user_hash['spoken'].length%></strong> Total Meetings </h3></td>
               </tr>
             </table>
           </div>
 
           <nav class="nav-extended">
             <div class="nav-content">
-              <ul class="nav tabs-white nav-fill" role="tablist">
+              <ul class="nav tabs-white justify-content-center" role="tablist">
                 <li class="nav-item">
                   <a id="view-all" class="nav-link waves-light active" data-toggle="tab" href="#panel1001" role="tab">View All</a>
                 </li>
@@ -67,20 +97,58 @@
                   <div style="margin:0 100px 0 100px">
                     <canvas id="speaker_chart"></canvas>
                   </div>
+                  <div style="margin:30px 100px 0 100px">
+                    <h4> Feedback </h4>
+                    <h5 style="font-size:18px !important;"> Spoken Percentages are the percentages of your participation time in each meeting compared to others in the meeting.
+                    <% if scale['0'] == meetings %>
+                      <h5 style="font-size:18px !important;"> It looks like you are doing great in participating in your meetings effectively. </h5>
+                    <% elsif (scale['1'] && scale['2']) > 0 %>
+                      <h5 style="font-size:18px !important;"> Your percentages fluctuate. These might be due to different meeting types, the different roles you play, or your level of engagement in the meeting. </h5>
+                    <% elsif scale['1'] == 1 %>
+                      <h5 style="font-size:18px !important;"> Having a lower speaking percentage might mean you were not engaged in the meeting or did not have anything to contribute, but might also mean you were listening to others more. </h5>
+                    <% elsif scale['2'] == 1 %>
+                      <h5 style="font-size:18px !important;"> Having a higher speaking percentage might mean you were dominating the meeting or was not effective in delivering your thoughts, but might also mean you were the facilitator. </h5>
+                    <% elsif scale['1'] > 1 %>
+                      <h5 style="font-size:18px !important;"> It looks like you are not participating much in your meetings either from not engaging, not having anything to share, or from listening too much. Don't be afraid to speak up, your thoughts are valuable to the team as well. </h5>
+                    <% elsif scale['2'] > 1 %>
+                      <h5 style="font-size:18px !important;"> It looks like you are participating a lot in your meetings, either from being the facilitator, not being able to communicate effectively, or having too much to say. Try to have pauses so others can share their thoughts and prepare a concise list of topics you want to talk about before a meeting.</h5>
+                    <% end %>
+
+                  </div>
               </div>
               <div class="tab-pane fade" id="panel1003" role="tabpanel" style="margin:20px 30px 20px 20px">
                 <div style="margin:0 100px 0 100px">
                   <canvas id="action_chart"></canvas>
                 </div>
+                <div style="margin:30px 100px 0 100px">
+                  <h4> Feedback </h4>
+                  <h5 style="font-size:18px !important;"> Action Items are tasks assigned during the meeting with due dates. It offers an insight to how productive or effective the meeting was. </h5>
+                  <% if zero_count == 0 %>
+                    <h5 style="font-size:18px !important;"> You created action item(s) in all of your meetings, keep up the productivity! </h5>
+                  <% elsif zero_count == 1 %>
+                    <h5 style="font-size:18px !important;"> You created action item(s) in most of your meetings, keep up the productivity! </h5>
+                  <% else %>
+                    <h5 style="font-size:18px !important;"> You had no action items in many of your meetings. Without task creation, a meeting might not be as productive because there are no clear actions to execute. If you do not have your own tasks, you are also able to help others on their tasks.</h5>
+                  <% end %>
+                </div>
               </div>
+
               <div class="tab-pane fade" id="panel1004" role="tabpanel" style="margin:20px 30px 20px 20px">
                 <div style="margin:0 100px 0 100px">
                   <canvas id="interruption_chart"></canvas>
+                </div>
+                <div style="margin:30px 100px 0 100px">
+                  <h4> Feedback </h4>
+                  <h5 style="font-size:18px !important;"> Interruptions are sign that you might not be listening to others, as you are also not waiting for others to finish their thoughts. It might also be an accident that you started to say something even though someone has not finished their thoughts. </h5>
                 </div>
               </div>
               <div class="tab-pane fade" id="panel1005" role="tabpanel" style="margin:20px 30px 20px 20px">
                 <div style="margin:0 100px 0 100px">
                   <canvas id="hesitation_chart"></canvas>
+                </div>
+                <div style="margin:30px 100px 0 100px">
+                  <h4> Feedback </h4>
+                  <h5 style="font-size:18px !important;"> Hesitations are pauses or filler words. Having many hesitations could hinder others understanding of what you are sharing. </h5>
                 </div>
               </div>
             </div>
@@ -97,7 +165,7 @@
     type: 'line',
     data: {
       datasets: [{
-        data: <%=raw spoken_percent %>,
+        data: <%=raw spoken_percent%>,
         borderColor: "rgba(67,215,217,1)",
         backgroundColor: "rgba(67,215,217,1)",
         fill: false,
@@ -111,7 +179,7 @@
       },
       title:{
         display:true,
-        text:'% of Spoken Time',
+        text:'Spoken Percentage',
         fontSize:16,
       },
       scales: {
@@ -122,30 +190,20 @@
             },
             ticks:{
               fontSize:16,
-              // fontColor:"rgba(255, 255, 255, 0.7)",
+              suggestedMin: 0,
+              suggestedMax: 100
             }
           }],
           xAxes: [{
             display: true,
             gridLines: {
               display: true
-              // color:"rgba(255, 255, 255, 0.5)",
             },
             ticks:{
               fontSize:16,
-              // fontColor:"rgba(255, 255, 255, 0.7)",
-              // beginAtZero: true,
             }
           }]
       },
-      // layout: {
-      //   padding: {
-      //       left: 40,
-      //       right: 50,
-      //       top: 50,
-      //       bottom: 50
-      //   }
-      // }
     }
   };
   //Hesitation chart
@@ -153,7 +211,7 @@
      type: 'line',
      data: {
        datasets: [{
-         data: <%=raw [0]+@user_hash['hesitations'].values %>,
+         data: <%=raw @user_hash['hesitations'].values %>,
          borderColor: "rgba(179,141,251, 1)",
          backgroundColor:"rgba(179,141,251, 1)",
          fill: false
@@ -167,7 +225,7 @@
        },
        title:{
          display:true,
-         text:'# of Hesitations in Meetings',
+         text:'Hesitations',
          fontSize:18,
        },
        scales: {
@@ -175,157 +233,122 @@
              display: true,
              gridLines: {
                display: true,
-               // borderDash: [2, 2],
-               // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
                fontSize:16,
                stepSize: 1,
-               // fontColor:"rgba(255, 255, 255, 0.7)",
+               suggestedMin: 0,
              }
            }],
            xAxes: [{
              display: true,
              gridLines: {
                display: true,
-               // borderDash: [2, 2],
-               // color:"rgba(255, 255, 255, 0.5)",
              },
              ticks:{
                fontSize:16,
-               // fontColor:"rgba(255, 255, 255, 0.7)",
              }
            }]
        },
-       // layout: {
-       //   padding: {
-       //       left: 40,
-       //       right: 50,
-       //       top: 50,
-       //       bottom: 50
-       //   }
-       // }
      }
    };
    //Interruptions chart
    var chart2 = {
-     type: 'line',
-     data: {
-       datasets: [{
-         data:<%=raw [0]+@user_hash['interruptions'].values %>,
-         borderColor: "rgba(255,71,145,1)",
-         backgroundColor:"rgba(255,71,145,1)",
-         fill: false
-       }],
-       labels: <%=raw meeting_number %>,
-     },
-     options: {
-       responsive: true,
-       legend: {
-         display: false
-       },
-       title:{
-         display:true,
-         text:'# of Interruptions in Meetings',
-         fontSize:16,
-       },
-       scales: {
-           yAxes: [{
-             display: true,
-             gridLines: {
-               display: true,
-
-               // borderDash: [2, 2],
-               // color:"rgba(255, 255, 255, 0.5)",
-             },
-             ticks:{
-               fontSize:16,
-               stepSize: 1,
-               // fontColor:"rgba(255, 255, 255, 0.7)",
-             }
-           }],
-           xAxes: [{
-             display: true,
-             gridLines: {
-               display: true,
-               // borderDash: [2, 2],
-               // color:"rgba(255, 255, 255, 0.5)",
-             },
-             ticks:{
-               fontSize:16,
-               // fontColor:"rgba(255, 255, 255, 0.7)",
-             }
+       type: 'bar',
+       data: {
+           labels: <%=raw meeting_number %>,
+           datasets: [{
+               label: 'Interruptions',
+               data: <%=raw @user_hash['interruptions'].values %>,
+               borderColor: "rgba(255,71,145,1)",
+               backgroundColor:"rgba(255,71,145,1)",
+               borderWidth: 1
            }]
        },
-       // layout: {
-       //   padding: {
-       //       left: 40,
-       //       right: 50,
-       //       top: 50,
-       //       bottom: 50
-       //   }
-       // }
-     }
-     };
-     //Action chart
-     var chart3 = {
-       type: 'line',
-       data: {
-         datasets: [{
-           data: <%=raw [0]+@user_hash['action_items'].values %>,
-           borderColor: "rgba(0,190,255,1)",
-           backgroundColor:"rgba(0,190,255,1)",
-           fill: false
-         }],
-         labels: <%=raw meeting_number %>,
-       },
        options: {
-         responsive: true,
-         legend: {
-           display: false
-         },
-         title:{
-           display:true,
-           text:'# of Action Items Made in Meetings',
-           fontSize:16,
-         },
-         scales: {
-             yAxes: [{
-               display: true,
-               gridLines: {
-                 display: true,
-                 // borderDash: [2, 2],
-                 // color:"rgba(255, 255, 255, 0.5)",
-               },
-               ticks:{
-                 fontSize:16,
-                 stepSize: 1,
-                 // fontColor:"rgba(255, 255, 255, 0.7)",
-               }
-             }],
-             xAxes: [{
-               display: true,
-               gridLines: {
-                 display: true,
-                 // borderDash: [2, 2],
-                 // color:"rgba(255, 255, 255, 0.5)",
-               },
-               ticks:{
-                 fontSize:16,
-                 // fontColor:"rgba(255, 255, 255, 0.7)",
-               }
-             }]
-         },
-         // layout: {
-         //   padding: {
-         //       left: 40,
-         //       right: 50,
-         //       top: 50,
-         //       bottom: 50
-         //   }
-         // }
+           responsive: true,
+           legend: {
+             display: false,
+             labels:{
+               fontSize:15,
+             }
+           },
+           title:{
+             display:true,
+             text:'Interruptions',
+             fontSize:16,
+           },
+           max: 5,
+           scales: {
+               xAxes:[{
+                 ticks:{
+                   fontSize:16
+                 }
+               }],
+               yAxes: [{
+                   ticks: {
+                       beginAtZero: true,
+                       fontSize:16,
+                       stepSize:1,
+                       suggestedMax: 3,
+                   }
+               }],
+             animation: {
+               animateScale: true
+             }
+           }
        }
      };
+
+     //Action chart
+     var chart3 = {
+         type: 'bar',
+         data: {
+             labels: <%=raw meeting_number %>,
+             datasets: [{
+                 label: 'Action Items',
+                 data: <%=raw @user_hash['action_items'].values %>,
+                 backgroundColor: 'rgba(0,190,255,1)',
+                 borderColor:
+                     'rgba(0,190,255,1)',
+
+                 borderWidth: 1
+             }]
+         },
+         options: {
+             responsive: true,
+             legend: {
+               display: false,
+               labels:{
+                 fontSize:15,
+               }
+             },
+             title:{
+               display:true,
+               text:'Action Items',
+               fontSize:16,
+             },
+             max: 5,
+             scales: {
+                 xAxes:[{
+                   ticks:{
+                     fontSize:16
+                   }
+                 }],
+                 yAxes: [{
+                     ticks: {
+                         beginAtZero: true,
+                         fontSize:16,
+                         stepSize:1,
+                         suggestedMax: 4,
+                     }
+                 }],
+               animation: {
+                 animateScale: true
+               }
+             }
+         }
+       };
 
   setTimeout(() => {
     var ctx0 = document.getElementById('speaker_chart1').getContext('2d');
@@ -335,7 +358,7 @@
     window.myLine = new Chart(ctx0, chart0);
     window.myLine = new Chart(ctx1, chart1);
     window.myLine = new Chart(ctx2, chart2);
-    window.myLine = new Chart(ctx3, chart3);
+    window.myBar = new Chart(ctx3, chart3);
   }, 300);
 
   setTimeout(() => {
@@ -354,28 +377,7 @@
    	window.myLine = new Chart(ctx0, chart0);
     window.myLine = new Chart(ctx1, chart1);
     window.myLine = new Chart(ctx2, chart2);
-    window.myLine = new Chart(ctx3, chart3);
+    window.myBar = new Chart(ctx3, chart3);
   }, 100);
-
-  // document.getElementById("view-all").addEventListener("click", function(){
-  //   var ctx0 = document.getElementById('speaker_chart1').getContext('2d');
-  //   var ctx1 = document.getElementById('hesitation_chart1').getContext('2d');
-  //   var ctx2 = document.getElementById('interruption_chart1').getContext('2d');
-  //   var ctx3 = document.getElementById('action_chart1').getContext('2d');
-  //   window.myLine = new Chart(ctx0, chart0);
-  //   window.myLine = new Chart(ctx1, chart1);
-  //   window.myLine = new Chart(ctx2, chart2);
-  //   window.myLine = new Chart(ctx3, chart3);
-  // });
-  // window.onload = function() {
-  //     var ctx0 = document.getElementById('speaker_chart').getContext('2d');
-	// 		window.myLine = new Chart(ctx0, chart0);
-  //     var ctx1 = document.getElementById('hesitation_chart').getContext('2d');
-  //     window.myLine = new Chart(ctx1, chart1);
-  //     var ctx2 = document.getElementById('interruption_chart').getContext('2d');
-  //     window.myLine = new Chart(ctx2, chart2);
-  //     var ctx3 = document.getElementById('action_chart').getContext('2d');
-  //     window.myLine = new Chart(ctx3, chart3);
-	// 	};
 
 </script>

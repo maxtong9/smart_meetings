@@ -43,6 +43,9 @@ li {
   font-size: 16px !important;
   font-family: 'Lato', sans-serif;
 }
+ul {
+  list-style-type: none;
+}
 
 .btn-outline-primary{
   color: white !important;
@@ -60,4 +63,9 @@ li {
   // color: #00c07f !important;
   background: #00c07f !important;
   border-color: #00c07f !important;
+}
+
+.scroll {
+    max-height: 400px;
+    overflow-y: auto;
 }
