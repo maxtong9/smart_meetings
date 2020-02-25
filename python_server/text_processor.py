@@ -64,7 +64,7 @@ class TextProcessor:
         self.stopwords = nltk.corpus.stopwords.words('english') + list(punctuation) + list("\'")
 
 
-        self.questionStarters = ['what', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would', 'whose'] # Add as you think of more
+        self.questionStarters = ['what', 'where', 'how', 'are', 'who', 'why', 'is', 'can', 'could', 'would', 'whose', 'does'] # Add as you think of more
 
         # Holds the values of all of the speakers in the meeting
         self.total_speakers = None
@@ -77,6 +77,9 @@ class TextProcessor:
 
         # Keeps track of the total number of words in a meeting
         self.total_words = 0
+
+        #Stores the POS mappings for each word with context.
+        self.pos_mappings = {}
 
 
 
@@ -132,6 +135,15 @@ class TextProcessor:
         summary_length = int(len(self.sentenceList) * self.SUMMARY_PERCENTAGE)
 
 
+        # Remove words that are not nouns
+        for sent in sentNoHesitations:
+            words_tagged = nltk.pos_tag(nltk.word_tokenize(sent))
+            new_words = []
+            for wordPoint in words_tagged:
+                if wordPoint[1][0] != '.':
+                    self.pos_mappings[wordPoint[0]] = wordPoint[1]
+
+
         return self.joinSentenceListToSentence(sentNoHesitations)
         # print(self.joinSentenceListToSentence(masterSentList))
 
@@ -148,7 +160,9 @@ class TextProcessor:
 
         for word in nltk.word_tokenize(raw_text):
             try:
-                if word in self.stopwords or word == "action" or word == "item" or '\'' in word:
+                if word in self.stopwords or word == "action" or word == "item" or "\'" in word:
+                    continue
+                if self.pos_mappings[word][0] != 'N':
                     continue
                 tfidf_scores[word] = X[0, tfidf.vocabulary_[word]] 
                 # tfidf_scores.append((word, X[0, tfidf.vocabulary_[word]]))
@@ -567,7 +581,6 @@ class TextProcessor:
             foundDeadline = False
             if len(words) >= 2:
                 for i in range(0, len(words)):
-                    print("word: " + words[i])
                     if words[i] == self.ACTION_ITEM_KEYWORD[0] and words[i+1] == self.ACTION_ITEM_KEYWORD[1]:
                         # print("FOUND ACTION ITEM")
                         ai_index = i
@@ -603,7 +616,7 @@ class TextProcessor:
                     if foundDeadline is True:
                         actionItems[len(actionItems)-1].append([datetime, keyword_index-2]) # subtract 2 from keyword_index to account for "action item" keywords
 
-        print("action items: " + str(actionItems))
+        # print("action items: " + str(actionItems))
         return actionItems
 
     '''
