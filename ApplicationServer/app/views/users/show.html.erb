@@ -123,9 +123,9 @@
                 <div style="margin:30px 100px 0 100px">
                   <h4> Feedback </h4>
                   <h5 style="font-size:18px !important;"> Action Items are tasks assigned during the meeting with due dates. It offers an insight to how productive or effective the meeting was. </h5>
-                  <% if zero_count = 0 %>
+                  <% if zero_count == 0 %>
                     <h5 style="font-size:18px !important;"> You created action item(s) in all of your meetings, keep up the productivity! </h5>
-                  <% elsif zero_count = 1 %>
+                  <% elsif zero_count == 1 %>
                     <h5 style="font-size:18px !important;"> You created action item(s) in most of your meetings, keep up the productivity! </h5>
                   <% else %>
                     <h5 style="font-size:18px !important;"> You had no action items in many of your meetings. Without task creation, a meeting might not be as productive because there are no clear actions to execute. If you do not have your own tasks, you are also able to help others on their tasks.</h5>

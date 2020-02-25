@@ -110,7 +110,7 @@
                 <% spoken_data = [] %>
                 <% spoken_participants = [] %>
                 <% for entry in hash.total_time_spoken %>
-                 <% spoken_data.push(entry[1].round(2)) %>
+                 <% spoken_data.push(entry[1]) %>
                  <% spoken_participants.push(entry[0]) %>
                 <% end %>
                 <div class="col-lg-4 col-lg-4">
@@ -166,9 +166,12 @@
                  </div>
                </div>
                <% action_data = [] %>
-
                <% for i in participants %>
-                <% action_data.push(action_counter[i]) %>
+                  <% if action_counter.key?(i) == true %>
+                    <% action_data.push(action_counter[i]) %>
+                  <% else %>
+                    <% action_data.push(0) %>
+                  <% end %>
                <% end %>
                <div class="col-xl-6 col-lg-4 mb-4">
                  <div class="card border-left-primary shadow h-100">
@@ -300,9 +303,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script type="text/javascript">
-  var ctx = document.getElementById('speaker_chart').getContext('2d');
-  var ctx2 = document.getElementById('action_chart').getContext('2d');
-  var ctx4 = document.getElementById('interruption_chart').getContext('2d');
+
     var participants = <%=raw participants%>;
     //Speakers Percentage Chart
     var chart1 ={
@@ -359,7 +360,7 @@
     							weight:'bold',
     						},
                 formatter: function(value, context) {
-                    return (value*100) + '%';
+                    return Math.round(value*100) + '%';
                 }
 
                // formatter:Math.multiple(100),
@@ -406,7 +407,9 @@
         plugins:{
           datalabels:{
             color:"white",
-            display:true,
+            display: function(context) {
+              return context.dataset.data[context.dataIndex] !== 0;
+            },
             font: {
                weight:'bold',
                fontSize:15,
@@ -483,7 +486,9 @@
           plugins:{
             datalabels:{
               color:"white",
-              display:true,
+              display: function(context) {
+                return context.dataset.data[context.dataIndex] !== 0;
+              },
               font: {
                  weight:'bold',
                  fontSize:15,
@@ -518,8 +523,11 @@
     //     }
     // });
     setTimeout(() => {
+      var ctx = document.getElementById('speaker_chart').getContext('2d');
+      var ctx2 = document.getElementById('action_chart').getContext('2d');
+      var ctx4 = document.getElementById('interruption_chart').getContext('2d');
       window.myLine = new Chart(ctx, chart1);
       window.myLine = new Chart(ctx2, chart2);
       window.myLine = new Chart(ctx4, chart3);
-    }, 300);
+    }, 500);
 </script>
