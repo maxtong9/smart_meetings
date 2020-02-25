@@ -847,18 +847,67 @@ class TextProcessor:
         actionItems = analyzerOutput["action_items"]
         print("ACTION ITEMS:")
         print(actionItems)
+        meetingSuggestions["Action Items"] = []
 
         if len(actionItems) == 0:
-            meetingSuggestions["Action Items"] = "This meeting seems to be lacking action items, which are important and helpful in finishing projects smoothly and on time."
+            meetingSuggestions["Action Items"].append("This meeting seems to be lacking action items, which are important and helpful in finishing projects smoothly and on time.")
+        else:
+            numActionItemsUser = {}
+            totalNumActionItems = len(actionItems)
+            for ai in actionItems:
+                speaker = ai[0]
+                if speaker not in numActionItemsUser:
+                    numActionItemsUser[speaker] = 1
+                else:
+                    numActionItemsUser[speaker] += 1
+
+            numActionItemsIdeal = totalNumActionItems / numSpeakers
+            numActionItemsMin = numActionItemsIdeal - 1
+            numActionItemsMax = numActionItemsIdeal + 1
+
+            fewActionItems = [] # list of people who have fewer action items than others
+            manyActionItems = [] # list of people who have more action items than others
+
+            for user, numActionItems in numActionItemsUser.items():
+                if numActionItems < numActionItemsMin:
+                    fewActionItems.append(user)
+                elif numActionItems > numActionItemsMax:
+                    manyActionItems.append(user)
+            
+            if len(fewActionItems) == 0 and len(manyActionItems) == 0:
+                meetingSuggestions["Action Items"].append("Action items has been assigned equally amongst all members of this meeting. Great job ensuring fair task management!")
+            else:
+                meetingSuggestions["Action Items"].append("It appears that task division has not been allocated equally. A balanced workload reduces stress and promotes productivity!")
+                if len(fewActionItems) > 0 and len(manyActionItems) > 0:
+                    s1 = "" # a formatted string of the names of people who were assigned fewer action items
+                    s2 = "" # a formatted string of the names of people who were assigned more action items
+
+                    for i in range(len(fewActionItems)):
+                        if i == len(fewActionItems)-2:
+                            s1 += ", and "
+                        elif i > 0:
+                            s1 += ", "
+                        s1 += fewActionItems[i]
+                    for i in range(len(manyActionItems)):
+                        if i == len(manyActionItems)-2:
+                            s2 += ", and "
+                        elif i > 0:
+                            s2 += ", "
+                        s2 += manyActionItems[i]
+                    meetingSuggestions["Action Items"].append("For example, you could give some of " + s2 + "\'s tasks to " + s1 + ".")
+                
 
         # Suggestions for interruptions
         interruptions = analyzerOutput["interruption"]
         print("INTERRUPTIONS:")
         print(interruptions)
         
+        meetingSuggestions["Interruptions"] = []
+
         if len(interruptions) == 0:
-            meetingSuggestions["Interruptions"] = "You all did an excellent job of making sure that everyone had the chance to finish what they had to say. Keep up the great work!"
+            meetingSuggestions["Interruptions"].append("You all did an excellent job of making sure that everyone had the chance to finish what they had to say. Keep up the great work!")
         else:
+            s = ""
             for i in range(len(interruptions)):
                 if i == len(interruptions)-2:
                     s += ", and "
@@ -872,9 +921,12 @@ class TextProcessor:
         questions = analyzerOutput["questions"]
         print("QUESTIONS:")
         print(questions)
+        meetingSuggestions["Questions"] = []
 
         if len(questions) == 0:
-            meetingSuggestions["Questions"] = "This meeting seems to be lacking questions. Questions are great for promoting meeting engagement and clarity. If you're confused, don't be afraid to ask a question!"
+            meetingSuggestions["Questions"].append("This meeting seems to be lacking questions. Questions are great for promoting meeting engagement and clarity. If you're confused, don't be afraid to ask a question!")
+        else:
+             meetingSuggestions["Questions"].append("Awesome job asking engaging and clarifying questions! Don't forget to follow up on any questions as needed.")
         
 
         print("MEETING SUGGESTIONS:")

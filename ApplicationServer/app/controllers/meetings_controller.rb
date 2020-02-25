@@ -211,21 +211,21 @@ class MeetingsController < ApplicationController
       boards_uri = URI(boards_url)
       boards_json = Net::HTTP.get(boards_uri)
       boards = JSON.parse(boards_json)
-      board_id = boards.find {|b| b['name']=='Demo Board'}['id']
+      board_id = boards.find {|b| b['name']=='Weekly Meetings'}['id']
 
       # get the id of the list within the board to add the new card to
       lists_url = "#{trello_url}/boards/#{board_id}/lists?key=#{trello_key}&token=#{trello_token}"
       lists_uri = URI(lists_url)
       lists_json = Net::HTTP.get(lists_uri)
       lists = JSON.parse(lists_json)
-      list_id = lists.find {|l| l['name']=='Demo List'}['id']
+      list_id = lists.find {|l| l['name']=='Tasks from Meetings'}['id']
 
       json_from_file = File.read("tmp/" + @meeting.file.attachments.last.filename.to_s())
       hash = JSON.parse(json_from_file, object_class: OpenStruct)
 
       for i in hash.action_items
         card_name = i[1][0...-1]
-        card_description = "Test Description"
+        card_description = "created by SmartMeetings"
         card_member_username = User.find_by(first: i[0]).trello
 
          # get id of the card member
