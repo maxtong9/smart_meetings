@@ -31,13 +31,11 @@ import text_processor
 
 # Practice my new class
 
-print('Hello, World! ')
+# print('Hello, World! ')
 if __name__ == "__main__":
     # Demo Input
     demoInput = "So, keep working. Keep striving. Never give up. Fall down seven times, get up eight. Ease is a greater threat to progress than hardship. Ease is a greater threat to progress than hardship. So, keep moving, keep growing, keep learning. See you at work."
     # Processing Object
     tp = text_processor.TextProcessor(demoInput)
 
-    print(tp.summarize())
-
-
+    # print(tp.summarize())

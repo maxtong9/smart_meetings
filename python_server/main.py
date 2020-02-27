@@ -16,12 +16,12 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
 
         amount = int(info_list[0][0])
         meeting_name = info_list[0][1:len(info_list[0])]
-        print(amount)
-        print(meeting_name)
+        # print(amount)
+        # print(meeting_name)
         TA = TranscriptionAnalyzer(meeting_name)
         key = info_list[1].split(';')[0]
         filename = info_list[1].split(';')[1]
-        print("Received file: ", filename)
+        # print("Received file: ", filename)
         download_file_from_S3("smartmeetingsbelieving", filename, key)
         # clean_filename = filename.split('.')[0]
         # names = clean_filename.split('_')
