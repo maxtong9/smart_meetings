@@ -1,17 +1,17 @@
-<body class="body" style="margin:10px 40px">
+<body class="body" style="margin:30px 40px">
   <p id="notice"><%= notice %></p>
   <div class="container-fluid">
     <div id="textbox">
-      <h1 style="float:left;">Meetings</h1>
-      <div style="float:right; padding-right:40px;">  <%= link_to 'Create Meeting', new_meeting_path, class:"btn btn-secondary", style:"color:white;"%></div>
+      <h1 style="float:left; font-weight:bold;">Meetings</h1>
+      <div style="float:right; padding-right:50px;">  <%= link_to 'Create Meeting', new_meeting_path, class:"btn btn-secondary btn-xl", style:"color:white;"%></div>
       <div style="clear: both;"></div>
     </div>
     <div class="row mt-3 mb-4" style="margin:0 10px">
       <% if @user_meeting1 != nil %>
           <div class="col-auto">
-            <div class="card shadow mb-2 h-100" style="width: 21rem;">
+            <div class="card shadow mb-2 h-100" style="width: 30rem;">
                 <div class="card-header py-2">
-                   <h2 class="m-2"><%= @user_meeting1.name %></h2>
+                   <h2 class="m-2"><strong><%= @user_meeting1.name %></strong></h2>
                 </div>
                 <div class="card-body">
                   <% analyzed_1 = false %>
@@ -25,9 +25,9 @@
                       <% for i in hash1.total_time_spoken %>
                         <% participants1 = participants1 + i[0].to_s() + " " %>
                       <% end %>
-                      <h3> Participants: <%=participants1%> </h3>
-                      <h3> Duration: <%= hash1.meeting_time %> </h3>
-                      <h3> Tags:
+                      <h3><strong> Participants:</strong> <%=participants1%> </h3>
+                      <h3> <strong>Duration:</strong> <%= hash1.meeting_time %> </h3>
+                      <h3> <strong>Tags:</strong>
                         <% for i in hash1.keywords %>
                           <span class="badge badge-pill pill badge-secondary"><%= i %></span>
                         <% end %>
@@ -41,14 +41,14 @@
               <div class="card-footer bg-transparent border-0 text-center mb-3">
                 <% if @user_meeting1.file.attachments.first != nil %>
                   <tr>
-                    <td><%= link_to 'Show', @user_meeting1, class:"btn btn-outline-primary btn-md"%></td>
-                    <td><%= link_to 'Edit', edit_meeting_path(@user_meeting1), class:"btn btn-outline-secondary btn-md"%></td>
-                    <td><%= link_to 'Destroy', @user_meeting1, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <td><%= link_to 'Show', @user_meeting1, class:"btn btn-outline-primary btn-xl"%></td>
+                    <td><%= link_to 'Edit', edit_meeting_path(@user_meeting1), class:"btn btn-outline-secondary btn-xl"%></td>
+                    <td><%= link_to 'Delete', @user_meeting1, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                   </tr>
                 <% else %>
                     <tr>
-                      <td><%= link_to "Upload Files", @user_meeting1, class:"btn btn-outline-primary btn-md"%></td>
-                      <td><%= link_to 'Destroy', @user_meeting1, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                      <td><%= link_to "Upload Files", @user_meeting1, class:"btn btn-outline-primary btn-xl"%></td>
+                      <td><%= link_to 'Delete', @user_meeting1, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                     </tr>
                 <% end %>
               </div>
@@ -57,9 +57,9 @@
       <% end %>
       <% if @user_meeting2 != nil %>
             <div class="col-auto">
-              <div class="card shadow mb-2 h-100" style="width: 21rem;">
+              <div class="card shadow mb-2 h-100" style="width: 30rem;">
                 <div class="card-header py-2">
-                   <h2 class="m-2"><%= @user_meeting2.name %></h2>
+                   <h2 class="m-2"><strong><%= @user_meeting2.name %></strong></h2>
                 </div>
                 <div class="card-body">
                   <% analyzed_2 = false %>
@@ -73,9 +73,9 @@
                       <% for i in hash2.total_time_spoken %>
                         <% participants2 = participants2 + i[0].to_s() + " " %>
                       <% end %>
-                      <h3> Participants: <%=participants2%> </h3>
-                      <h3> Duration: <%= hash2.meeting_time %> </h3>
-                      <h3> Tags:
+                      <h3><strong> Participants:</strong> <%=participants2%> </h3>
+                      <h3> <strong>Duration:</strong> <%= hash2.meeting_time %> </h3>
+                      <h3> <strong>Tags:</strong>
                         <% for i in hash2.keywords %>
                           <span class="badge badge-pill pill badge-secondary"><%= i %></span>
                         <% end %>
@@ -89,14 +89,14 @@
               <div class="card-footer bg-transparent border-0 text-center mb-3">
                 <% if @user_meeting2.file.attachments.first != nil %>
                   <tr>
-                    <td><%= link_to 'Show', @user_meeting2, class:"btn btn-outline-primary btn-md"%></td>
-                    <td><%= link_to 'Edit', edit_meeting_path(@user_meeting2), class:"btn btn-outline-secondary btn-md"%></td>
-                    <td><%= link_to 'Destroy', @user_meeting2, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <td><%= link_to 'Show', @user_meeting2, class:"btn btn-outline-primary btn-xl"%></td>
+                    <td><%= link_to 'Edit', edit_meeting_path(@user_meeting2), class:"btn btn-outline-secondary btn-xl"%></td>
+                    <td><%= link_to 'Delete', @user_meeting2, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                   </tr>
                 <% else %>
                     <tr>
-                      <td><%= link_to "Upload Files", @user_meeting2, class:"btn btn-outline-primary btn-md"%></td>
-                      <td><%= link_to 'Destroy', @user_meeting2, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                      <td><%= link_to "Upload Files", @user_meeting2, class:"btn btn-outline-primary btn-xl"%></td>
+                      <td><%= link_to 'Delete', @user_meeting2, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                     </tr>
                 <% end %>
               </div>
@@ -105,9 +105,9 @@
       <% end %>
       <% if @user_meeting3 != nil %>
           <div class="col-auto">
-            <div class="card shadow mb-2 h-100" style="width: 21rem;">
+            <div class="card shadow mb-2 h-100" style="width: 30rem;">
                 <div class="card-header py-2">
-                   <h2 class="m-2"><%= @user_meeting3.name %></h2>
+                  <h2 class="m-2"><strong><%= @user_meeting3.name %></strong></h2>
                 </div>
                 <div class="card-body">
                   <% analyzed_3 = false %>
@@ -121,9 +121,9 @@
                       <% for i in hash3.total_time_spoken %>
                         <% participants3 = participants3 + i[0].to_s() + " " %>
                       <% end %>
-                      <h3> Participants: <%=participants3%> </h3>
-                      <h3> Duration: <%= hash3.meeting_time %> </h3>
-                      <h3> Tags:
+                      <h3><strong> Participants:</strong> <%=participants3%> </h3>
+                      <h3> <strong>Duration:</strong> <%= hash3.meeting_time %> </h3>
+                      <h3> <strong>Tags:</strong>
                         <% for i in hash3.keywords %>
                           <span class="badge badge-pill pill badge-secondary"><%= i %></span>
                         <% end %>
@@ -137,14 +137,14 @@
               <div class="card-footer bg-transparent border-0 text-center mb-3">
                 <% if @user_meeting3.file.attachments.first != nil %>
                   <tr>
-                    <td><%= link_to 'Show', @user_meeting3, class:"btn btn-outline-primary btn-md"%></td>
-                    <td><%= link_to 'Edit', edit_meeting_path(@user_meeting3), class:"btn btn-outline-secondary btn-md"%></td>
-                    <td><%= link_to 'Destroy', @user_meeting3, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <td><%= link_to 'Show', @user_meeting3, class:"btn btn-outline-primary btn-xl"%></td>
+                    <td><%= link_to 'Edit', edit_meeting_path(@user_meeting3), class:"btn btn-outline-secondary btn-xl"%></td>
+                    <td><%= link_to 'Delete', @user_meeting3, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                   </tr>
                 <% else %>
                     <tr>
-                      <td><%= link_to "Upload Files", @user_meeting3, class:"btn btn-outline-primary btn-md"%></td>
-                      <td><%= link_to 'Destroy', @user_meeting3, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                      <td><%= link_to "Upload Files", @user_meeting3, class:"btn btn-outline-primary btn-xl"%></td>
+                      <td><%= link_to 'Delete', @user_meeting3, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                     </tr>
                 <% end %>
               </div>
@@ -155,9 +155,9 @@
     <div class="row mt-3 mb-4" style="margin:0 10px">
         <% if @user_meeting4 != nil %>
             <div class="col-auto">
-              <div class="card shadow mb-2 h-100" style="width: 21rem;">
+              <div class="card shadow mb-2 h-100" style="width: 30rem;">
                   <div class="card-header py-2">
-                     <h2 class="m-2"><%= @user_meeting4.name %></h2>
+                    <h2 class="m-2"><strong><%= @user_meeting4.name %></strong></h2>
                   </div>
                   <div class="card-body">
                     <% analyzed_4 = false %>
@@ -171,9 +171,9 @@
                         <% for i in hash4.total_time_spoken %>
                           <% participants4 = participants4 + i[0].to_s() + " " %>
                         <% end %>
-                        <h3> Participants: <%=participants4%> </h3>
-                        <h3> Duration: <%= hash4.meeting_time %> </h3>
-                        <h3> Tags:
+                        <h3><strong> Participants:</strong> <%=participants4%> </h3>
+                        <h3> <strong>Duration:</strong> <%= hash4.meeting_time %> </h3>
+                        <h3> <strong>Tags:</strong>
                           <% for i in hash4.keywords %>
                             <span class="badge badge-pill pill badge-secondary"><%= i %></span>
                           <% end %>
@@ -187,14 +187,14 @@
                 <div class="card-footer bg-transparent border-0 text-center mb-3">
                   <% if @user_meeting4.file.attachments.first != nil %>
                     <tr>
-                      <td><%= link_to 'Show', @user_meeting4, class:"btn btn-outline-primary btn-md"%></td>
-                      <td><%= link_to 'Edit', edit_meeting_path(@user_meeting4), class:"btn btn-outline-secondary btn-md"%></td>
-                      <td><%= link_to 'Destroy', @user_meeting4, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                      <td><%= link_to 'Show', @user_meeting4, class:"btn btn-outline-primary btn-xl"%></td>
+                      <td><%= link_to 'Edit', edit_meeting_path(@user_meeting4), class:"btn btn-outline-secondary btn-xl"%></td>
+                      <td><%= link_to 'Delete', @user_meeting4, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                     </tr>
                   <% else %>
                       <tr>
-                        <td><%= link_to "Upload Files", @user_meeting4, class:"btn btn-outline-primary btn-md"%></td>
-                        <td><%= link_to 'Destroy', @user_meeting4, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                        <td><%= link_to "Upload Files", @user_meeting4, class:"btn btn-outline-primary btn-xl"%></td>
+                        <td><%= link_to 'Delete', @user_meeting4, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                       </tr>
                   <% end %>
                 </div>
@@ -203,9 +203,9 @@
         <% end %>
         <% if @user_meeting5 != nil %>
             <div class="col-auto">
-              <div class="card shadow mb-2 h-100" style="width: 21rem;">
+              <div class="card shadow mb-2 h-100" style="width: 30rem;">
                   <div class="card-header py-2">
-                     <h2 class="m-2"><%= @user_meeting5.name %></h2>
+                     <h2 class="m-2"><strong><%= @user_meeting5.name %></strong></h2>
                   </div>
                   <div class="card-body">
                     <% analyzed_5 = false %>
@@ -219,9 +219,9 @@
                         <% for i in hash5.total_time_spoken %>
                           <% participants5 = participants5 + i[0].to_s() + " " %>
                         <% end %>
-                        <h3> Participants: <%=participants5%> </h3>
-                        <h3> Duration: <%= hash5.meeting_time %> </h3>
-                        <h3> Tags:
+                        <h3><strong> Participants:</strong> <%=participants5%> </h3>
+                        <h3> <strong>Duration:</strong> <%= hash5.meeting_time %> </h3>
+                        <h3> <strong>Tags:</strong>
                           <% for i in hash5.keywords %>
                             <span class="badge badge-pill pill badge-secondary"><%= i %></span>
                           <% end %>
@@ -235,14 +235,14 @@
                 <div class="card-footer bg-transparent border-0 text-center mb-3">
                   <% if @user_meeting5.file.attachments.first != nil %>
                     <tr>
-                      <td><%= link_to 'Show', @user_meeting5, class:"btn btn-outline-primary btn-md"%></td>
-                      <td><%= link_to 'Edit', edit_meeting_path(@user_meeting5), class:"btn btn-outline-secondary btn-md"%></td>
-                      <td><%= link_to 'Destroy', @user_meeting5, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                      <td><%= link_to 'Show', @user_meeting5, class:"btn btn-outline-primary btn-xl"%></td>
+                      <td><%= link_to 'Edit', edit_meeting_path(@user_meeting5), class:"btn btn-outline-secondary btn-xl"%></td>
+                      <td><%= link_to 'Delete', @user_meeting5, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                     </tr>
                   <% else %>
                       <tr>
-                        <td><%= link_to "Upload Files", @user_meeting5, class:"btn btn-outline-primary btn-md"%></td>
-                        <td><%= link_to 'Destroy', @user_meeting5, class:"btn btn-outline-secondary btn-md", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                        <td><%= link_to "Upload Files", @user_meeting5, class:"btn btn-outline-primary btn-xl"%></td>
+                        <td><%= link_to 'Delete', @user_meeting5, class:"btn btn-outline-secondary btn-xl", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                       </tr>
                   <% end %>
                 </div>
