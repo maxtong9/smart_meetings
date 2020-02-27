@@ -19,14 +19,14 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         print(amount)
         print(meeting_name)
         TA = TranscriptionAnalyzer(meeting_name)
-        for i in range(1, amount + 1):
-            key = info_list[i].split(';')[0]
-            filename = info_list[i].split(';')[1]
-            print("Received file: ", filename)
-            download_file_from_S3("smartmeetingsbelieving", filename, key)
-            clean_filename = filename.split('.')[0]
-            names = clean_filename.split('_')
-            TA.loadAudio(names, "./tmp/" + filename)
+        key = info_list[1].split(';')[0]
+        filename = info_list[1].split(';')[1]
+        print("Received file: ", filename)
+        download_file_from_S3("smartmeetingsbelieving", filename, key)
+        # clean_filename = filename.split('.')[0]
+        # names = clean_filename.split('_')
+        names = ['Maxton', 'Sarita', 'Jackson']
+        TA.loadAudio(names, "./tmp/" + filename)
 
         TA.run()
         upload_file_to_S3("smartmeetingsbelieving", "./tmp/" + meeting_name + ".json", meeting_name + ".json")
