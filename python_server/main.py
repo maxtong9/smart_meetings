@@ -24,7 +24,9 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             filename = info_list[i].split(';')[1]
             print("Received file: ", filename)
             download_file_from_S3("smartmeetingsbelieving", filename, key)
-            TA.loadAudio(filename.split('.')[0] + str(i), "./tmp/" + filename)
+            clean_filename = filename.split('.')[0]
+            names = clean_filename.split('_')
+            TA.loadAudio(names, "./tmp/" + filename)
 
         TA.run()
         upload_file_to_S3("smartmeetingsbelieving", "./tmp/" + meeting_name + ".json", meeting_name + ".json")

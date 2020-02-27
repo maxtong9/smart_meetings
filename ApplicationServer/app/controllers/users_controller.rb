@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
     # @user_hash["spoken"] returns hash of a user's spoken percentages, keyed by meeting #
     # @user_hash["spoken"][1] will return the percentage of the first meeting
-    @user_hash = { "spoken" => {}, "hesitations" => {}, "interruptions" => {}, "action_items" => {} }
+    @user_hash = { "spoken" => {}, "hesitations" => {}, "interruptions" => {}, "action_items" => {}, "participants" => {} }
 
     meeting = Meeting.find_by(id: @user.meeting_1)
     if !meeting.nil?
@@ -55,6 +55,18 @@ class UsersController < ApplicationController
             end
           end
           @user_hash["action_items"] = @user_hash["action_items"].merge({ 1 => counter })
+
+          user_counter = 0
+          if !meeting.user1.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user2.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user3.nil?
+            user_counter = user_counter + 1
+          end
+          @user_hash['participants'] = @user_hash["participants"].merge({ 1 => user_counter })
 
         end
       end
@@ -99,6 +111,17 @@ class UsersController < ApplicationController
           end
           @user_hash["action_items"] = @user_hash["action_items"].merge({ 2 => counter })
 
+          user_counter = 0
+          if !meeting.user1.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user2.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user3.nil?
+            user_counter = user_counter + 1
+          end
+          @user_hash['participants'] = @user_hash["participants"].merge({ 2 => user_counter })
         end
       end
     end
@@ -141,7 +164,17 @@ class UsersController < ApplicationController
             end
           end
           @user_hash["action_items"] = @user_hash["action_items"].merge({ 3 => counter })
-
+          user_counter = 0
+          if !meeting.user1.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user2.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user3.nil?
+            user_counter = user_counter + 1
+          end
+        @user_hash['participants'] = @user_hash["participants"].merge({ 3 => user_counter })
         end
       end
     end
@@ -184,7 +217,17 @@ class UsersController < ApplicationController
             end
           end
           @user_hash["action_items"] = @user_hash["action_items"].merge({ 4 => counter })
-
+          user_counter = 0
+          if !meeting.user1.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user2.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user3.nil?
+            user_counter = user_counter + 1
+          end
+          @user_hash['participants'] = @user_hash["participants"].merge({ 4 => user_counter })
         end
       end
     end
@@ -227,7 +270,17 @@ class UsersController < ApplicationController
             end
           end
           @user_hash["action_items"] = @user_hash["action_items"].merge({ 5 => counter })
-
+          user_counter = 0
+          if !meeting.user1.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user2.nil?
+            user_counter = user_counter + 1
+          end
+          if !meeting.user3.nil?
+            user_counter = user_counter + 1
+          end
+          @user_hash['participants'] = @user_hash["participants"].merge({ 5 => user_counter })
         end
       end
     end

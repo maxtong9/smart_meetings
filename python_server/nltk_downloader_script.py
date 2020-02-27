@@ -16,3 +16,5 @@ else:
 nltk.download('punkt')
 nltk.download('stopwords')
 # Missing Probability but couldn't find a package, I believe it comes with nltk
+
+nltk.download('averaged_perceptron_tagger')
