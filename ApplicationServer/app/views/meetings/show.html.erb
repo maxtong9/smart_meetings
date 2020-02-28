@@ -6,14 +6,14 @@
 <% if @json_from_file != 0 %>
   <body class="body">
   <div class="container-fluid">
-    <div class="row" style="margin: 0 0 0 20px">
+    <div class="row" style="margin: 60px 0 0 20px">
       <div class="col-2.5 col-md-2.5">
-        <div class="card border-left-primary shadow h-50">
+        <div class="card border-left-primary shadow h-30">
           <div class="card-body">
             <div class="border-bottom">
               <h1> <%= @meeting.name %></h1>
               <h3>Participants:</h3>
-                  <ul>
+                  <ul class="no-bullets">
                     <% if !@meeting.user1.nil? %>
                       <li> <%= User.find(@meeting.user1).first %> </li>
                     <% end %>
@@ -27,7 +27,7 @@
               </div>
             <div class="border-bottom pt-2">
               <h3>Tags:</h3>
-              <ul>
+              <ul class="no-bullets">
                 <% if @json_from_file != 0 %>
                   <% for i in hash.keywords do %>
                         <li> <%= i %> </li>
@@ -36,15 +36,8 @@
               </ul>
             </div>
             <div class="pt-2" style="margin:0 0 0 40px;">
-              <%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary btn-md" %>
+              <%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary btn-lg" %>
             </div>
-            <!-- <table class="table w-auto table-borderless mb-0 span2" style="margin:0 0 0 20px;">
-              <tr class="row">
-                <td><%= link_to 'Edit', edit_meeting_path(@meeting), class:"btn btn-outline-secondary btn-md" %> </td>
-                <td><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary btn-md" %> </td>
-              </tr>
-            </table> -->
-            <!-- </div> -->
           </div>
         </div>
 
@@ -54,245 +47,332 @@
 
         <% if @json_from_file != 0 %>
             <% participants = [] %>
-            <!-- Summary card -->
             <div class="card shadow border-left-success mb-4 scroll">
-                <div class="card-header py-2">
-                   <h4 class="m-0 ">Summary</h4>
-                </div>
-                <div class="card-body">
-                    <% temp = 0 %>
-                    <% p = 0 %>
-                    <% string_s = '' %>
-                    <% for i in hash.summary %>
-                        <% if temp == 0 %>
-                          <% string_s = i[1][0...-1] %>
-                          <% p = i[0] %>
-                          <% temp = temp+1 %>
-                        <% else %>
-                          <% if p == i[0] %>
-                            <% string_s = string_s+ ' ' + i[1][0...-1] %>
-                            <% if temp == hash.summary.length-1 %>
-                              <p> <strong><%= p %></strong>: <%=string_s.capitalize()%></p>
-                              <% if (participants.include? p.to_s())== false  %>
-                                <% participants.append(p) %>
-                              <%end%>
-                            <% end %>
-                          <% else %>
-                            <p> <strong><%= p %></strong>: <%=string_s.capitalize()%></p>
-                            <% if (participants.include? p.to_s()) == false %>
-                              <% participants.append(p) %>
-                            <%end%>
-                            <% string_s = i[1][0...-1] %>
-                            <% p = i[0] %>
-                          <% end %>
-                          <% temp = temp+1 %>
-                        <% end %>
-
-                    <% end %>
-
-                  </div>
+              <div class="card-header cheader py-2 button-heading1">
+                <h3 class="m-0 highlight">View All</h3>
               </div>
-
-              <!-- Question card -->
-              <div class="row">
-                <div class="col-lg-4 col-lg-4">
-                  <div class="card border-left-success shadow mb-4">
-                      <div class="card-header py-2">
-                         <h4 class="m-2 ">Speaking Percentages</h4>
-                      </div>
-                      <div class="card-body">
-                        <div class="chart-area">
-                          <canvas id="speaker_chart"></canvas>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-                <% spoken_data = [] %>
-                <% spoken_participants = [] %>
-                <% for entry in hash.total_time_spoken %>
-                 <% spoken_data.push(entry[1]) %>
-                 <% spoken_participants.push(entry[0]) %>
-                <% end %>
-                <div class="col-lg-4 col-lg-4">
-                  <div class="card border-left-success shadow mb-4">
-                    <div class="card-header py-2">
-                       <h4 class="m-2 ">Action Items Frequency</h4>
-                    </div>
-                      <div class="card-body">
-                        <div class="chart-area">
-                          <canvas id="action_chart"></canvas>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-lg-4">
-                  <div class="card border-left-success shadow mb-4">
-                    <div class="card-header py-2">
-                       <h4 class="m-2 ">Interruptions</h4>
-                    </div>
-                      <div class="card-body">
-                      <div class="chart-area">
-                        <canvas id="interruption_chart"></canvas>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-             </div>
-
-            <!-- Action Items card -->
-             <% action_counter = {} %>
-             <div class="row">
-               <div class="col-xl-6 col-lg-4 mb-4">
-                 <div class="card border-left-primary shadow h-100">
-                   <div class="card-header py-2">
-                      <h4 class="m-0 ">Action Items</h4>
-                   </div>
-                     <div class="card-body">
-                       <% if hash.action_items.length != 0 %>
-                         <% for i in hash.action_items %>
-                           <% if action_counter.include? i[0] %>
-                             <% action_counter[i[0]] += 1 %>
-                           <% else %>
-                             <% action_counter[i[0]] = 1 %>
-                           <% end %>
-                           <p class="pb-2 border-bottom border-gray">
-                             <strong class="d-block"><%= i[0] %></strong><%= i[1][0...-1].capitalize()%> </p>
-
-                         <% end %>
-                       <% else %>
-                         <p> No action items were said during the meeting. </p>
-                       <% end %>
-                   </div>
-                 </div>
-               </div>
-               <% action_data = [] %>
-               <% for i in participants %>
-                  <% if action_counter.key?(i) == true %>
-                    <% action_data.push(action_counter[i]) %>
-                  <% else %>
-                    <% action_data.push(0) %>
-                  <% end %>
-               <% end %>
-               <div class="col-xl-6 col-lg-4 mb-4">
-                 <div class="card border-left-primary shadow h-100">
-                   <div class="card-header py-2">
-                      <h4 class="m-0 ">Questions</h4>
-                   </div>
-                     <div class="card-body">
-                      <% if hash.questions.length != 0 %>
-                        <% for i in hash.questions %>
-                        <p class="pb-2 border-bottom border-gray">
-                          <strong class="d-block"><%= i[0] %></strong><%= i[1].capitalize()%> </p>
-                        <% end %>
-                      <% else %>
-                        <p> No questions were asked during the meeting. </p>
-                      <% end %>
-                      </div>
-                 </div>
-                </div>
-             </div>
-
-            <% hesitation_counter = {} %>
-            <% if hash.hesitation_analytics.length != 0 %>
-              <% for i in hash.hesitation_analytics %>
-                <% hesitation_counter[i[0]] = i[1] %>
-              <% end %>
-            <% else %>
-              <p> None </p>
-            <% end %>
-
-            <% hesitation_array = [] %>
-            <% for i in participants %>
-              <% hesitation_array.append(hesitation_counter[i])%>
-            <% end %>
-
-            <% interruption_counter = {} %>
-            <% if hash.interruption.to_s.length != 0 %>
-              <% for i in hash.interruption %>
-                <% interruption_counter[i[0]] = i[1] %>
-              <% end %>
-            <% else %>
-              <p> None </p>
-            <% end %>
-
-            <% interruption_array = [] %>
-            <% if hash.interruption.to_s.length != 0 %>
-              <% for i in participants %>
-                <% if interruption_counter.key?(i) == true %>
-                  <% interruption_array.append(interruption_counter[i])%>
-                <% else %>
-                  <% interruption_array.append(0)%>
-                <% end %>
-              <% end %>
-            <% end %>
-            <% if interruption_array.length == 0 %>
-              <%interruption_array.append(0)%>
-            <% end %>
-
-            <% if interruption_array.length > 0%>
-              <% max_number = (interruption_array[0]+1)*2 %>
-            <% else %>
-              <% max_number = 0%>
-            <% end %>
-            <!-- Transcription card -->
-            <div class="card shadow mb-4 scroll overflow-auto">
-              <div class="card-header py-2">
-                 <h4 class="m-0 ">Transcription</h4>
-              </div>
-                <div class="card-body">
-                  <% temp1 = 0 %>
-                  <% p1 = '' %>
-                  <% string1 = '' %>
-                  <% time1 = 0 %>
-                  <% time2 = 0 %>
-                  <% for i in hash.raw %>
-                      <% if temp1 == 0 %>
-                        <% string1 = i[1] %>
-                        <% p1 = i[0] %>
-                        <% temp1 = temp1+1 %>
-                        <% time1 = i[2] %>
-                        <% time2 = i[3] %>
-                      <% else %>
-                        <% if p1 == i[0] %>
-                          <% string1 = string1+i[1] %>
-                          <% time2 = i[3] %>
-                          <% if temp1 == hash.raw.length-1 %>
-                            <p><strong><%=p1%></strong> (<%= time1 %>, <%= time2 %>): <%=string1.capitalize()%></p>
-                            <% string1 = '' %>
-                          <% end %>
-                        <% else %>
-                          <p><strong><%=p1%> </strong>(<%= time1 %>, <%= time2 %>): <%=string1.capitalize()%></p>
-                          <% string1 = '' %>
-                          <% string1 = i[1] %>
-                          <% p1 = i[0] %>
-                          <% time1 = i[2] %>
-                          <% time2 = i[3] %>
-                        <% end %>
-                        <% temp1 = temp1+1 %>
-                      <% end %>
-
-                  <% end %>
-                </div>
             </div>
+            <!-- Summary card -->
+            <div class="accordion" id="accordionFilter">
+              <div class="accordion-group">
+                <div class="accordion-heading1">
+                  <div class="card shadow border-left-success mb-4 scroll">
+                    <div class="card-header cheader py-2">
+                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseOne">
+                          <h3 class="m-0 highlight">Summary</h3>
+                        </a>
+                    </div>
+                      <div id="collapseOne" class="accordion-body collapse" style="height: 0px;">
+                        <div class="accordion-inner">
+                          <div class="card-body">
+                              <% temp = 0 %>
+                              <% p = 0 %>
+                              <% string_s = '' %>
+                              <% for i in hash.summary %>
+                                  <% if temp == 0 %>
+                                    <% string_s = i[1][0...-1] %>
+                                    <% p = i[0] %>
+                                    <% temp = temp+1 %>
+                                  <% else %>
+                                    <% if p == i[0] %>
+                                      <% string_s = string_s+ ' ' + i[1][0...-1] %>
+                                      <% if temp == hash.summary.length-1 %>
+                                        <p> <strong><%= p %></strong>: <%=string_s.capitalize()%></p>
+                                        <% if (participants.include? p.to_s())== false  %>
+                                          <% participants.append(p) %>
+                                        <%end%>
+                                      <% end %>
+                                    <% else %>
+                                      <p> <strong><%= p %></strong>: <%=string_s.capitalize()%></p>
+                                      <% if (participants.include? p.to_s()) == false %>
+                                        <% participants.append(p) %>
+                                      <%end%>
+                                      <% string_s = i[1][0...-1] %>
+                                      <% p = i[0] %>
+                                    <% end %>
+                                    <% temp = temp+1 %>
+                                  <% end %>
+
+                              <% end %>
+
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col" style="margin: 0 0 0 5px">
+                  <div class="card border-left-success shadow mb-4">
+                    <div class="accordion" id="accordionFilter">
+                      <div class="accordion-group">
+                        <div class="accordion-heading2">
+                          <div class="card-header cheader py-2">
+                              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseTwo">
+                                <h3 class="m-0 highlight">Analytics</h3>
+                              </a>
+                          </div>
+                        </div>
+                          <div id="collapseTwo" class="accordion-body collapse" style="height: 0px;">
+                            <div class="accordion-inner">
+                              <div class="card-body">
+                                <nav class="nav-extended mt-5 mb-3">
+                                  <div class="nav-content">
+                                    <ul class="nav tabs-white justify-content-center" role="tablist">
+                                      <li class="nav-item">
+                                        <a id="view-all" class="nav-link waves-light active" data-toggle="tab" href="#panel1" role="tab">View All</a>
+                                      </li>
+                                      <li class="nav-item ml-0">
+                                        <a class="nav-link waves-ligh" data-toggle="tab" href="#panel2" role="tab">Spoken Percentage</a>
+                                      </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link waves-light" data-toggle="tab" href="#panel3" role="tab">Action Items</a>
+                                      </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link waves-light" data-toggle="tab" href="#panel4" role="tab">Interruptions</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </nav>
+
+                                  <div class="tab-content rounded-bottom">
+                                    <div class="tab-pane fade in show active" id="panel1" role="tabpanel" style="margin:20px 30px 20px 20px">
+                                      <div class="row">
+                                        <div class="col col-md-4">
+                                            <canvas id="speaker_chart"></canvas>
+                                        </div>
+                                        <div class="col col-md-4">
+                                          <canvas id="action_chart"></canvas>
+                                        </div>
+                                        <div class="col col-md-4">
+                                          <canvas id="interruption_chart"></canvas>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="panel2" role="tabpanel" style="margin:20px 30px 20px 20px">
+                                        <div style="margin:0 400px 0 400px">
+                                          <canvas id="speaker_chart1"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="panel3" role="tabpanel" style="margin:20px 30px 20px 20px">
+                                      <div class="row">
+                                        <div class="col col-md-6">
+                                          <div style="margin:0 100px 0 100px">
+                                            <canvas id="action_chart1"></canvas>
+                                            <% spoken_data = [] %>
+                                            <% spoken_participants = [] %>
+                                            <% for entry in hash.total_time_spoken %>
+                                             <% spoken_data.push(entry[1]) %>
+                                             <% spoken_participants.push(entry[0]) %>
+                                            <% end %>
+                                          </div>
+                                        </div>
+                                        <div class="col col-md-6">
+                                          <div class="card scroll overflow-auto" style="border:transparent !important;">
+                                            <div class="card-body">
+                                               <% action_counter = {} %>
+                                               <h3><strong> Action Items </strong></h3>
+                                               <div style="margin: 0 40px;">
+                                                 <% if hash.action_items.length != 0 %>
+                                                   <% for i in hash.action_items %>
+                                                     <% if action_counter.include? i[0] %>
+                                                       <% action_counter[i[0]] += 1 %>
+                                                     <% else %>
+                                                       <% action_counter[i[0]] = 1 %>
+                                                     <% end %>
+                                                     <p class="pb-2 border-bottom border-gray">
+                                                       <strong class="d-block"><%= i[0] %></strong><%= i[1][0...-1].capitalize()%> </p>
+
+                                                   <% end %>
+                                                 <% else %>
+                                                   <p> No action items were said during the meeting. </p>
+                                                 <% end %>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                           <% action_data = [] %>
+                                           <% for i in participants %>
+                                              <% if action_counter.key?(i) == true %>
+                                                <% action_data.push(action_counter[i]) %>
+                                              <% else %>
+                                                <% action_data.push(0) %>
+                                              <% end %>
+                                           <% end %>
+                                    </div>
+                                    <div class="tab-pane fade" id="panel4" role="tabpanel" style="margin:20px 30px 20px 20px">
+                                      <div style="margin:0 300px 0 300px">
+                                        <canvas id="interruption_chart1"></canvas>
+                                        <% interruption_counter = {} %>
+                                        <% if hash.interruption.to_s.length != 0 %>
+                                          <% for i in hash.interruption %>
+                                            <% interruption_counter[i[0]] = i[1] %>
+                                          <% end %>
+                                        <% else %>
+                                          <p> None </p>
+                                        <% end %>
+
+                                        <% interruption_array = [] %>
+                                        <% if hash.interruption.to_s.length != 0 %>
+                                          <% for i in participants %>
+                                            <% if interruption_counter.key?(i) == true %>
+                                              <% interruption_array.append(interruption_counter[i])%>
+                                            <% else %>
+                                              <% interruption_array.append(0)%>
+                                            <% end %>
+                                          <% end %>
+                                        <% end %>
+                                        <% if interruption_array.length == 0 %>
+                                          <%interruption_array.append(0)%>
+                                        <% end %>
+
+                                        <% if interruption_array.length > 0%>
+                                          <% max_number = (interruption_array[0]+1)*2 %>
+                                        <% else %>
+                                          <% max_number = 0%>
+                                        <% end %>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              <div class="row">
+                <div class="col">
+                  <div class="accordion" id="accordionFilter">
+                    <div class="accordion-group">
+                      <div class="accordion-heading3">
+                        <div class="card shadow border-left-success mb-4 scroll">
+                          <div class="card-header cheader py-2">
+                              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseThree">
+                                <h3 class="m-0 highlight">Questions</h3>
+                              </a>
+                          </div>
+                          <div id="collapseThree" class="accordion-body collapse" style="height: 0px;">
+                            <div class="accordion-inner">
+                              <div class="card-body ml-5">
+                                <% if hash.questions.length != 0 %>
+                                  <% for i in hash.questions %>
+                                  <p class="pb-2 border-bottom border-gray">
+                                    <strong class="d-block"><%= i[0] %></strong><%= i[1].capitalize()%> </p>
+                                  <% end %>
+                                <% else %>
+                                  <p> No questions were asked during the meeting. </p>
+                                <% end %>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="accordion" id="accordionFilter">
+                    <div class="accordion-group">
+                      <div class="accordion-heading4">
+                        <div class="card shadow border-left-success mb-4 scroll">
+                          <div class="card-header cheader py-2">
+                              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseFour">
+                                <h3 class="m-0 highlight">Meeting Suggestions</h3>
+                              </a>
+                          </div>
+                          <div id="collapseFour" class="accordion-body collapse" style="height: 0px;">
+                            <div class="accordion-inner">
+                              <div class="card-body ml-5">
+                                <p> Coming Soon </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <div class="accordion" id="accordionFilter">
+                    <div class="accordion-group">
+                      <div class="accordion-heading5">
+                        <div class="card shadow border-left-success mb-4 scroll">
+                          <div class="card-header cheader py-2">
+                              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseFive">
+                                <h3 class="m-0 highlight">Transcription</h3>
+                              </a>
+                          </div>
+                          <div id="collapseFive" class="accordion-body collapse" style="height: 0px;">
+                            <div class="accordion-inner">
+                              <div class="card-body ml-5">
+                                <% temp1 = 0 %>
+                                <% p1 = '' %>
+                                <% string1 = '' %>
+                                <% time1 = 0 %>
+                                <% time2 = 0 %>
+                                <% for i in hash.raw %>
+                                    <% if temp1 == 0 %>
+                                      <% string1 = i[1] %>
+                                      <% p1 = i[0] %>
+                                      <% temp1 = temp1+1 %>
+                                      <% time1 = i[2] %>
+                                      <% time2 = i[3] %>
+                                    <% else %>
+                                      <% if p1 == i[0] %>
+                                        <% string1 = string1+i[1] %>
+                                        <% time2 = i[3] %>
+                                        <% if temp1 == hash.raw.length-1 %>
+                                          <p><strong><%=p1%></strong> (<%= time1 %>, <%= time2 %>): <%=string1.capitalize()%></p>
+                                          <% string1 = '' %>
+                                        <% end %>
+                                      <% else %>
+                                        <p><strong><%=p1%> </strong>(<%= time1 %>, <%= time2 %>): <%=string1.capitalize()%></p>
+                                        <% string1 = '' %>
+                                        <% string1 = i[1] %>
+                                        <% p1 = i[0] %>
+                                        <% time1 = i[2] %>
+                                        <% time2 = i[3] %>
+                                      <% end %>
+                                      <% temp1 = temp1+1 %>
+                                    <% end %>
+
+                                <% end %>
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
         <% end %>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 </body>
 <% else %>
 <div class="container">
-  <div class="row justify-content-center">
+  <div class="row justify-content-center mt-5">
     <!-- <div class="col-sm-9 col-md-7 col-lg-5 mx-auto"> -->
       <div class="card shadow my-2">
         <div class="card-body text-center">
-          <h1 class="card-title text-center">Upload Meeting Files</h1>
+          <h1 class="card-title text-center"><strong>Upload Meeting Files</strong></h1>
           <p>
           <% for file in @meeting.file.attachments do %>
                  <%= file.filename.to_s() %> <br />
           <% end %>
           </p>
           <%= render 'upload_form', meeting: @meeting %>
-          <%= button_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id}, class:"btn btn-outline-secondary"%>
+          <%= button_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id}, class:"btn btn-outline-secondary btn-xl"%>
         </div>
       </div>
     <!-- </div> -->
@@ -334,17 +414,22 @@
            labels: participants
          },
          options: {
-           maintainAspectRatio: false,
+           maintainAspectRatio: true,
            legend: {
              position: 'right',
              labels: {
-               fontSize:15,
+               fontSize:20,
                usePointStyle: true
              },
               position: 'right',
            },
+           title:{
+             display: true,
+             text:'Spoken Percentages',
+             fontSize:30,
+           },
            animation: {
-             animateScale: true,
+             // animateScale: true,
              animateRotate: true
            },
            plugins:{
@@ -358,6 +443,7 @@
     					 // },
                font: {
     							weight:'bold',
+                  size:25,
     						},
                 formatter: function(value, context) {
                     return Math.round(value*100) + '%';
@@ -392,13 +478,18 @@
         labels: participants
       },
       options: {
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         legend: {
           position: 'right',
           labels: {
-            fontSize:15,
+            fontSize:20,
             usePointStyle: true
           }
+        },
+        title:{
+          display: true,
+          text:'Action Items Frequency    ',
+          fontSize:30,
         },
         animation: {
           animateScale: true,
@@ -412,7 +503,7 @@
             },
             font: {
                weight:'bold',
-               fontSize:15,
+               size:25,
              },
 
             // formatter:Math.multiple(100),
@@ -457,25 +548,30 @@
           }]
       },
       options: {
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
           legend: {
             display: true,
             labels:{
-              fontSize:15,
+              fontSize:20,
             }
+          },
+          title:{
+            display: true,
+            text:'Interruptions',
+            fontSize:30,
           },
           max: 5,
           scales: {
               xAxes:[{
                 ticks:{
-                  fontSize:15
+                  fontSize:20
                 }
               }],
               yAxes: [{
                   ticks: {
                       beginAtZero: true,
                       max: <%= raw max_number %>,
-                      fontSize:15,
+                      fontSize:25,
                       stepSize:1
                   }
               }],
@@ -491,43 +587,64 @@
               },
               font: {
                  weight:'bold',
-                 fontSize:15,
+                 size:25,
                },
               // formatter:Math.multiple(100),
             }
           }
       }
     };
-    // Chart.types.Doughnut.extend({
-    //     name: "chart1",
-    //     showTooltip: function() {
-    //         this.chart.ctx.save();
-    //         Chart.types.Doughnut.prototype.showTooltip.apply(this, arguments);
-    //         this.chart.ctx.restore();
-    //     },
-    //     draw: function() {
-    //         Chart.types.Doughnut.prototype.draw.apply(this, arguments);
-    //
-    //         var width = this.chart.width,
-    //             height = this.chart.height;
-    //
-    //         var fontSize = (height / 114).toFixed(2);
-    //         this.chart.ctx.font = fontSize + "em Verdana";
-    //         this.chart.ctx.textBaseline = "middle";
-    //
-    //         var text = "82%",
-    //             textX = Math.round((width - this.chart.ctx.measureText(text).width) / 2),
-    //             textY = height / 2;
-    //
-    //         this.chart.ctx.fillText(text, textX, textY);
-    //     }
-    // });
+
+    $('.button-heading1').click(function() {
+      $('#collapseOne').collapse('toggle');
+      $('#collapseTwo').collapse('toggle');
+      $('#collapseThree').collapse('toggle');
+      $('#collapseFour').collapse('toggle');
+      $('#collapseFive').collapse('toggle');
+    });
+
+    $('.accordion-heading1').click(function() {
+      $('#collapseOne').collapse('toggle');
+    });
+    $('.accordion-heading2').click(function() {
+      $('#collapseTwo').collapse('toggle');
+    });
+    $('.accordion-heading3').click(function() {
+      $('#collapseThree').collapse('toggle');
+    });
+    $('.accordion-heading4').click(function() {
+      $('#collapseFour').collapse('toggle');
+    });
+    $('.accordion-heading5').click(function() {
+      $('#collapseFive').collapse('toggle');
+    });
     setTimeout(() => {
       var ctx = document.getElementById('speaker_chart').getContext('2d');
+      ctx.canvas.width = 180;
+      ctx.canvas.height = 180;
       var ctx2 = document.getElementById('action_chart').getContext('2d');
+      ctx2.canvas.width = 180;
+      ctx2.canvas.height = 180;
       var ctx4 = document.getElementById('interruption_chart').getContext('2d');
-      window.myLine = new Chart(ctx, chart1);
-      window.myLine = new Chart(ctx2, chart2);
-      window.myLine = new Chart(ctx4, chart3);
+      ctx4.canvas.width = 200;
+      ctx4.canvas.height = 200;
+      window.myDoughnut = new Chart(ctx, chart1);
+      window.myDoughnut = new Chart(ctx2, chart2);
+      window.myBar = new Chart(ctx4, chart3);
     }, 500);
+
+    setTimeout(() => {
+      var ctx = document.getElementById('speaker_chart1').getContext('2d');
+      ctx.canvas.width = 100;
+      ctx.canvas.height = 100;
+      var ctx2 = document.getElementById('action_chart1').getContext('2d');
+      ctx2.canvas.width = 100;
+      ctx2.canvas.height = 100;
+      var ctx4 = document.getElementById('interruption_chart1').getContext('2d');
+      ctx4.canvas.width = 180;
+      ctx4.canvas.height = 120;
+      window.myDoughnut = new Chart(ctx, chart1);
+      window.myDoughnut = new Chart(ctx2, chart2);
+      window.myBar = new Chart(ctx4, chart3);
+    }, 100);
 </script>
