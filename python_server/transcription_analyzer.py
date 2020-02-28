@@ -44,11 +44,11 @@ class TranscriptionAnalyzer:
         self.transcription = self.transcribe.transcription_with_recognition()
         self.interruption = self.transcribe.overlap()
         self.time = self.transcribe.time()
-        print(self.transcription)
+        # print(self.transcription)
 
      # Analyzes the text
     def analyze(self):
-        print(self.transcription)
+        # print(self.transcription)
         if self.transcription == None:
             print("Error: Transcription is not available")
             return -1
@@ -72,7 +72,7 @@ class TranscriptionAnalyzer:
     # Runs all of the necessary functions.
     # Called from the socket program after loading the audio files
     def run(self):
-        print("In TA.run()")
+        # print("In TA.run()")
         if self.transcribeAudio() == -1:
             print("Error: No audio files are loaded")
         if self.analyze() == -1:
