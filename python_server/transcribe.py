@@ -20,7 +20,7 @@ class Transcribe:
 		# for i in nameList:
 			# self.nameList.append(i[:-1])
 		self.nameList = nameList
-		print(self.nameList)
+		# print(self.nameList)
 
 
 		self.phrase = None
@@ -43,7 +43,7 @@ class Transcribe:
 			except IndexError:
 				print("Error: Recognized more speakers than names available. Defaulting to the first speaker..")
 				self.speakerMapper[recognized_speaker] = self.speakerMapper[0] # assuming 0 already exists, because it should be the first speaker available
-				return self.speakerMapper[recognized_speaker] 
+				return self.speakerMapper[recognized_speaker]
 		# print(self.speakerByStamp)
 
 
@@ -73,7 +73,7 @@ class Transcribe:
 		for label in results['speaker_labels']:
 			self.speakerByStamp[label['from']] = label['speaker']
 
-		
+
 		for r_index, i in enumerate(results['results']):
 			for j in i['alternatives']:
 				words = j['timestamps']
@@ -104,12 +104,12 @@ class Transcribe:
 					currentPhrase = None
 
 					#currentPhrase = (self.getSpeakerAtTimestamp(word[1]), word[0], word[1], word[2])
-					
+
 					# print(word[0])
 					# for word in words:
 					# 	print(word[0])
 		self.phrase = phrase
-		print(self.phrase)
+		# print(self.phrase)
 		return phrase
 
 	#def transcribeAudio(self):

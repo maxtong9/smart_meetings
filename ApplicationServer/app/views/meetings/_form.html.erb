@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <div class=" text-style field form-label-group">
+  <div class="text-style field form-label-group">
     <%= form.text_field :name, class: 'form-control', placeholder: 'Meeting Name', :required => true %>
   </div>
 
@@ -19,21 +19,25 @@
     <%= form.text_field :participants, class: 'form-control', placeholder: 'Participants', :required => true %>
   </div>
 
-  <div class="user lists" style="margin: 0 0 0 110px">
+  <div class="user lists" style="margin: 0 0 0 130px">
     <% User.all.each do |user| %>
         <% if user.id == current_user.id %>
+          <h4>
             <%= check_box_tag 'user_ids[]', user.id, true -%>
             <%= user.first %> <br />
+          </h4>
         <% else %>
-          <%= check_box_tag 'user_ids[]', user.id -%>
-          <%= user.first %> <br />
+          <h4>
+            <%= check_box_tag 'user_ids[]', user.id -%>
+            <%= user.first %> <br />
+          </h4>
         <% end %>
     <% end %>
   </div>
   <table class="table w-auto table-borderless mb-0 span2">
     <tr class="row">
-      <td style="padding: 10px 0 0 20px;"><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary" %></td>
-      <td style="padding: 10px 0 0 160px;"> <%= form.submit :Submit, class:'btn btn-outline-primary'%></td>
+      <td style="padding: 10px 0 0 50px;"><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary btn-xl" %></td>
+      <td style="padding: 10px 0 0 240px;"> <%= form.submit :Submit, class:'btn btn-outline-primary btn-xl'%></td>
     </tr>
   </table>
 <% end %>

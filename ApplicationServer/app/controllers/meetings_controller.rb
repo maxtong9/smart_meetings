@@ -54,7 +54,7 @@ class MeetingsController < ApplicationController
     send_to_socket(@meeting)
     create_trello_cards()
     send_email()
-    redirect_to @meeting
+    # redirect_to @meeting
   end
 
   # PATCH/PUT /meetings/1
@@ -65,6 +65,7 @@ class MeetingsController < ApplicationController
         @meeting.file.attach(params[:meeting][:my_file])
         format.html { redirect_to @meeting, notice: 'Meeting was successfully updated.' }
         format.json { render :show, status: :ok, location: @meeting }
+        analyze
       else
         format.html { render :edit }
         format.json { render json: @meeting.errors, status: :unprocessable_entity }

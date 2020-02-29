@@ -43,12 +43,14 @@
       <div class="col col-lg-12">
         <div class="card chart-card border-left-primary shadow h-100">
           <div class="card-body">
-            <table class="table w-auto table-borderless">
+            <h1 class="m-2">Meeting Statistics</h1>
+            <h2 class="m-2"> <strong><%=@user_hash['spoken'].length%></strong> Total Meetings </h2>
+            <!-- <table class="table w-auto table-borderless">
               <tr class="row">
                 <td style="padding: 0 0 0 16px"><h2 class="m-2">Meeting Statistics</h2></td>
                 <td style="padding: 0 0 0 730px"><h3 class="m-3"> <strong><%=@user_hash['spoken'].length%></strong> Total Meetings </h3></td>
               </tr>
-            </table>
+            </table> -->
           </div>
 
           <nav class="nav-extended">
@@ -98,20 +100,20 @@
                     <canvas id="speaker_chart"></canvas>
                   </div>
                   <div style="margin:30px 100px 0 100px">
-                    <h4> Feedback </h4>
-                    <h5 style="font-size:18px !important;"> Spoken Percentages are the percentages of your participation time in each meeting compared to others in the meeting.
+                    <h3> Feedback </h3>
+                    <h4> Spoken Percentages are the percentages of your participation time in each meeting compared to others in the meeting.</h4>
                     <% if scale['0'] == meetings %>
-                      <h5 style="font-size:18px !important;"> It looks like you are doing great in participating in your meetings effectively. </h5>
+                      <h4 > It looks like you are doing great in participating in your meetings effectively. </h4>
                     <% elsif (scale['1'] && scale['2']) > 0 %>
-                      <h5 style="font-size:18px !important;"> Your percentages fluctuate. These might be due to different meeting types, the different roles you play, or your level of engagement in the meeting. </h5>
+                      <h4 > Your percentages fluctuate. These might be due to different meeting types, the different roles you play, or your level of engagement in the meeting. </h4>
                     <% elsif scale['1'] == 1 %>
-                      <h5 style="font-size:18px !important;"> Having a lower speaking percentage might mean you were not engaged in the meeting or did not have anything to contribute, but might also mean you were listening to others more. </h5>
+                      <h4 > Having a lower speaking percentage might mean you were not engaged in the meeting or did not have anything to contribute, but might also mean you were listening to others more. </h4>
                     <% elsif scale['2'] == 1 %>
-                      <h5 style="font-size:18px !important;"> Having a higher speaking percentage might mean you were dominating the meeting or was not effective in delivering your thoughts, but might also mean you were the facilitator. </h5>
+                      <h4 > Having a higher speaking percentage might mean you were dominating the meeting or was not effective in delivering your thoughts, but might also mean you were the facilitator. </h4>
                     <% elsif scale['1'] > 1 %>
-                      <h5 style="font-size:18px !important;"> It looks like you are not participating much in your meetings either from not engaging, not having anything to share, or from listening too much. Don't be afraid to speak up, your thoughts are valuable to the team as well. </h5>
+                      <h4 > It looks like you are not participating much in your meetings either from not engaging, not having anything to share, or from listening too much. Don't be afraid to speak up, your thoughts are valuable to the team as well. </h4>
                     <% elsif scale['2'] > 1 %>
-                      <h5 style="font-size:18px !important;"> It looks like you are participating a lot in your meetings, either from being the facilitator, not being able to communicate effectively, or having too much to say. Try to have pauses so others can share their thoughts and prepare a concise list of topics you want to talk about before a meeting.</h5>
+                      <h4 > It looks like you are participating a lot in your meetings, either from being the facilitator, not being able to communicate effectively, or having too much to say. Try to have pauses so others can share their thoughts and prepare a concise list of topics you want to talk about before a meeting.</h4>
                     <% end %>
 
                   </div>
@@ -121,14 +123,14 @@
                   <canvas id="action_chart"></canvas>
                 </div>
                 <div style="margin:30px 100px 0 100px">
-                  <h4> Feedback </h4>
-                  <h5 style="font-size:18px !important;"> Action Items are tasks assigned during the meeting with due dates. It offers an insight to how productive or effective the meeting was. </h5>
+                  <h3> Feedback </h3>
+                  <h4 > Action Items are tasks assigned during the meeting with due dates. It offers an insight to how productive or effective the meeting was. </h4>
                   <% if zero_count == 0 %>
-                    <h5 style="font-size:18px !important;"> You created action item(s) in all of your meetings, keep up the productivity! </h5>
+                    <h4 > You created action item(s) in all of your meetings, keep up the productivity! </h4>
                   <% elsif zero_count == 1 %>
-                    <h5 style="font-size:18px !important;"> You created action item(s) in most of your meetings, keep up the productivity! </h5>
+                    <h4 > You created action item(s) in most of your meetings, keep up the productivity! </h4>
                   <% else %>
-                    <h5 style="font-size:18px !important;"> You had no action items in many of your meetings. Without task creation, a meeting might not be as productive because there are no clear actions to execute. If you do not have your own tasks, you are also able to help others on their tasks.</h5>
+                    <h4 > You had no action items in many of your meetings. Without task creation, a meeting might not be as productive because there are no clear actions to execute. If you do not have your own tasks, you are also able to help others on their tasks.</h4>
                   <% end %>
                 </div>
               </div>
@@ -138,8 +140,8 @@
                   <canvas id="interruption_chart"></canvas>
                 </div>
                 <div style="margin:30px 100px 0 100px">
-                  <h4> Feedback </h4>
-                  <h5 style="font-size:18px !important;"> Interruptions are sign that you might not be listening to others, as you are also not waiting for others to finish their thoughts. It might also be an accident that you started to say something even though someone has not finished their thoughts. </h5>
+                  <h3> Feedback </h3>
+                  <h4 > Interruptions are sign that you might not be listening to others, as you are also not waiting for others to finish their thoughts. It might also be an accident that you started to say something even though someone has not finished their thoughts. </h4>
                 </div>
               </div>
               <div class="tab-pane fade" id="panel1005" role="tabpanel" style="margin:20px 30px 20px 20px">
@@ -147,8 +149,8 @@
                   <canvas id="hesitation_chart"></canvas>
                 </div>
                 <div style="margin:30px 100px 0 100px">
-                  <h4> Feedback </h4>
-                  <h5 style="font-size:18px !important;"> Hesitations are pauses or filler words. Having many hesitations could hinder others understanding of what you are sharing. </h5>
+                  <h3> Feedback </h3>
+                  <h4 > Hesitations are pauses or filler words. Having many hesitations could hinder others understanding of what you are sharing. </h4>
                 </div>
               </div>
             </div>
@@ -169,6 +171,7 @@
         borderColor: "rgba(67,215,217,1)",
         backgroundColor: "rgba(67,215,217,1)",
         fill: false,
+        borderWidth: 6,
       }],
       labels: <%=raw meeting_number %> ,
     },
@@ -180,7 +183,7 @@
       title:{
         display:true,
         text:'Spoken Percentage',
-        fontSize:16,
+        fontSize:35,
       },
       scales: {
           yAxes: [{
@@ -189,7 +192,7 @@
               display: true
             },
             ticks:{
-              fontSize:16,
+              fontSize:25,
               suggestedMin: 0,
               suggestedMax: 100
             }
@@ -200,7 +203,7 @@
               display: true
             },
             ticks:{
-              fontSize:16,
+              fontSize:25,
             }
           }]
       },
@@ -214,7 +217,8 @@
          data: <%=raw @user_hash['hesitations'].values %>,
          borderColor: "rgba(179,141,251, 1)",
          backgroundColor:"rgba(179,141,251, 1)",
-         fill: false
+         fill: false,
+         borderWidth:6,
        }],
        labels: <%=raw meeting_number %>,
      },
@@ -226,7 +230,7 @@
        title:{
          display:true,
          text:'Hesitations',
-         fontSize:18,
+         fontSize:35,
        },
        scales: {
            yAxes: [{
@@ -235,7 +239,7 @@
                display: true,
              },
              ticks:{
-               fontSize:16,
+               fontSize:25,
                stepSize: 1,
                suggestedMin: 0,
              }
@@ -246,7 +250,7 @@
                display: true,
              },
              ticks:{
-               fontSize:16,
+               fontSize:25,
              }
            }]
        },
@@ -270,25 +274,25 @@
            legend: {
              display: false,
              labels:{
-               fontSize:15,
+               fontSize:25,
              }
            },
            title:{
              display:true,
              text:'Interruptions',
-             fontSize:16,
+             fontSize:35,
            },
            max: 5,
            scales: {
                xAxes:[{
                  ticks:{
-                   fontSize:16
+                   fontSize:25
                  }
                }],
                yAxes: [{
                    ticks: {
                        beginAtZero: true,
-                       fontSize:16,
+                       fontSize:25,
                        stepSize:1,
                        suggestedMax: 3,
                    }
@@ -320,25 +324,25 @@
              legend: {
                display: false,
                labels:{
-                 fontSize:15,
+                 fontSize:25,
                }
              },
              title:{
                display:true,
                text:'Action Items',
-               fontSize:16,
+               fontSize:35,
              },
              max: 5,
              scales: {
                  xAxes:[{
                    ticks:{
-                     fontSize:16
+                     fontSize:25
                    }
                  }],
                  yAxes: [{
                      ticks: {
                          beginAtZero: true,
-                         fontSize:16,
+                         fontSize:25,
                          stepSize:1,
                          suggestedMax: 4,
                      }

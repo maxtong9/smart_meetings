@@ -1,5 +1,5 @@
 .head {
-  padding: 200px 0 240px;
+  padding: 270px 0 400px;
   /* background-color: #5cdb95; */
   color: #FFF;
   background: rgb(0,192,127);
@@ -14,11 +14,11 @@ section {
 
 .btn-default {
   font-family: 'Lato', sans-serif !important;
-  font-size: 20px !important;
+  font-size: 35px !important;
   color: #00c07f !important;
   background: white !important;
   border-radius: 40px !important;
-  width: 240px;
+  width: 300px;
 }
 
 .btn-default:hover {
@@ -34,11 +34,16 @@ section {
 .title {
   color: white;
   font-weight: bold;
-  font-size: 40px;
-  padding: 50px 0 0 0;
+  font-size: 60px;
+  padding: 60px 0 0 0;
 }
 
 .subtitle {
   color: white;
-  font-size: 25px;
+  font-size: 40px !important;
+}
+
+li.home{
+  font-size:30px !important;
+  line-height:50px !important;
 }

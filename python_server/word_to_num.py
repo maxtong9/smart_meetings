@@ -30,26 +30,25 @@ class WordToNum:
         else:
             num += nums[arr[0]]
             num += nums[arr[1]]
-        print(num)
+        # print(num)
         return str(num)
 
     def convert_string(self, words_arr):
-        print(str(words_arr))
+        # print(str(words_arr))
         for i in range(len(words_arr)-1, 0, -1):
-            print("attempting to convert \"" + words_arr[i] + "\"")
+            # print("attempting to convert \"" + words_arr[i] + "\"")
             if (words_arr[i].isalpha()):
-                print("is alpha")
+                # print("is alpha")
                 if words_arr[i] in nums:
-                    print("words[i]: " + words_arr[i])
+                    # print("words[i]: " + words_arr[i])
                     if words_arr[i-1] in nums:
-                        print("words[i-1]: " + words_arr[i-1])
+                        # print("words[i-1]: " + words_arr[i-1])
                         words_arr[i-1] = self.convert([words_arr[i-1], words_arr[i]])
                         del words_arr[i]
                     else:
                         words_arr[i] = self.convert([words_arr[i]])
-            else:
-                print("not alpha")
-        
-        print(str(words_arr))
+            # else:
+                # print("not alpha")
+
+        # print(str(words_arr))
         return words_arr
-        

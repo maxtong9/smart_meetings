@@ -1,7 +1,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.corpus import brown # NEEDS TO BE TURNED ON WHEN GENE
 from string import punctuation
-from nltk.corpus import stopwords 
+from nltk.corpus import stopwords
 from nltk import word_tokenize
 import pickle
 
@@ -19,7 +19,7 @@ Gets all the words in the Brown Corpus
 #     for f in docs:
 #         doc = brown.words(f)
 #         doc = [w.lower().translate(translator).strip() for w in doc]
-        
+
 
 def tokenize(text):
     words = word_tokenize(text)
@@ -36,11 +36,11 @@ def getVocabulary():
     for file_id in brown.fileids():
         words = tokenize(brown.raw(file_id))
         vocabulary.update(words)
-        print(words)
-    
+        # print(words)
+
     vocabulary = list(vocabulary)
     word_index = {w: idx for idx, w in enumerate(vocabulary)}
-    
+
     VOCABULARY_SIZE = len(vocabulary)
     DOCUMENTS_COUNT = len(brown.fileids())
     return vocabulary
@@ -77,7 +77,3 @@ if __name__ == '__main__':
     #saveModel()
 
     testModel()
-
-
-
-
