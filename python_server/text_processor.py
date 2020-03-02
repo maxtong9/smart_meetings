@@ -892,7 +892,7 @@ class TextProcessor:
             if len(fewActionItems) == 0 and len(manyActionItems) == 0:
                 meetingSuggestions["Action Items"].append("Action items has been assigned equally amongst all members of this meeting. Great job ensuring fair task management!")
             else:
-                meetingSuggestions["Action Items"].append("It appears that task division has not been allocated equally. A balanced workload reduces stress and promotes productivity!")
+                meetingSuggestions["Action Items"].append("It appears that task division has not been allocated equally. A balanced workload reduces stress and promotes productivity! Try breaking tasks into smaller subtasks to assign to more members.")
                 if len(fewActionItems) > 0 and len(manyActionItems) > 0:
                     s1 = "" # a formatted string of the names of people who were assigned fewer action items
                     s2 = "" # a formatted string of the names of people who were assigned more action items
@@ -940,8 +940,10 @@ class TextProcessor:
 
         if len(questions) == 0:
             meetingSuggestions["Questions"].append("This meeting seems to be lacking questions. Questions are great for promoting meeting engagement and clarity. If you're confused, don't be afraid to ask a question!")
+        elif len(questions) < numSpeakers:
+            meetingSuggestions["Questions"].append("This meeting has a low number of questions. Questions are great for promoting meeting engagement and clarity. If you're confused, don't be afraid to ask a question!")
         else:
-             meetingSuggestions["Questions"].append("Awesome job asking engaging and clarifying questions! Don't forget to follow up on any questions as needed.")
+            meetingSuggestions["Questions"].append("Awesome job asking engaging and clarifying questions! Don't forget to follow up on any questions as needed.")
         
 
         print("MEETING SUGGESTIONS:")
