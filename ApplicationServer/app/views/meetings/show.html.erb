@@ -348,31 +348,34 @@
                                 <% time1 = 0 %>
                                 <% time2 = 0 %>
                                 <% for i in hash.raw %>
-                                    <% if temp1 == 0 %>
+                                  <% if temp1 == 0 %>
+                                    <% string1 = i[1] %>
+                                    <% p1 = i[0] %>
+                                    <% temp1 = temp1+1 %>
+                                    <% time1 = i[2] %>
+                                    <% time2 = i[3] %>
+                                  <% else %>
+                                    <% if p1 == i[0] %>
+                                      <% string1 = string1+i[1] %>
+                                      <% time2 = i[3] %>
+                                      <% if temp1 == hash.raw.length-1 %>
+                                        <p><strong><%=p1%></strong> (<%= time1 %>, <%= time2 %>): <%=string1.capitalize()%></p>
+                                        <% string1 = '' %>
+                                      <% end %>
+                                    <% else %>
+                                      <p><strong><%=p1%> </strong>(<%= time1 %>, <%= time2 %>): <%=string1.capitalize()%></p>
+                                      <% string1 = '' %>
                                       <% string1 = i[1] %>
                                       <% p1 = i[0] %>
-                                      <% temp1 = temp1+1 %>
                                       <% time1 = i[2] %>
                                       <% time2 = i[3] %>
-                                    <% else %>
-                                      <% if p1 == i[0] %>
-                                        <% string1 = string1+i[1] %>
-                                        <% time2 = i[3] %>
-                                        <% if temp1 == hash.raw.length-1 %>
-                                          <p><strong><%=p1%></strong> (<%= time1 %>, <%= time2 %>): <%=string1.capitalize()%></p>
-                                          <% string1 = '' %>
-                                        <% end %>
-                                      <% else %>
-                                        <p><strong><%=p1%> </strong>(<%= time1 %>, <%= time2 %>): <%=string1.capitalize()%></p>
+                                      <% if temp1 == hash.raw.length-1 %>
+                                        <p><strong><%=p1%></strong> (<%= time1 %>, <%= time2 %>): <%=string1.capitalize()%></p>
                                         <% string1 = '' %>
-                                        <% string1 = i[1] %>
-                                        <% p1 = i[0] %>
-                                        <% time1 = i[2] %>
-                                        <% time2 = i[3] %>
                                       <% end %>
-                                      <% temp1 = temp1+1 %>
                                     <% end %>
-
+                                    <% temp1 = temp1+1 %>
+                                  <% end %>
                                 <% end %>
                               </div>
                               </div>

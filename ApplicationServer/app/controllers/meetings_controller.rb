@@ -159,8 +159,8 @@ class MeetingsController < ApplicationController
       require 'open-uri'
       # hostname = 'localhost' # COMMENT THIS OUT FOR DOCKER
       hostname = open('https://api.ipify.org').read
+      # hostname = '107.77.213.153' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       puts hostname
-      # hostname = '169.231.141.63' # REPLACE THIS WITH YOUR PUBLIC IP ADDRESS FOR DOCKER
       port = 9999
 
       s = TCPSocket.open(hostname, port)
@@ -226,7 +226,7 @@ class MeetingsController < ApplicationController
 
       for i in hash.action_items
         card_name = i[1][0...-1]
-        card_description = "Test Description"
+        card_description = "created by SmartMeetings"
         card_member_username = User.find_by(first: i[0]).trello
 
          # get id of the card member
@@ -239,12 +239,12 @@ class MeetingsController < ApplicationController
         if i.size() == 3
           deadline = i[2][0]
           dl_index = i[2][1]
-          puts dl_index
+          # puts dl_index
           # card_name = i[1][0...dl_index]
-          puts card_name.split(' ')
-          puts card_name.split(' ')[0...dl_index]
+          # puts card_name.split(' ')
+          # puts card_name.split(' ')[0...dl_index]
           card_name = (card_name.split(' ')[0...dl_index]).join(' ')
-          puts "RUBY DEADLINE: " + deadline
+          # puts "RUBY DEADLINE: " + deadline
           url = URI("#{trello_url}/cards?name=#{card_name}&desc=#{card_description}&idList=#{list_id}&idMembers=#{member_id}&due=#{deadline}&key=#{trello_key}&token=#{trello_token}")
         else
           url = URI("#{trello_url}/cards?name=#{card_name}&desc=#{card_description}&idList=#{list_id}&idMembers=#{member_id}&key=#{trello_key}&token=#{trello_token}")
