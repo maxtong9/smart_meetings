@@ -223,6 +223,7 @@
   </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script type="text/javascript">
   // Speakers chart
   var chart0 = {
@@ -374,6 +375,19 @@
              animation: {
                animateScale: true
              }
+           },
+           plugins:{
+             datalabels:{
+               color:"white",
+               display: function(context) {
+                 return context.dataset.data[context.dataIndex] !== 0;
+               },
+               font: {
+                  weight:'bold',
+                  size:25,
+                },
+               // formatter:Math.multiple(100),
+             }
            }
        }
      };
@@ -427,6 +441,19 @@
                  }],
                animation: {
                  animateScale: true
+               }
+             },
+             plugins:{
+               datalabels:{
+                 color:"white",
+                 display: function(context) {
+                   return context.dataset.data[context.dataIndex] !== 0;
+                 },
+                 font: {
+                    weight:'bold',
+                    size:25,
+                  },
+                 // formatter:Math.multiple(100),
                }
              }
          }
