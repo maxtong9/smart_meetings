@@ -11,7 +11,8 @@ RUN curl -sL https://deb.nodesource.com/setup_13.x | bash - \
 
  # Install Ruby Gems using bundle, node modules using yarn, update yarn packages
 COPY Gemfile package.json Gemfile.lock yarn.lock ./
-RUN bundler update --bundler
+RUN gem install bundler -v 2.1.4
+RUN bundle update --bundler
 RUN bundle install
 #  && npm install \
 RUN yarn install --check-files
