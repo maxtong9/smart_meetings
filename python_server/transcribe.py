@@ -26,7 +26,7 @@ class Transcribe:
 		self.phrase = None
 		self.speakerByStamp = {}
 		self.speakerMapper = {} # maps that speakers that appear to the list of speakers in the list
-
+		self.INTERRUPTION_TIME = 0.27
 	'''
 	Gets the speaker at the current timestamp
 	'''
@@ -88,7 +88,7 @@ class Transcribe:
 					# If word speaker == current speaker
 					if (speaker == currentPhrase[0]):
 						period = "." if word[1] - words[index-1][2] > .45 else ""
-						currentPhrase = (currentPhrase[0], currentPhrase[1] + period + " " + word[0], currentPhrase[2], currentPhrase[3])
+						currentPhrase = (currentPhrase[0], currentPhrase[1] + period + " " + word[0], currentPhrase[2], word[2])
 						# print(currentPhrase)
 					else:
 						# Append to phrase
@@ -223,34 +223,64 @@ class Transcribe:
 			json.dump(data, outfile)
 
 	def overlap(self):
-		s_time = 0
-		e_time = 0
-		name = ''
-		overlap = {}
-		for index, comp in enumerate(self.phrase):
-			if index == 0:
-				name = comp[0]
-				s_time = comp[2]
-				e_time = comp[3]
+		if self.phrase is not None:
+			prevPoint = self.phrase[0]
+		interruption = {}
+		for point in self.phrase:
+			# Names different
+			if prevPoint[0] != point[0]:
+				# Check Time for interruption
+				if point[2] - prevPoint[3] < self.INTERRUPTION_TIME:
+					# Add Interruption
+					if point[0] not in interruption:
+						interruption[point[0]] = 1
+					else:
+						interruption[point[0]] += 1
 			else:
-				if name != comp[0]:
-					if comp[2] > s_time and comp[2] < e_time:
-						if comp[0] not in overlap:
-							overlap[comp[0]] = 1
-						else:
-							overlap[comp[0]] += 1
-					s_time = comp[2]
-					e_time = comp[3]
-					name = comp[0]
-		interruption = []
-		for i in overlap:
-			# interruption.append([i[:-1], overlap[i]])
-			interruption.append([i, overlap[i]])
+				prevPoint = point
+		returnInterrupt = []
+		for key in interruption:
+			returnInterrupt.append([key, interruption[key]])
+		
+		return returnInterrupt
 
-		return interruption
+
+
+
+
+
+
+
+	# def overlap(self):
+	# 	s_time = 0
+	# 	e_time = 0
+	# 	name = ''
+	# 	overlap = {}
+	# 	for index, comp in enumerate(self.phrase):
+	# 		if index == 0:
+	# 			name = comp[0]
+	# 			s_time = comp[2]
+	# 			e_time = comp[3]
+	# 		else:
+	# 			if name != comp[0]:
+	# 				if comp[2] > s_time and comp[2] < e_time:
+	# 					if comp[0] not in overlap:
+	# 						overlap[comp[0]] = 1
+	# 					else:
+	# 						overlap[comp[0]] += 1
+	# 				s_time = comp[2]
+	# 				e_time = comp[3]
+	# 				name = comp[0]
+	# 	interruption = []
+	# 	for i in overlap:
+	# 		# interruption.append([i[:-1], overlap[i]])
+	# 		interruption.append([i, overlap[i]])
+
+	# 	return interruption
+	
 
 
 
 if __name__ == "__main__":
-    transcribe = Transcribe(['3ppl0.wav'], ['Max', 'Sarita', 'Tuan'])
-    transcription = transcribe.transcription_with_recognition()
+    transcribe = Transcribe(['4.mp3'], ['Max', 'Sarita', 'Tuan'])
+    transcription = transcribe.transcription_with_recognition();print(transcribe.overlap())
