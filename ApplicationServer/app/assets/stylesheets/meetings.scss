@@ -20,7 +20,8 @@ h2 {
 }
 
 h3 {
-  padding-left: 30px;
+  padding-left: 10px;
+  padding-top:5px;
   color:#737373;
   font-size: 30px !important;
   font-family: 'Lato', sans-serif;
@@ -45,13 +46,16 @@ li {
   font-family: 'Lato', sans-serif;
   line-height: 30px !important;
 }
+
 ul.no-bullets {
   list-style-type: none;
 }
 
-// .text-field{
-//   font-size: 35px !important;
-// }
+.text-field{
+  font-family: 'Lato', sans-serif !important;
+  font-size: 25px !important;
+}
+
 .btn-outline-primary{
   color: white !important;
   background: #00c07f !important;
@@ -77,7 +81,7 @@ ul.no-bullets {
 }
 
 .scroll {
-    max-height: 400px;
+    max-height: 700px;
     overflow-y: auto;
 }
 

@@ -35,8 +35,11 @@
                 <% end %>
               </ul>
             </div>
-            <div class="pt-2" style="margin:0 0 0 40px;">
-              <%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary btn-lg" %>
+            <div class="pt-2" style="margin: 0 0 0 15px">
+              <tr>
+                <td><a class="btn btn-outline-secondary btn-lg" href="https://trello.com/b/nrl0o9rP/weekly-meetings" role="button" target="_blank" style="font-size:20px;">Trello</a></td>
+                <td><%= link_to 'Back', meetings_path, class:"btn btn-outline-secondary btn-lg" %></td>
+              </tr>
             </div>
           </div>
         </div>
@@ -47,19 +50,209 @@
 
         <% if @json_from_file != 0 %>
             <% participants = [] %>
+            <% for i in hash.total_time_spoken %>
+              <% participants.append(i[0]) %>
+            <% end %>
             <div class="card shadow border-left-success mb-4 scroll">
               <div class="card-header cheader py-2 button-heading1">
-                <h3 class="m-0 highlight">View All</h3>
+                <div style="display:inline-block;vertical-align:middle;">
+                    <img src="../../assets/expand.png" alt="expand" width="30" height="30"/>
+                </div>
+                <div style="display:inline-block;vertical-align:middle;">
+                    <div><h3 class="highlight" style="span-text; margin-left:10px;"> View All </h3></div>
+                </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col">
+                <div class="accordion">
+                    <div class="accordion-heading4">
+                      <div class="card shadow border-left-success mb-4 scroll">
+                        <div class="card-header cheader py-2">
+                            <a class="accordion-toggle" data-toggle="collapse" href="#collapseFour">
+                              <div style="display:inline-block;vertical-align:middle;">
+                                  <img src="../../assets/file.png" alt="expand" width="40" height="40"/>
+                              </div>
+                              <div style="display:inline-block;vertical-align:middle;">
+                                  <div><h3 class="highlight" style="span-text"> Suggestions </h3></div>
+                              </div>
+                            </a>
+                        </div>
+                        <div id="collapseFour" class="accordion-body collapse" style="height: 0px;">
+                          <div class="accordion-inner">
+                            <div class="card-body ml-5">
+                              <%# <% s_keys = hash.meeting_suggestions.keys %>
+                              <%# <% for i in s_keys %>
+                                <%# <% if hash.meeting_suggestions[i].length != 0 %>
+
+                                <%# <% end %>
+                              <%# <% end %>
+                              <p> Coming Soon </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="card border-left-success shadow mb-4">
+                  <div class="accordion">
+                      <div class="accordion-heading2">
+                        <div class="card-header cheader py-2">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseTwo">
+                              <div style="display:inline-block;vertical-align:middle;">
+                                  <img src="../../assets/diagram.png" alt="diagram" width="40" height="40"/>
+                              </div>
+                              <div style="display:inline-block;vertical-align:middle;">
+                                  <div><h3 class="highlight" style="span-text"> Analytics Chart </h3></div>
+                              </div>
+                            </a>
+                        </div>
+                      </div>
+                      <div id="collapseTwo" class="accordion-body collapse" style="height: 0px;">
+                        <div class="accordion-inner">
+                          <div class="card-body">
+                            <nav class="nav-extended mt-5 mb-3">
+                              <div class="nav-content">
+                                <ul class="nav tabs-white justify-content-center" role="tablist">
+                                  <li class="nav-item">
+                                    <a id="view-all" class="nav-link waves-light active" data-toggle="tab" href="#panel1" role="tab">View All</a>
+                                  </li>
+                                  <li class="nav-item ml-0">
+                                    <a class="nav-link waves-ligh" data-toggle="tab" href="#panel2" role="tab">Spoken Percentage</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link waves-light" data-toggle="tab" href="#panel3" role="tab">Action Items</a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link waves-light" data-toggle="tab" href="#panel4" role="tab">Interruptions</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </nav>
+
+                              <div class="tab-content rounded-bottom">
+                                <div class="tab-pane fade in show active" id="panel1" role="tabpanel" style="margin:20px 30px 20px 20px">
+                                  <div class="row">
+                                    <div class="col col-md-4">
+                                        <canvas id="speaker_chart"></canvas>
+                                    </div>
+                                    <div class="col col-md-4">
+                                      <canvas id="action_chart"></canvas>
+                                    </div>
+                                    <div class="col col-md-4">
+                                      <canvas id="interruption_chart"></canvas>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="tab-pane fade" id="panel2" role="tabpanel" style="margin:20px 30px 20px 20px">
+                                    <div style="margin:0 400px 0 400px">
+                                      <canvas id="speaker_chart1"></canvas>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="panel3" role="tabpanel" style="margin:20px 30px 20px 20px">
+                                  <div class="row">
+                                    <div class="col col-md-6">
+                                      <div style="margin:0 100px 0 100px">
+                                        <canvas id="action_chart1"></canvas>
+                                        <% spoken_data = [] %>
+                                        <% spoken_participants = [] %>
+                                        <% for entry in hash.total_time_spoken %>
+                                         <% spoken_data.push(entry[1]) %>
+                                         <% spoken_participants.push(entry[0]) %>
+                                        <% end %>
+                                      </div>
+                                    </div>
+                                    <div class="col col-md-6">
+                                      <div class="card scroll overflow-auto" style="border:transparent !important;">
+                                        <div class="card-body">
+                                           <% action_counter = {} %>
+                                           <h3><strong> Action Items </strong></h3>
+                                           <div style="margin: 0 40px;">
+                                             <% if hash.action_items.length != 0 %>
+                                               <% for i in hash.action_items %>
+                                                 <% if action_counter.include? i[0] %>
+                                                   <% action_counter[i[0]] += 1 %>
+                                                 <% else %>
+                                                   <% action_counter[i[0]] = 1 %>
+                                                 <% end %>
+                                                 <p class="pb-2 border-bottom border-gray">
+                                                   <strong class="d-block"><%= i[0] %></strong><%= i[1][0...-1].capitalize()%> </p>
+
+                                               <% end %>
+                                             <% else %>
+                                               <p> No action items were said during the meeting. </p>
+                                             <% end %>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                       <% action_data = [] %>
+                                       <% for i in participants %>
+                                          <% if action_counter.key?(i) == true %>
+                                            <% action_data.push(action_counter[i]) %>
+                                          <% else %>
+                                            <% action_data.push(0) %>
+                                          <% end %>
+                                       <% end %>
+                                </div>
+                                <div class="tab-pane fade" id="panel4" role="tabpanel" style="margin:20px 30px 20px 20px">
+                                  <div style="margin:0 300px 0 300px">
+                                    <canvas id="interruption_chart1"></canvas>
+                                    <% interruption_counter = {} %>
+                                    <% if hash.interruption.to_s.length != 0 %>
+                                      <% for i in hash.interruption %>
+                                        <% interruption_counter[i[0]] = i[1] %>
+                                      <% end %>
+                                    <% else %>
+                                      <p> None </p>
+                                    <% end %>
+
+                                    <% interruption_array = [] %>
+                                    <% if hash.interruption.to_s.length != 0 %>
+                                      <% for i in participants %>
+                                        <% if interruption_counter.key?(i) == true %>
+                                          <% interruption_array.append(interruption_counter[i])%>
+                                        <% else %>
+                                          <% interruption_array.append(0)%>
+                                        <% end %>
+                                      <% end %>
+                                    <% end %>
+                                    <% if interruption_array.length == 0 %>
+                                      <%interruption_array.append(0)%>
+                                    <% end %>
+
+                                    <% if interruption_array.length > 0%>
+                                      <% max_number = (interruption_array[0]+1)*2 %>
+                                    <% else %>
+                                      <% max_number = 0%>
+                                    <% end %>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
             <!-- Summary card -->
-            <div class="accordion" id="accordionFilter">
-              <div class="accordion-group">
+            <div class="accordion">
                 <div class="accordion-heading1">
                   <div class="card shadow border-left-success mb-4 scroll">
                     <div class="card-header cheader py-2">
-                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseOne">
-                          <h3 class="m-0 highlight">Summary</h3>
+                        <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseOne">
+                          <div style="display:inline-block;vertical-align:middle;">
+                              <img src="../../assets/star.png" alt="star" width="40" height="40"/>
+                          </div>
+                          <div style="display:inline-block;vertical-align:middle;">
+                              <div><h3 class="highlight" style="span-text"> Summary </h3></div>
+                          </div>
                         </a>
                     </div>
                       <div id="collapseOne" class="accordion-body collapse" style="height: 0px;">
@@ -78,15 +271,9 @@
                                       <% string_s = string_s+ ' ' + i[1][0...-1] %>
                                       <% if temp == hash.summary.length-1 %>
                                         <p> <strong><%= p %></strong>: <%=string_s.capitalize()%></p>
-                                        <% if (participants.include? p.to_s())== false  %>
-                                          <% participants.append(p) %>
-                                        <%end%>
                                       <% end %>
                                     <% else %>
                                       <p> <strong><%= p %></strong>: <%=string_s.capitalize()%></p>
-                                      <% if (participants.include? p.to_s()) == false %>
-                                        <% participants.append(p) %>
-                                      <%end%>
                                       <% string_s = i[1][0...-1] %>
                                       <% p = i[0] %>
                                     <% end %>
@@ -100,159 +287,21 @@
                         </div>
                     </div>
                   </div>
-                </div>
               </div>
-              <div class="row">
-                <div class="col" style="margin: 0 0 0 5px">
-                  <div class="card border-left-success shadow mb-4">
-                    <div class="accordion" id="accordionFilter">
-                      <div class="accordion-group">
-                        <div class="accordion-heading2">
-                          <div class="card-header cheader py-2">
-                              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseTwo">
-                                <h3 class="m-0 highlight">Analytics</h3>
-                              </a>
-                          </div>
-                        </div>
-                          <div id="collapseTwo" class="accordion-body collapse" style="height: 0px;">
-                            <div class="accordion-inner">
-                              <div class="card-body">
-                                <nav class="nav-extended mt-5 mb-3">
-                                  <div class="nav-content">
-                                    <ul class="nav tabs-white justify-content-center" role="tablist">
-                                      <li class="nav-item">
-                                        <a id="view-all" class="nav-link waves-light active" data-toggle="tab" href="#panel1" role="tab">View All</a>
-                                      </li>
-                                      <li class="nav-item ml-0">
-                                        <a class="nav-link waves-ligh" data-toggle="tab" href="#panel2" role="tab">Spoken Percentage</a>
-                                      </li>
-                                      <li class="nav-item">
-                                        <a class="nav-link waves-light" data-toggle="tab" href="#panel3" role="tab">Action Items</a>
-                                      </li>
-                                      <li class="nav-item">
-                                        <a class="nav-link waves-light" data-toggle="tab" href="#panel4" role="tab">Interruptions</a>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </nav>
 
-                                  <div class="tab-content rounded-bottom">
-                                    <div class="tab-pane fade in show active" id="panel1" role="tabpanel" style="margin:20px 30px 20px 20px">
-                                      <div class="row">
-                                        <div class="col col-md-4">
-                                            <canvas id="speaker_chart"></canvas>
-                                        </div>
-                                        <div class="col col-md-4">
-                                          <canvas id="action_chart"></canvas>
-                                        </div>
-                                        <div class="col col-md-4">
-                                          <canvas id="interruption_chart"></canvas>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="panel2" role="tabpanel" style="margin:20px 30px 20px 20px">
-                                        <div style="margin:0 400px 0 400px">
-                                          <canvas id="speaker_chart1"></canvas>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="panel3" role="tabpanel" style="margin:20px 30px 20px 20px">
-                                      <div class="row">
-                                        <div class="col col-md-6">
-                                          <div style="margin:0 100px 0 100px">
-                                            <canvas id="action_chart1"></canvas>
-                                            <% spoken_data = [] %>
-                                            <% spoken_participants = [] %>
-                                            <% for entry in hash.total_time_spoken %>
-                                             <% spoken_data.push(entry[1]) %>
-                                             <% spoken_participants.push(entry[0]) %>
-                                            <% end %>
-                                          </div>
-                                        </div>
-                                        <div class="col col-md-6">
-                                          <div class="card scroll overflow-auto" style="border:transparent !important;">
-                                            <div class="card-body">
-                                               <% action_counter = {} %>
-                                               <h3><strong> Action Items </strong></h3>
-                                               <div style="margin: 0 40px;">
-                                                 <% if hash.action_items.length != 0 %>
-                                                   <% for i in hash.action_items %>
-                                                     <% if action_counter.include? i[0] %>
-                                                       <% action_counter[i[0]] += 1 %>
-                                                     <% else %>
-                                                       <% action_counter[i[0]] = 1 %>
-                                                     <% end %>
-                                                     <p class="pb-2 border-bottom border-gray">
-                                                       <strong class="d-block"><%= i[0] %></strong><%= i[1][0...-1].capitalize()%> </p>
-
-                                                   <% end %>
-                                                 <% else %>
-                                                   <p> No action items were said during the meeting. </p>
-                                                 <% end %>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                           <% action_data = [] %>
-                                           <% for i in participants %>
-                                              <% if action_counter.key?(i) == true %>
-                                                <% action_data.push(action_counter[i]) %>
-                                              <% else %>
-                                                <% action_data.push(0) %>
-                                              <% end %>
-                                           <% end %>
-                                    </div>
-                                    <div class="tab-pane fade" id="panel4" role="tabpanel" style="margin:20px 30px 20px 20px">
-                                      <div style="margin:0 300px 0 300px">
-                                        <canvas id="interruption_chart1"></canvas>
-                                        <% interruption_counter = {} %>
-                                        <% if hash.interruption.to_s.length != 0 %>
-                                          <% for i in hash.interruption %>
-                                            <% interruption_counter[i[0]] = i[1] %>
-                                          <% end %>
-                                        <% else %>
-                                          <p> None </p>
-                                        <% end %>
-
-                                        <% interruption_array = [] %>
-                                        <% if hash.interruption.to_s.length != 0 %>
-                                          <% for i in participants %>
-                                            <% if interruption_counter.key?(i) == true %>
-                                              <% interruption_array.append(interruption_counter[i])%>
-                                            <% else %>
-                                              <% interruption_array.append(0)%>
-                                            <% end %>
-                                          <% end %>
-                                        <% end %>
-                                        <% if interruption_array.length == 0 %>
-                                          <%interruption_array.append(0)%>
-                                        <% end %>
-
-                                        <% if interruption_array.length > 0%>
-                                          <% max_number = (interruption_array[0]+1)*2 %>
-                                        <% else %>
-                                          <% max_number = 0%>
-                                        <% end %>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
               <div class="row">
                 <div class="col">
-                  <div class="accordion" id="accordionFilter">
-                    <div class="accordion-group">
+                  <div class="accordion">
                       <div class="accordion-heading3">
                         <div class="card shadow border-left-success mb-4 scroll">
                           <div class="card-header cheader py-2">
-                              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseThree">
-                                <h3 class="m-0 highlight">Questions</h3>
+                              <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseThree">
+                                <div style="display:inline-block;vertical-align:middle;">
+                                    <img src="../../assets/question.png" alt="question" width="40" height="40"/>
+                                </div>
+                                <div style="display:inline-block;vertical-align:middle;">
+                                    <div><h3 class="highlight" style="span-text"> Questions </h3></div>
+                                </div>
                               </a>
                           </div>
                           <div id="collapseThree" class="accordion-body collapse" style="height: 0px;">
@@ -271,42 +320,23 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="accordion" id="accordionFilter">
-                    <div class="accordion-group">
-                      <div class="accordion-heading4">
-                        <div class="card shadow border-left-success mb-4 scroll">
-                          <div class="card-header cheader py-2">
-                              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseFour">
-                                <h3 class="m-0 highlight">Meeting Suggestions</h3>
-                              </a>
-                          </div>
-                          <div id="collapseFour" class="accordion-body collapse" style="height: 0px;">
-                            <div class="accordion-inner">
-                              <div class="card-body ml-5">
-                                <p> Coming Soon </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col">
-                  <div class="accordion" id="accordionFilter">
-                    <div class="accordion-group">
+                  <div class="accordion">
                       <div class="accordion-heading5">
                         <div class="card shadow border-left-success mb-4 scroll">
                           <div class="card-header cheader py-2">
-                              <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionFilter" href="#collapseFive">
-                                <h3 class="m-0 highlight">Transcription</h3>
+                              <a class="accordion-toggle collapsed" data-toggle="collapse" href="#collapseFive">
+                                <div style="display:inline-block;vertical-align:middle;">
+                                    <img src="../../assets/radio.png" alt="radio" width="40" height="40"/>
+                                </div>
+                                <div style="display:inline-block;vertical-align:middle;">
+                                    <div><h3 class="highlight" style="span-text"> Transcription</h3></div>
+                                </div>
                               </a>
                           </div>
                           <div id="collapseFive" class="accordion-body collapse" style="height: 0px;">
@@ -349,7 +379,6 @@
                             </div>
                           </div>
                         </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -372,7 +401,7 @@
           <% end %>
           </p>
           <%= render 'upload_form', meeting: @meeting %>
-          <%= button_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id}, class:"btn btn-outline-secondary btn-xl"%>
+          <%# <%= button_to 'Analyze Meeting', meetings_analyze_path, method: :post, params: {id: @meeting.id}, class:"btn btn-outline-secondary btn-xl"%>
         </div>
       </div>
     <!-- </div> -->
@@ -392,14 +421,6 @@
            datasets: [{
              data: <%= raw spoken_data %>,
              backgroundColor: [
-             // 'rgba(255, 99, 132, 1)',
-             // 'rgba(54, 162, 235, 1)',
-             // 'rgba(255, 206, 86, 1)',
-             // 'rgba(75, 192, 192, 1)',
-             // 'rgba(153, 102, 255, 1)',
-             // 'rgba(255, 159, 64, 1)'
-
-             // 'rgba(67,215,217,1)',
              'rgba(255,71,145,1)',
              'rgba(0,190,255,1)',
              'rgba(179,141,251, 1)',
@@ -428,6 +449,10 @@
              text:'Spoken Percentages',
              fontSize:30,
            },
+           tooltips: {
+             titleFontSize: 25,
+             bodyFontSize: 25
+           },
            animation: {
              // animateScale: true,
              animateRotate: true
@@ -436,11 +461,6 @@
              datalabels:{
                color:"white",
                display: true,
-               // display: function(chart1) {
-               //  var dataset = chart1.dataset;
-  							// var value = dataset.data[chart1.dataIndex];
-  							// return value*100;
-    					 // },
                font: {
     							weight:'bold',
                   size:25,
@@ -461,12 +481,6 @@
         datasets: [{
           data: <%= raw action_data %>,
           backgroundColor: [
-            // 'rgba(255, 99, 132, 1)',
-            // 'rgba(54, 162, 235, 1)',
-            // 'rgba(255, 206, 86, 1)',
-            // 'rgba(75, 192, 192, 1)',
-            // 'rgba(153, 102, 255, 1)',
-            // 'rgba(255, 159, 64, 1)'
             'rgba(255,71,145,1)',
             'rgba(0,190,255,1)',
             'rgba(179,141,251, 1)',
@@ -490,6 +504,10 @@
           display: true,
           text:'Action Items Frequency    ',
           fontSize:30,
+        },
+        tooltips: {
+          titleFontSize: 25,
+          bodyFontSize: 25
         },
         animation: {
           animateScale: true,
@@ -519,12 +537,6 @@
               label: '# of Interruptions',
               data: <%=raw interruption_array%>,
               backgroundColor: [
-                  // 'rgba(255, 99, 132, 0.2)',
-                  // 'rgba(54, 162, 235, 0.2)',
-                  // 'rgba(255, 206, 86, 0.2)',
-                  // 'rgba(75, 192, 192, 0.2)',
-                  // 'rgba(153, 102, 255, 0.2)',
-                  // 'rgba(255, 159, 64, 0.2)'
                   'rgba(255,71,145,1)',
                   'rgba(0,190,255,1)',
                   'rgba(179,141,251, 1)',
@@ -532,12 +544,6 @@
                   'rgba(67,215,217,1)'
               ],
               borderColor: [
-                  // 'rgba(255, 99, 132, 1)',
-                  // 'rgba(54, 162, 235, 1)',
-                  // 'rgba(255, 206, 86, 1)',
-                  // 'rgba(75, 192, 192, 1)',
-                  // 'rgba(153, 102, 255, 1)',
-                  // 'rgba(255, 159, 64, 1)'
                   'rgba(255,71,145,1)',
                   'rgba(0,190,255,1)',
                   'rgba(179,141,251, 1)',
@@ -559,6 +565,10 @@
             display: true,
             text:'Interruptions',
             fontSize:30,
+          },
+          tooltips: {
+            titleFontSize: 25,
+            bodyFontSize: 25
           },
           max: 5,
           scales: {
@@ -618,6 +628,14 @@
     $('.accordion-heading5').click(function() {
       $('#collapseFive').collapse('toggle');
     });
+
+    setTimeout(() => {
+      $('#collapseOne').collapse('toggle');
+      $('#collapseTwo').collapse('toggle');
+      $('#collapseThree').collapse('toggle');
+      $('#collapseFour').collapse('toggle');
+      $('#collapseFive').collapse('toggle');
+    }, 100);
     setTimeout(() => {
       var ctx = document.getElementById('speaker_chart').getContext('2d');
       ctx.canvas.width = 180;
