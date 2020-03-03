@@ -26,7 +26,7 @@ class Transcribe:
 		self.phrase = None
 		self.speakerByStamp = {}
 		self.speakerMapper = {} # maps that speakers that appear to the list of speakers in the list
-		self.INTERRUPTION_TIME = 0.1
+		self.INTERRUPTION_TIME = 0.27
 	'''
 	Gets the speaker at the current timestamp
 	'''
@@ -88,7 +88,7 @@ class Transcribe:
 					# If word speaker == current speaker
 					if (speaker == currentPhrase[0]):
 						period = "." if word[1] - words[index-1][2] > .45 else ""
-						currentPhrase = (currentPhrase[0], currentPhrase[1] + period + " " + word[0], currentPhrase[2], currentPhrase[3])
+						currentPhrase = (currentPhrase[0], currentPhrase[1] + period + " " + word[0], currentPhrase[2], word[2])
 						# print(currentPhrase)
 					else:
 						# Append to phrase
@@ -240,7 +240,7 @@ class Transcribe:
 				prevPoint = point
 		returnInterrupt = []
 		for key in interruption:
-			returnInterrupt.append(key, interruption[key])
+			returnInterrupt.append([key, interruption[key]])
 		
 		return returnInterrupt
 
@@ -282,5 +282,5 @@ class Transcribe:
 
 
 if __name__ == "__main__":
-    transcribe = Transcribe(['3ppl0.wav'], ['Max', 'Sarita', 'Tuan'])
+    transcribe = Transcribe(['4.mp3'], ['Max', 'Sarita', 'Tuan'])
     transcription = transcribe.transcription_with_recognition();print(transcribe.overlap())
