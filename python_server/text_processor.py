@@ -837,22 +837,26 @@ class TextProcessor:
         if len(lowSpeakers) > 0:
             s = ""
             for i in range(len(lowSpeakers)):
-                if i == len(lowSpeakers)-2:
-                    s += ", and "
-                elif i > 0:
-                    s += ", "
                 s += lowSpeakers[i][0]
+                if len(lowSpeakers) == 2 and i == 0:
+                    s += " and "
+                elif len(lowSpeakers) >= 3:
+                    s += ", "
+                    if i == len(lowSpeakers)-2:
+                        s += "and "
             s += " appear(s) to be speaking less than their peers. Don't be afraid to contribute your great ideas!"
             meetingSuggestions["Speaking Percentages"].append(s)
         if len(highSpeakers) > 0:
             s = ""
             for i in range(len(highSpeakers)):
-                if i == len(highSpeakers)-2:
-                    s += ", and "
-                elif i > 0:
-                    s += ", "
                 s += highSpeakers[i][0]
-            s += " appear(s) to be dominating this meeting. Try encourging or opening the floor up to other members of the meeting!"
+                if i == len(highSpeakers) == 2 and i == 0:
+                    s += " and "
+                elif len(highSpeakers) >= 3:
+                    s += ", "
+                    if i == len(highSpeakers)-2:
+                        s += "and "
+            s += " appear(s) to be dominating this meeting. Try encouraging or opening the floor up to other members of the meeting!"
             meetingSuggestions["Speaking Percentages"].append(s)
         
         if len(meetingSuggestions["Speaking Percentages"]) == 0:
@@ -898,17 +902,21 @@ class TextProcessor:
                     s2 = "" # a formatted string of the names of people who were assigned more action items
 
                     for i in range(len(fewActionItems)):
-                        if i == len(fewActionItems)-2:
-                            s1 += ", and "
-                        elif i > 0:
-                            s1 += ", "
                         s1 += fewActionItems[i]
+                        if i == len(fewActionItems) == 2 and i == 0:
+                            s1 += " and "
+                        elif len(fewActionItems) >= 3:
+                            s1 += ", "
+                            if i == len(fewActionItems)-2:
+                                s1 += "and "
                     for i in range(len(manyActionItems)):
-                        if i == len(manyActionItems)-2:
-                            s2 += ", and "
-                        elif i > 0:
-                            s2 += ", "
                         s2 += manyActionItems[i]
+                        if i == len(manyActionItems) == 2 and i == 0:
+                            s2 += " and "
+                        elif len(manyActionItems) >= 3:
+                            s2 += ", "
+                            if i == len(manyActionItems)-2:
+                                s2 += "and "
                     meetingSuggestions["Action Items"].append("For example, you could give some of " + s2 + "\'s tasks to " + s1 + ".")
                 
 
@@ -920,7 +928,7 @@ class TextProcessor:
         meetingSuggestions["Interruptions"] = []
 
         if len(interruptions) == 0:
-            meetingSuggestions["Interruptions"].append("You all did an excellent job of making sure that everyone had the chance to finish what they had to say. Keep up the great work!")
+            meetingSuggestions["Interruptions"].append("Everyone did an excellent job of making sure that everyone had the chance to finish what they had to say. Keep up the great work!")
         else:
             s = ""
             for i in range(len(interruptions)):
