@@ -121,29 +121,32 @@
                     <h3> <strong> Description </strong></h3>
                     <h4> Spoken Percentages are the percentages of your participation time in each meeting compared to others in the meeting. The number of participants in the each meetings is considered when analyzing the level of engagement. </h4>
                     <h3> <strong> Feedback </strong></h3>
-                    <% if scale['0'] == meetings %>
-                      <h4> Your overall participation percentages indicates that you are very engaged in your meeting. </h4>
-                    <% elsif (scale['1'] > 0) && (scale['2'] > 0) %>
-                      <h4> Your percentages fluctuate. This might be due to different meeting types, the different roles you play, or your level of engagement in the meeting. </h4>
-                    <% elsif (scale['0'] > scale['1']) && (scale['1'] != 0) %>
-                      <h4> Your overall participation percentages indicates that you are engaged in most of your meeting, which is a great direction to improving the productivity of your meeting.</h4>
-                    <% elsif (scale['0'] > scale['2']) && (scale['2'] != 0) %>
-                      <h4> Your overall participation percentages indicates that you are engaged in most of your meeting, which is a great direction to improving the productivity of your meeting.</h4>
-                    <% elsif scale['1'] > 1 %>
-                      <h4> It looks like you are not participating much in your meetings. Don't be afraid to speak up, whether they are ideas or concerns, because your thoughts are valuable to the team. </h4>
-                      <h4> Reasons that might be hindering your participation: </h4>
-                      <li class="suggestions"> Not paying attention to what other members of your team are saying. </li>
-                      <li class="suggestions"> Being unprepared to the meeting. </li>
-                      <li class="suggestions"> Only listening to others. </li>
-                      <li class="suggestions"> Not being assertive enought. </li>
-                    <% elsif scale['2'] > 1 %>
-                      <h4> It looks like you are participating a lot in your meetings. The thoughts and opinions of your team members are valuable to the project as well. </h4>
-                      <h4> Reasons that might lead to over participating: </h4>
-                      <li class="suggestions"> Not listening to what other members of your team are saying. </li>
-                      <li class="suggestions"> Not being concise or restating your point multiple times.</li>
-                      <li class="suggestions"> Being unaware when others are trying to participate. </li>
+                    <% if meetings == 0 %>
+                      <h4> No meetings yet </h4>
+                    <% else %>
+                      <% if scale['0'] == meetings %>
+                        <h4> Your overall participation percentages indicates that you are very engaged in your meeting. </h4>
+                      <% elsif (scale['1'] > 0) && (scale['2'] > 0) %>
+                        <h4> Your percentages fluctuate. This might be due to different meeting types, the different roles you play, or your level of engagement in the meeting. </h4>
+                      <% elsif (scale['0'] > scale['1']) && (scale['1'] != 0) %>
+                        <h4> Your overall participation percentages indicates that you are engaged in most of your meeting, which is a great direction to improving the productivity of your meeting.</h4>
+                      <% elsif (scale['0'] > scale['2']) && (scale['2'] != 0) %>
+                        <h4> Your overall participation percentages indicates that you are engaged in most of your meeting, which is a great direction to improving the productivity of your meeting.</h4>
+                      <% elsif scale['1'] > 1 %>
+                        <h4> It looks like you are not participating much in your meetings. Don't be afraid to speak up, whether they are ideas or concerns, because your thoughts are valuable to the team. </h4>
+                        <h4> Reasons that might be hindering your participation: </h4>
+                        <li class="suggestions"> Not paying attention to what other members of your team are saying. </li>
+                        <li class="suggestions"> Being unprepared to the meeting. </li>
+                        <li class="suggestions"> Only listening to others. </li>
+                        <li class="suggestions"> Not being assertive enought. </li>
+                      <% elsif scale['2'] > 1 %>
+                        <h4> It looks like you are participating a lot in your meetings. The thoughts and opinions of your team members are valuable to the project as well. </h4>
+                        <h4> Reasons that might lead to over participating: </h4>
+                        <li class="suggestions"> Not listening to what other members of your team are saying. </li>
+                        <li class="suggestions"> Not being concise or restating your point multiple times.</li>
+                        <li class="suggestions"> Being unaware when others are trying to participate. </li>
+                      <% end %>
                     <% end %>
-
                   </div>
               </div>
               <div class="tab-pane fade" id="panel1003" role="tabpanel" style="margin:20px 30px 20px 20px">
@@ -154,12 +157,16 @@
                   <h3> <strong> Description </strong> </h3>
                     <h4> Action Items are tasks assigned during the meeting with due dates. This offers an insight to how productive or effective the meeting was. </h4>
                   <h3> <strong> Feedback </strong></h3>
-                  <% if action_count == 0 %>
-                    <h4 > You created action item(s) in all of your meetings, keep up the productivity! </h4>
-                  <% elsif (((action_count/meetings)*100)>60) %>
-                    <h4 > You created action item(s) in most of your meetings, keep up the productivity! </h4>
+                  <% if meetings == 0 %>
+                    <h4> No meetings yet </h4>
                   <% else %>
-                    <h4 > You do not have action items in many of your meetings. Without task creation, a meeting might not be as productive because there are no clear actions to execute. If you do not have your own tasks, you are also able to help others on their tasks.</h4>
+                    <% if action_count == 0 %>
+                      <h4 > You created action item(s) in all of your meetings, keep up the productivity! </h4>
+                    <% elsif (((action_count/meetings)*100)>60) %>
+                      <h4 > You created action item(s) in most of your meetings, keep up the productivity! </h4>
+                    <% else %>
+                      <h4 > You do not have action items in many of your meetings. Without task creation, a meeting might not be as productive because there are no clear actions to execute. If you do not have your own tasks, you are also able to help others on their tasks.</h4>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
@@ -172,13 +179,17 @@
                   <h3> <strong> Description </strong></h3>
                   <h4> Interruptions are a sign that you might not be listening to others, as you are also not waiting for others to finish their thoughts. It might also be on accident ofcourse! </h4>
                   <h3> <strong> Feedback </strong></h3>
-                    <% if (inter_count[0]/meetings) == 1 %>
-                      <h4> Looks good, you do not have any interruptions. </h4>
-                    <% elsif (inter_count[1]/meetings) > 1 %>
-                      <h4> You have some interruption, which may have occured on accident. </h4>
-                    <% elsif (inter_count[1]/meetings) > 2 %>
-                      <h4> Looks like you are interrupting others a lot. </h4>
-                      <h4> One way to improve is to wait a moment before sharing your thoughts. </h4>
+                    <% if meetings == 0 %>
+                      <h4> No meetings yet </h4>
+                    <% else %>
+                      <% if (inter_count[0]/meetings) == 1 %>
+                        <h4> Looks good, you do not have any interruptions. </h4>
+                      <% elsif (inter_count[1]/meetings) > 1 %>
+                        <h4> You have some interruption, which may have occured on accident. </h4>
+                      <% elsif (inter_count[1]/meetings) > 2 %>
+                        <h4> Looks like you are interrupting others a lot. </h4>
+                        <h4> One way to improve is to wait a moment before sharing your thoughts. </h4>
+                      <% end %>
                     <% end %>
                 </div>
               </div>
@@ -190,13 +201,17 @@
                   <h3> <strong> Description </strong></h3>
                   <h4> Hesitations are pauses or filler words. Having many hesitations can hinder the effectiveness of your points. </h4>
                   <h3> <strong> Feedback </strong></h3>
-                  <% if (hes_count[0]/meetings) == 1 %>
-                    <h4> Looks good, you do not have any hesitations. </h4>
-                  <% elsif (hes_count[1]/meetings) < 2 %>
-                    <h4> You have some hesitations which will most likely not hinder the effectiveness of your communication. </h4>
-                  <% elsif (hes_count[1]/meetings) > 2 %>
-                    <h4> Looks like you have a lot of hesitations. </h4>
-                    <h4> One way to avoid hesitations is formulating your thoughts well before speaking to reduce unnecessary pauses. </h4>
+                  <% if meetings == 0 %>
+                    <h4> No meetings yet </h4>
+                  <% else %>
+                    <% if (hes_count[0]/meetings) == 1 %>
+                      <h4> Looks good, you do not have any hesitations. </h4>
+                    <% elsif (hes_count[1]/meetings) < 2 %>
+                      <h4> You have some hesitations which will most likely not hinder the effectiveness of your communication. </h4>
+                    <% elsif (hes_count[1]/meetings) > 2 %>
+                      <h4> Looks like you have a lot of hesitations. </h4>
+                      <h4> One way to avoid hesitations is formulating your thoughts well before speaking to reduce unnecessary pauses. </h4>
+                    <% end %>
                   <% end %>
                 </div>
               </div>

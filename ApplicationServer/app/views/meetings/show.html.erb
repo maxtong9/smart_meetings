@@ -53,6 +53,7 @@
             <% for i in hash.total_time_spoken %>
               <% participants.append(i[0]) %>
             <% end %>
+
             <div class="card shadow border-left-success mb-4 scroll">
               <div class="card-header cheader py-2 button-heading1">
                 <div style="display:inline-block;vertical-align:middle;">
@@ -81,13 +82,17 @@
                         <div id="collapseFour" class="accordion-body collapse" style="height: 0px;">
                           <div class="accordion-inner">
                             <div class="card-body ml-5">
-                              <%# <% s_keys = hash.meeting_suggestions.keys %>
-                              <%# <% for i in s_keys %>
-                                <%# <% if hash.meeting_suggestions[i].length != 0 %>
-
-                                <%# <% end %>
-                              <%# <% end %>
-                              <p> Coming Soon </p>
+                              <% s_keys = hash.meeting_suggestions.to_h.keys%>
+                                <% for i in s_keys %>
+                                  <div class="border-bottom pt-2">
+                                    <p> <strong> <%= i %> </strong> </p>
+                                    <% if hash.meeting_suggestions[i].length != 0 %>
+                                      <% for j in hash.meeting_suggestions[i] %>
+                                        <p style="margin-left: 30px;"> <%=j%> </p>
+                                      <% end %>
+                                  </div>
+                                <% end %>
+                              <% end %>
                             </div>
                           </div>
                         </div>
