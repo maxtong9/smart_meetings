@@ -796,6 +796,168 @@ class TextProcessor:
 
         return listOfSent
 
+    '''
+    Gets a list of meeting suggestions
+
+    Input: A dict of analysis, i.e. total time spoken, questions, action items, interruptions, meeting time etc.
+    '''
+    def getMeetingSuggestions(self, analyzerOutput):
+        meetingSuggestions = {}
+        # self.total_speakers
+        print("TOTAL SPEAKERS:")
+        print(self.total_speakers)
+
+        numSpeakers = len(self.total_speakers)
+        print("NUM SPEAKERS: " + str(numSpeakers))
+
+        # Suggestions for speaking contributions
+        speakingPercentages = analyzerOutput["total_time_spoken"] # speaking percentages is a list of [name, wordsPerPerson[name]]
+        print("SPEAKING PERCENTAGES:")
+        print(speakingPercentages)
+
+        speakingPercentageIdeal = 1.0/numSpeakers
+        print("IDEAL SPEAKING PERCENTAGES: " + str(speakingPercentageIdeal))
+
+        # aim for each person to speak an equal amount +/- 15%
+        speakingPercentageMin = speakingPercentageIdeal * 0.85
+        speakingPercentageMax = speakingPercentageIdeal * 1.15
+        print("SPEAKING PERCENTAGES RANGE: (" + str(speakingPercentageMin) + ", " + str(speakingPercentageMax) + ")")
+
+        lowSpeakers = [] # list of speakers whose spoken percentages are below speakingPercentageMin
+        highSpeakers = [] # list of speakers whose spoken percentages are above speakingPercentageMax
+
+        for sp in speakingPercentages:
+            percentage = sp[1]
+            if percentage < speakingPercentageMin:
+                lowSpeakers.append(sp)
+            elif percentage > speakingPercentageMax:
+                highSpeakers.append(sp)
+            
+        meetingSuggestions["Speaking Percentages"] = []
+        if len(lowSpeakers) > 0:
+            s = ""
+            for i in range(len(lowSpeakers)):
+                s += lowSpeakers[i][0]
+                if len(lowSpeakers) == 2 and i == 0:
+                    s += " and "
+                elif len(lowSpeakers) >= 3:
+                    s += ", "
+                    if i == len(lowSpeakers)-2:
+                        s += "and "
+            s += " appear(s) to be speaking less than their peers. Don't be afraid to contribute your great ideas!"
+            meetingSuggestions["Speaking Percentages"].append(s)
+        if len(highSpeakers) > 0:
+            s = ""
+            for i in range(len(highSpeakers)):
+                s += highSpeakers[i][0]
+                if i == len(highSpeakers) == 2 and i == 0:
+                    s += " and "
+                elif len(highSpeakers) >= 3:
+                    s += ", "
+                    if i == len(highSpeakers)-2:
+                        s += "and "
+            s += " appear(s) to be dominating this meeting. Try encouraging or opening the floor up to other members of the meeting!"
+            meetingSuggestions["Speaking Percentages"].append(s)
+        
+        if len(meetingSuggestions["Speaking Percentages"]) == 0:
+            meetingSuggestions["Speaking Percentages"].append("Everyone contributed to this meeting. Good job TEAM!")
+
+        # Suggestions for action items frequencies
+        actionItems = analyzerOutput["action_items"]
+        print("ACTION ITEMS:")
+        print(actionItems)
+        meetingSuggestions["Action Items"] = []
+
+        if len(actionItems) == 0:
+            meetingSuggestions["Action Items"].append("This meeting seems to be lacking action items, which are important and helpful in finishing projects smoothly and on time.")
+        else:
+            numActionItemsUser = {}
+            totalNumActionItems = len(actionItems)
+            for ai in actionItems:
+                speaker = ai[0]
+                if speaker not in numActionItemsUser:
+                    numActionItemsUser[speaker] = 1
+                else:
+                    numActionItemsUser[speaker] += 1
+
+            numActionItemsIdeal = totalNumActionItems / numSpeakers
+            numActionItemsMin = numActionItemsIdeal * 0.85
+            numActionItemsMax = numActionItemsIdeal * 1.15
+
+            fewActionItems = [] # list of people who have fewer action items than others
+            manyActionItems = [] # list of people who have more action items than others
+
+            for user, numActionItems in numActionItemsUser.items():
+                if numActionItems < numActionItemsMin:
+                    fewActionItems.append(user)
+                elif numActionItems > numActionItemsMax:
+                    manyActionItems.append(user)
+            
+            if len(fewActionItems) == 0 and len(manyActionItems) == 0:
+                meetingSuggestions["Action Items"].append("Action items has been assigned equally amongst all members of this meeting. Great job ensuring fair task management!")
+            else:
+                meetingSuggestions["Action Items"].append("It appears that task division has not been allocated equally. A balanced workload reduces stress and promotes productivity! Try breaking tasks into smaller subtasks to assign to more members.")
+                if len(fewActionItems) > 0 and len(manyActionItems) > 0:
+                    s1 = "" # a formatted string of the names of people who were assigned fewer action items
+                    s2 = "" # a formatted string of the names of people who were assigned more action items
+
+                    for i in range(len(fewActionItems)):
+                        s1 += fewActionItems[i]
+                        if i == len(fewActionItems) == 2 and i == 0:
+                            s1 += " and "
+                        elif len(fewActionItems) >= 3:
+                            s1 += ", "
+                            if i == len(fewActionItems)-2:
+                                s1 += "and "
+                    for i in range(len(manyActionItems)):
+                        s2 += manyActionItems[i]
+                        if i == len(manyActionItems) == 2 and i == 0:
+                            s2 += " and "
+                        elif len(manyActionItems) >= 3:
+                            s2 += ", "
+                            if i == len(manyActionItems)-2:
+                                s2 += "and "
+                    meetingSuggestions["Action Items"].append("For example, you could give some of " + s2 + "\'s tasks to " + s1 + ".")
+                
+
+        # Suggestions for interruptions
+        interruptions = analyzerOutput["interruption"]
+        print("INTERRUPTIONS:")
+        print(interruptions)
+        
+        meetingSuggestions["Interruptions"] = []
+
+        if len(interruptions) == 0:
+            meetingSuggestions["Interruptions"].append("Everyone did an excellent job of making sure that everyone had the chance to finish what they had to say. Keep up the great work!")
+        else:
+            s = ""
+            for i in range(len(interruptions)):
+                if i == len(interruptions)-2:
+                    s += ", and "
+                elif i > 0:
+                    s += ", "
+                s += interruptions[i][0]
+            s += " appear(s) to be interrupting other members. Make sure you're letting other people finish what they have to say!"
+            meetingSuggestions["Interruptions"].append(s)
+
+        # Suggestions for questions
+        questions = analyzerOutput["questions"]
+        print("QUESTIONS:")
+        print(questions)
+        meetingSuggestions["Questions"] = []
+
+        if len(questions) == 0:
+            meetingSuggestions["Questions"].append("This meeting seems to be lacking questions. Questions are great for promoting meeting engagement and clarity. If you're confused, don't be afraid to ask a question!")
+        elif len(questions) < numSpeakers:
+            meetingSuggestions["Questions"].append("This meeting has a low number of questions. Questions are great for promoting meeting engagement and clarity. If you're confused, don't be afraid to ask a question!")
+        else:
+            meetingSuggestions["Questions"].append("Awesome job asking engaging and clarifying questions! Don't forget to follow up on any questions as needed.")
+        
+
+        print("MEETING SUGGESTIONS:")
+        print(meetingSuggestions)
+        return meetingSuggestions
+
 '''
 Minimal
 Testing Here
