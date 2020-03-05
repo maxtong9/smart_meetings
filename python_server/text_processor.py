@@ -819,8 +819,8 @@ class TextProcessor:
         print("IDEAL SPEAKING PERCENTAGES: " + str(speakingPercentageIdeal))
 
         # aim for each person to speak an equal amount +/- 15%
-        speakingPercentageMin = speakingPercentageIdeal * 0.85
-        speakingPercentageMax = speakingPercentageIdeal * 1.15
+        speakingPercentageMin = speakingPercentageIdeal * 0.75
+        speakingPercentageMax = speakingPercentageIdeal * 1.25
         print("SPEAKING PERCENTAGES RANGE: (" + str(speakingPercentageMin) + ", " + str(speakingPercentageMax) + ")")
 
         lowSpeakers = [] # list of speakers whose spoken percentages are below speakingPercentageMin
