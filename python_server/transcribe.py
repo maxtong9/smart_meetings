@@ -26,7 +26,7 @@ class Transcribe:
 		self.phrase = None
 		self.speakerByStamp = {}
 		self.speakerMapper = {} # maps that speakers that appear to the list of speakers in the list
-		self.INTERRUPTION_TIME = 0.27
+		self.INTERRUPTION_TIME = 0.39
 	'''
 	Gets the speaker at the current timestamp
 	'''
@@ -236,8 +236,7 @@ class Transcribe:
 						interruption[point[0]] = 1
 					else:
 						interruption[point[0]] += 1
-			else:
-				prevPoint = point
+			prevPoint = point
 		returnInterrupt = []
 		for key in interruption:
 			returnInterrupt.append([key, interruption[key]])
