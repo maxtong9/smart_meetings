@@ -932,11 +932,13 @@ class TextProcessor:
         else:
             s = ""
             for i in range(len(interruptions)):
-                if i == len(interruptions)-2:
-                    s += ", and "
-                elif i > 0:
-                    s += ", "
                 s += interruptions[i][0]
+                if i == len(interruptions) == 2 and i == 0:
+                    s += " and "
+                elif len(interruptions) >= 3:
+                    s += ", "
+                    if i == len(interruptions)-2:
+                        s += "and "
             s += " appear(s) to be interrupting other members. Make sure you're letting other people finish what they have to say!"
             meetingSuggestions["Interruptions"].append(s)
 
