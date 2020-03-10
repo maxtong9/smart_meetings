@@ -881,8 +881,8 @@ class TextProcessor:
                     numActionItemsUser[speaker] += 1
 
             numActionItemsIdeal = totalNumActionItems / numSpeakers
-            numActionItemsMin = numActionItemsIdeal * 0.85
-            numActionItemsMax = numActionItemsIdeal * 1.15
+            numActionItemsMin = numActionItemsIdeal - 1
+            numActionItemsMax = numActionItemsIdeal + 1
 
             fewActionItems = [] # list of people who have fewer action items than others
             manyActionItems = [] # list of people who have more action items than others
