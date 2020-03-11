@@ -850,7 +850,7 @@ class TextProcessor:
             s = ""
             for i in range(len(highSpeakers)):
                 s += highSpeakers[i][0]
-                if i == len(highSpeakers) == 2 and i == 0:
+                if len(highSpeakers) == 2 and i == 0:
                     s += " and "
                 elif len(highSpeakers) >= 3:
                     s += ", "
@@ -860,7 +860,7 @@ class TextProcessor:
             meetingSuggestions["Speaking Percentages"].append(s)
         
         if len(meetingSuggestions["Speaking Percentages"]) == 0:
-            meetingSuggestions["Speaking Percentages"].append("Everyone contributed to this meeting. Good job TEAM!")
+            meetingSuggestions["Speaking Percentages"].append("Everyone contributed to this meeting. Good job ensuring fair speaking distributions!")
 
         # Suggestions for action items frequencies
         actionItems = analyzerOutput["action_items"]
@@ -870,6 +870,8 @@ class TextProcessor:
 
         if len(actionItems) == 0:
             meetingSuggestions["Action Items"].append("This meeting seems to be lacking action items, which are important and helpful in finishing projects smoothly and on time.")
+        elif len(actionItems) < numSpeakers:
+            meetingSuggestions["Action Items"].append("It seems that not many action items have been assigned during this meeting. Action items are important and helpful in finishing projects smoothly and on time. Try breaking tasks into smaller subtasks to assign to more members.")
         else:
             numActionItemsUser = {}
             totalNumActionItems = len(actionItems)
@@ -881,8 +883,8 @@ class TextProcessor:
                     numActionItemsUser[speaker] += 1
 
             numActionItemsIdeal = totalNumActionItems / numSpeakers
-            numActionItemsMin = numActionItemsIdeal * 0.85
-            numActionItemsMax = numActionItemsIdeal * 1.15
+            numActionItemsMin = numActionItemsIdeal - 1
+            numActionItemsMax = numActionItemsIdeal + 1
 
             fewActionItems = [] # list of people who have fewer action items than others
             manyActionItems = [] # list of people who have more action items than others
@@ -894,7 +896,7 @@ class TextProcessor:
                     manyActionItems.append(user)
             
             if len(fewActionItems) == 0 and len(manyActionItems) == 0:
-                meetingSuggestions["Action Items"].append("Action items has been assigned equally amongst all members of this meeting. Great job ensuring fair task management!")
+                meetingSuggestions["Action Items"].append("Action items have been assigned equally amongst all members of this meeting. Great job ensuring fair task management!")
             else:
                 meetingSuggestions["Action Items"].append("It appears that task division has not been allocated equally. A balanced workload reduces stress and promotes productivity! Try breaking tasks into smaller subtasks to assign to more members.")
                 if len(fewActionItems) > 0 and len(manyActionItems) > 0:
@@ -903,7 +905,7 @@ class TextProcessor:
 
                     for i in range(len(fewActionItems)):
                         s1 += fewActionItems[i]
-                        if i == len(fewActionItems) == 2 and i == 0:
+                        if len(fewActionItems) == 2 and i == 0:
                             s1 += " and "
                         elif len(fewActionItems) >= 3:
                             s1 += ", "
@@ -911,7 +913,7 @@ class TextProcessor:
                                 s1 += "and "
                     for i in range(len(manyActionItems)):
                         s2 += manyActionItems[i]
-                        if i == len(manyActionItems) == 2 and i == 0:
+                        if len(manyActionItems) == 2 and i == 0:
                             s2 += " and "
                         elif len(manyActionItems) >= 3:
                             s2 += ", "
@@ -932,11 +934,13 @@ class TextProcessor:
         else:
             s = ""
             for i in range(len(interruptions)):
-                if i == len(interruptions)-2:
-                    s += ", and "
-                elif i > 0:
-                    s += ", "
                 s += interruptions[i][0]
+                if len(interruptions) == 2 and i == 0:
+                    s += " and "
+                elif len(interruptions) >= 3:
+                    s += ", "
+                    if i == len(interruptions)-2:
+                        s += "and "
             s += " appear(s) to be interrupting other members. Make sure you're letting other people finish what they have to say!"
             meetingSuggestions["Interruptions"].append(s)
 
