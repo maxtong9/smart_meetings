@@ -244,6 +244,7 @@ class MeetingsController < ApplicationController
           # puts card_name.split(' ')
           # puts card_name.split(' ')[0...dl_index]
           card_name = (card_name.split(' ')[0...dl_index]).join(' ')
+          # puts card_name
           # puts "RUBY DEADLINE: " + deadline
           url = URI("#{trello_url}/cards?name=#{card_name}&desc=#{card_description}&idList=#{list_id}&idMembers=#{member_id}&due=#{deadline}&key=#{trello_key}&token=#{trello_token}")
         else
