@@ -587,25 +587,30 @@ class TextProcessor:
                         dl_index = len(words)
                         # actionItems.append([sentence[0], self.removeHesitationFromString(self.joinWordsToSentence(words[i+2:]))])
                         foundActionItem = True
+                        print(words)
                         continue
                         # break
                     if foundActionItem == True and words[i] in self.DEADLINE_KEYWORD:
                         # print("FOUND DEADLINE")
+                        # print("ai_index: " + str(ai_index))
                         if i+1 < len(words):
                             if words[i] == self.DEADLINE_KEYWORD[1]:
                                 deadline = words[i:] # "in" keyword
                                 dl_index = i
-                            else:
+                            elif words[i] == self.DEADLINE_KEYWORD[0] or words[i] == self.DEADLINE_KEYWORD[2]:
                                 deadline = words[i+1:] # "by" or "on" keyword
                                 dl_index = i+1
-                            keyword_index = i # index of the deadline keyword, without the "action item" keywords
+                            # print("dl_index: " + str(dl_index))
+                            keyword_index = i # index of the deadline keyword
+                            # print("keyword_index: " + str(keyword_index))
                             otc = WordToNum()
                             deadline = otc.convert_string(deadline)
                             datetime = dateparser.parse(' '.join(deadline))
                             if datetime is not None:
                                 del words[dl_index:len(words)]
                                 # replace the current deadline within the action item with a properly formatted deadline
-                                words[dl_index:dl_index] = deadline
+                                # words[dl_index:dl_index] = deadline
+                                words = words + deadline
                                 datetime = self.format_deadline(datetime)
                                 foundDeadline = True
                                 # actionItems[len(actionItems)-1].append(deadline)
@@ -614,7 +619,7 @@ class TextProcessor:
                 if foundActionItem is True:
                     actionItems.append([sentence[0], self.removeHesitationFromString(self.joinWordsToSentence(words[ai_index+2:]))])
                     if foundDeadline is True:
-                        actionItems[len(actionItems)-1].append([datetime, keyword_index-2]) # subtract 2 from keyword_index to account for "action item" keywords
+                        actionItems[len(actionItems)-1].append([datetime, keyword_index-2-ai_index]) # subtract 2 from keyword_index to account for "action item" keywords
 
         # print("action items: " + str(actionItems))
         return actionItems
